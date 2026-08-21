@@ -1,0 +1,69 @@
+name: getyourcv-dev
+
+services:
+    app:
+        build:
+            context: .
+            target: dev
+            args:
+                UID: ${APP_UID:-1000}
+                GID: ${APP_GID:-1000}
+        ports:
+            - '${APP_PORT:-8000}:8000'
+        volumes:
+            - '.:/var/www/html'
+            - vendor_data:/var/www/html/vendor
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - app
+
+    vite:
+        image: node:22-alpine
+        working_dir: /var/www/html
+        command: sh -c "npm ci && npm run dev -- --host 0.0.0.0"
+        ports:
+            - '5173:5173'
+        volumes:
+            - '.:/var/www/html'
+            - node_modules_data:/var/www/html/node_modules
+            - vendor_data:/var/www/html/vendor:ro
+        depends_on:
+            - app
+        networks:
+            - app
+
+    postgres:
+        image: postgres:18-alpine
+        ports:
+            - '${FORWARD_DB_PORT:-5432}:5432'
+        environment:
+            POSTGRES_DB: ${DB_DATABASE:-getyourcv}
+            POSTGRES_USER: ${DB_USERNAME:-getyourcv}
+            POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+        volumes:
+            - postgres_data:/var/lib/postgresql
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U ${DB_USERNAME:-getyourcv} -d ${DB_DATABASE:-getyourcv}']
+            interval: 5s
+            timeout: 5s
+            retries: 10
+        networks:
+            - app
+
+    mailpit:
+        image: axllent/mailpit:latest
+        ports:
+            - '1025:1025'
+            - '8025:8025'
+        networks:
+            - app
+
+networks:
+    app:
+
+volumes:
+    postgres_data:
+    vendor_data:
+    node_modules_data:
