@@ -16,10 +16,13 @@ defineProps({
     },
 });
 
+const redirect = new URLSearchParams(window.location.search).get('redirect');
+
 const form = useForm({
     email: '',
     password: '',
     remember: false,
+    redirect,
 });
 
 const submit = () => {
