@@ -32,6 +32,11 @@ class ResumeController extends Controller
         ]);
     }
 
+    public function create(): Response
+    {
+        return Inertia::render('Resume/Create');
+    }
+
     public function store(StoreResumeRequest $request, CreateResume $action): RedirectResponse
     {
         $resume = $action->execute(Auth::user(), $request->validated());

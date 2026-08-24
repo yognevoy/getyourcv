@@ -2,20 +2,18 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResumeController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', fn () => Inertia::render('Welcome'))->name('home');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::get('/about', fn () => Inertia::render('About'))->name('about');
+Route::get('/policy', fn () => Inertia::render('Policy'))->name('policy');
+Route::get('/contacts', fn () => Inertia::render('Contacts'))->name('contacts');
+
+Route::get('/resume/new', [ResumeController::class, 'create'])->name('resumes.create');
+
+Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [ResumeController::class, 'index'])->name('dashboard');
 
     Route::post('/resumes', [ResumeController::class, 'store'])->name('resumes.store');
