@@ -295,14 +295,9 @@ function submit() {
                         <AddRowButton @click="addExperience">Add experience</AddRowButton>
                     </section>
 
-                    <div class="space-y-2">
-                        <PrimaryButton type="submit" :disabled="form.processing" class="w-full sm:w-auto">
-                            Save resume
-                        </PrimaryButton>
-                        <p class="text-xs text-black/50">
-                            We'll ask you to sign in only when you save - nothing you've typed is lost.
-                        </p>
-                    </div>
+                    <PrimaryButton type="submit" :disabled="form.processing" class="w-full sm:w-auto">
+                        Save resume
+                    </PrimaryButton>
                 </form>
 
                 <div class="lg:sticky lg:top-10 lg:self-start">
