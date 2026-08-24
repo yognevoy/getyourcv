@@ -107,7 +107,7 @@ function removeBullet(experienceIndex, bulletIndex) {
 function submit() {
     if (!page.props.auth.user) {
         sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draftData()));
-        router.visit(route('register', { redirect: route('resumes.create') }));
+        router.visit(route('register', { redirect: route('resumes.create', {}, false) }));
         return;
     }
 
