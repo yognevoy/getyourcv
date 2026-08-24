@@ -20,6 +20,32 @@ test('users can authenticate using the login screen', function () {
     $response->assertRedirect(route('dashboard', absolute: false));
 });
 
+test('login honors a same-site redirect target', function () {
+    $user = User::factory()->create();
+
+    $response = $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+        'redirect' => '/profile',
+    ]);
+
+    $this->assertAuthenticated();
+    $response->assertRedirect('/profile');
+});
+
+test('login ignores an off-site redirect target', function () {
+    $user = User::factory()->create();
+
+    $response = $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+        'redirect' => 'https://evil.example.com',
+    ]);
+
+    $this->assertAuthenticated();
+    $response->assertRedirect(route('dashboard', absolute: false));
+});
+
 test('users can not authenticate with invalid password', function () {
     $user = User::factory()->create();
 
