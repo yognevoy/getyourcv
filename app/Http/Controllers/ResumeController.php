@@ -120,9 +120,9 @@ class ResumeController extends Controller
     {
         $this->authorize('view', $resume);
 
-        $action->execute($resume);
+        $clone = $action->execute($resume);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('resumes.edit', $clone);
     }
 
     public function updateStatus(Request $request, Resume $resume): RedirectResponse

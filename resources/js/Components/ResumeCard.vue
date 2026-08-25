@@ -12,7 +12,7 @@ const props = defineProps({
     },
 });
 
-const stubActions = ['Duplicate', 'Get link', 'Download PDF', 'Delete', 'Archive', 'Versions'];
+const stubActions = ['Get link', 'Download PDF', 'Delete', 'Archive', 'Versions'];
 
 function openEdit() {
     router.visit(route('resumes.edit', props.resume.id));
@@ -53,6 +53,9 @@ function openEdit() {
                 <template #content>
                     <DropdownLink :href="route('resumes.edit', resume.id)">
                         Edit
+                    </DropdownLink>
+                    <DropdownLink :href="route('resumes.duplicate', resume.id)" method="post" as="button">
+                        Duplicate
                     </DropdownLink>
                     <button
                         v-for="action in stubActions"
