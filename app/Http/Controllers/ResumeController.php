@@ -46,6 +46,42 @@ class ResumeController extends Controller
             ->with('resume', $resume);
     }
 
+    public function edit(Resume $resume): Response
+    {
+        $this->authorize('update', $resume);
+
+        $resume->load(UpdateResume::RESUME_RELATIONS);
+
+        return Inertia::render('Resume/Edit', [
+            'resume' => [
+                'id' => $resume->id,
+                'full_name' => $resume->full_name,
+                'position' => $resume->position,
+                'email' => $resume->email,
+                'about' => $resume->about,
+                'links' => $resume->links->map(fn ($link) => [
+                    'label' => $link->label,
+                    'url' => $link->url,
+                ]),
+                'skill_groups' => $resume->skillGroups->map(fn ($group) => [
+                    'label' => $group->label,
+                    'skills' => $group->skills->map(fn ($skill) => ['value' => $skill->value]),
+                ]),
+                'experiences' => $resume->experiences->map(fn ($experience) => [
+                    'company' => $experience->company,
+                    'title' => $experience->title,
+                    'period_from' => $experience->period_from?->toDateString(),
+                    'period_to' => $experience->period_to?->toDateString(),
+                    'is_current' => $experience->is_current,
+                    'bullets' => $experience->bullets->map(fn ($bullet) => [
+                        'type' => $bullet->type->value,
+                        'text' => $bullet->text,
+                    ]),
+                ]),
+            ],
+        ]);
+    }
+
     public function update(UpdateResumeRequest $request, Resume $resume, UpdateResume $action): RedirectResponse
     {
         $action->execute($resume, $request->validated());

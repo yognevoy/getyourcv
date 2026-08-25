@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [ResumeController::class, 'index'])->name('dashboard');
 
     Route::post('/resumes', [ResumeController::class, 'store'])->name('resumes.store');
+    Route::get('/resumes/{resume}/edit', [ResumeController::class, 'edit'])->name('resumes.edit');
     Route::put('/resumes/{resume}', [ResumeController::class, 'update'])->name('resumes.update');
     Route::delete('/resumes/{resume}', [ResumeController::class, 'destroy'])->name('resumes.destroy');
     Route::post('/resumes/{resume}/restore', [ResumeController::class, 'restore'])
