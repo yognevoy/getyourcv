@@ -22,7 +22,12 @@ const menuActions = [
 </script>
 
 <template>
-    <div class="flex aspect-[3/4] flex-col justify-between border border-black p-5">
+    <div class="group relative flex aspect-[3/4] flex-col justify-between border border-black p-5">
+        <span
+            class="pointer-events-none absolute right-0 top-0 h-6 w-6 scale-0 bg-black opacity-0 transition-all duration-150 group-hover:scale-100 group-hover:opacity-100"
+            style="clip-path: polygon(100% 0, 100% 100%, 0 0)"
+        ></span>
+
         <div class="flex items-start justify-between gap-3">
             <div class="min-w-0">
                 <p class="truncate text-base font-semibold text-black">
@@ -33,7 +38,7 @@ const menuActions = [
                 </p>
             </div>
 
-            <Dropdown align="right" width="48">
+            <Dropdown align="left" width="48">
                 <template #trigger>
                     <button
                         type="button"
