@@ -37,6 +37,19 @@ class ResumeController extends Controller
         return Inertia::render('Resume/Create');
     }
 
+    public function trash(): Response
+    {
+        $resumes = Auth::user()
+            ->resumes()
+            ->onlyTrashed()
+            ->latest('deleted_at')
+            ->get();
+
+        return Inertia::render('Resume/Trash', [
+            'resumes' => $resumes,
+        ]);
+    }
+
     public function store(StoreResumeRequest $request, CreateResume $action): RedirectResponse
     {
         $resume = $action->execute(Auth::user(), $request->validated());

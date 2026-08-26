@@ -15,6 +15,7 @@ Route::get('/resume/new', [ResumeController::class, 'create'])->name('resumes.cr
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [ResumeController::class, 'index'])->name('dashboard');
+    Route::get('/trash', [ResumeController::class, 'trash'])->name('resumes.trash');
 
     Route::post('/resumes', [ResumeController::class, 'store'])->name('resumes.store');
     Route::get('/resumes/{resume}/edit', [ResumeController::class, 'edit'])->name('resumes.edit');
