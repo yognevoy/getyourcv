@@ -1,9 +1,12 @@
 <script setup>
+import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import MenuIcon from '@/Components/MenuIcon.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
+import { showToast } from '@/composables/useToast';
 
 const props = defineProps({
     resume: {
@@ -12,10 +15,26 @@ const props = defineProps({
     },
 });
 
-const stubActions = ['Get link', 'Download PDF', 'Delete', 'Archive', 'Versions'];
+const stubActions = ['Get link', 'Download PDF', 'Archive', 'Versions'];
+
+const confirmingDelete = ref(false);
+const deleting = ref(false);
 
 function openEdit() {
     router.visit(route('resumes.edit', props.resume.id));
+}
+
+function deleteResume() {
+    deleting.value = true;
+
+    router.delete(route('resumes.destroy', props.resume.id), {
+        preserveScroll: true,
+        onSuccess: () => showToast('Resume moved to trash'),
+        onFinish: () => {
+            deleting.value = false;
+            confirmingDelete.value = false;
+        },
+    });
 }
 </script>
 
@@ -66,9 +85,28 @@ function openEdit() {
                     >
                         {{ action }}
                     </button>
+                    <button
+                        type="button"
+                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-black transition duration-150 ease-in-out hover:bg-black/5 focus:bg-black/5 focus:outline-none"
+                        @click="confirmingDelete = true"
+                    >
+                        Delete
+                    </button>
                 </template>
             </Dropdown>
         </div>
+
+        <ConfirmDialog
+            :show="confirmingDelete"
+            title="Move this resume to trash?"
+            :message="`“${resume.title}” will be moved to the trash. You can restore it later.`"
+            confirm-label="Delete"
+            danger
+            :processing="deleting"
+            @click.stop
+            @confirm="deleteResume"
+            @cancel="confirmingDelete = false"
+        />
 
         <div class="flex items-center justify-between">
             <StatusBadge :status="resume.status" />
