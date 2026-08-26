@@ -11,7 +11,6 @@ use App\Actions\Resume\UpdateResume;
 use App\Enums\ResumeStatus;
 use App\Http\Requests\StoreResumeRequest;
 use App\Http\Requests\UpdateResumeRequest;
-use App\Http\Requests\UpdateResumeStatusRequest;
 use App\Http\Resources\ResumeTemplateResource;
 use App\Models\Resume;
 use Illuminate\Http\RedirectResponse;
@@ -114,9 +113,20 @@ class ResumeController extends Controller
         return redirect()->route('resumes.edit', $clone);
     }
 
-    public function updateStatus(UpdateResumeStatusRequest $request, Resume $resume): RedirectResponse
+    public function archive(Resume $resume): RedirectResponse
     {
-        $resume->update(['status' => ResumeStatus::from($request->validated('status'))]);
+        $this->authorize('update', $resume);
+
+        $resume->update(['status' => ResumeStatus::Archived]);
+
+        return back();
+    }
+
+    public function unarchive(Resume $resume): RedirectResponse
+    {
+        $this->authorize('update', $resume);
+
+        $resume->update(['status' => ResumeStatus::Draft]);
 
         return back();
     }

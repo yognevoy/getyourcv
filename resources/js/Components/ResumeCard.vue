@@ -22,6 +22,7 @@ const deleting = ref(false);
 
 const confirmingArchive = ref(false);
 const archiving = ref(false);
+const unarchiving = ref(false);
 
 function openEdit() {
     router.visit(route('resumes.edit', props.resume.id));
@@ -54,12 +55,24 @@ function deleteResume() {
 function archiveResume() {
     archiving.value = true;
 
-    router.patch(route('resumes.status', props.resume.id), { status: 'archived' }, {
+    router.post(route('resumes.archive', props.resume.id), {}, {
         preserveScroll: true,
         onSuccess: () => showToast('Resume archived'),
         onFinish: () => {
             archiving.value = false;
             confirmingArchive.value = false;
+        },
+    });
+}
+
+function unarchiveResume() {
+    unarchiving.value = true;
+
+    router.post(route('resumes.unarchive', props.resume.id), {}, {
+        preserveScroll: true,
+        onSuccess: () => showToast('Resume unarchived'),
+        onFinish: () => {
+            unarchiving.value = false;
         },
     });
 }
@@ -117,6 +130,15 @@ function archiveResume() {
                         @click="confirmingArchive = true"
                     >
                         Archive
+                    </button>
+                    <button
+                        v-else
+                        type="button"
+                        :disabled="unarchiving"
+                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-black transition duration-150 ease-in-out hover:bg-black/5 focus:bg-black/5 focus:outline-none disabled:cursor-not-allowed disabled:text-black/30"
+                        @click="unarchiveResume"
+                    >
+                        Unarchive
                     </button>
                     <button
                         v-for="action in stubActions"

@@ -33,7 +33,8 @@ Route::middleware('auth')->group(function () {
         ->withTrashed()
         ->name('resumes.force-destroy');
     Route::post('/resumes/{resume}/duplicate', [ResumeController::class, 'duplicate'])->name('resumes.duplicate');
-    Route::patch('/resumes/{resume}/status', [ResumeController::class, 'updateStatus'])->name('resumes.status');
+    Route::post('/resumes/{resume}/archive', [ResumeController::class, 'archive'])->name('resumes.archive');
+    Route::post('/resumes/{resume}/unarchive', [ResumeController::class, 'unarchive'])->name('resumes.unarchive');
 });
 
 Route::middleware('auth')->group(function () {
