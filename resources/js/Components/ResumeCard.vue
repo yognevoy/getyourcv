@@ -15,13 +15,24 @@ const props = defineProps({
     },
 });
 
-const stubActions = ['Get link', 'Download PDF', 'Archive', 'Versions'];
+const stubActions = ['Download PDF', 'Archive', 'Versions'];
 
 const confirmingDelete = ref(false);
 const deleting = ref(false);
 
 function openEdit() {
     router.visit(route('resumes.edit', props.resume.id));
+}
+
+async function copyLink() {
+    const url = `${window.location.origin}/r/${props.resume.slug}`;
+
+    try {
+        await navigator.clipboard.writeText(url);
+        showToast('Link copied to clipboard');
+    } catch {
+        showToast('Could not copy link');
+    }
 }
 
 function deleteResume() {
@@ -76,6 +87,13 @@ function deleteResume() {
                     <DropdownLink :href="route('resumes.duplicate', resume.id)" method="post" as="button">
                         Duplicate
                     </DropdownLink>
+                    <button
+                        type="button"
+                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-black transition duration-150 ease-in-out hover:bg-black/5 focus:bg-black/5 focus:outline-none"
+                        @click="copyLink"
+                    >
+                        Get link
+                    </button>
                     <button
                         v-for="action in stubActions"
                         :key="action"
