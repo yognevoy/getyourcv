@@ -11,6 +11,7 @@ use App\Actions\Resume\UpdateResume;
 use App\Enums\ResumeStatus;
 use App\Http\Requests\StoreResumeRequest;
 use App\Http\Requests\UpdateResumeRequest;
+use App\Http\Resources\ResumeTemplateResource;
 use App\Models\Resume;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -66,32 +67,7 @@ class ResumeController extends Controller
         $resume->load(UpdateResume::RESUME_RELATIONS);
 
         return Inertia::render('Resume/Edit', [
-            'resume' => [
-                'id' => $resume->id,
-                'full_name' => $resume->full_name,
-                'position' => $resume->position,
-                'email' => $resume->email,
-                'about' => $resume->about,
-                'links' => $resume->links->map(fn ($link) => [
-                    'label' => $link->label,
-                    'url' => $link->url,
-                ]),
-                'skill_groups' => $resume->skillGroups->map(fn ($group) => [
-                    'label' => $group->label,
-                    'skills' => $group->skills->map(fn ($skill) => ['value' => $skill->value]),
-                ]),
-                'experiences' => $resume->experiences->map(fn ($experience) => [
-                    'company' => $experience->company,
-                    'title' => $experience->title,
-                    'period_from' => $experience->period_from?->toDateString(),
-                    'period_to' => $experience->period_to?->toDateString(),
-                    'is_current' => $experience->is_current,
-                    'bullets' => $experience->bullets->map(fn ($bullet) => [
-                        'type' => $bullet->type->value,
-                        'text' => $bullet->text,
-                    ]),
-                ]),
-            ],
+            'resume' => new ResumeTemplateResource($resume),
         ]);
     }
 
