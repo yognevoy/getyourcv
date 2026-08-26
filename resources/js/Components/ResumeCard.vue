@@ -15,10 +15,13 @@ const props = defineProps({
     },
 });
 
-const stubActions = ['Download PDF', 'Archive', 'Versions'];
+const stubActions = ['Download PDF', 'Versions'];
 
 const confirmingDelete = ref(false);
 const deleting = ref(false);
+
+const confirmingArchive = ref(false);
+const archiving = ref(false);
 
 function openEdit() {
     router.visit(route('resumes.edit', props.resume.id));
@@ -44,6 +47,19 @@ function deleteResume() {
         onFinish: () => {
             deleting.value = false;
             confirmingDelete.value = false;
+        },
+    });
+}
+
+function archiveResume() {
+    archiving.value = true;
+
+    router.patch(route('resumes.status', props.resume.id), { status: 'archived' }, {
+        preserveScroll: true,
+        onSuccess: () => showToast('Resume archived'),
+        onFinish: () => {
+            archiving.value = false;
+            confirmingArchive.value = false;
         },
     });
 }
@@ -95,6 +111,14 @@ function deleteResume() {
                         Get link
                     </button>
                     <button
+                        v-if="resume.status !== 'archived'"
+                        type="button"
+                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-black transition duration-150 ease-in-out hover:bg-black/5 focus:bg-black/5 focus:outline-none"
+                        @click="confirmingArchive = true"
+                    >
+                        Archive
+                    </button>
+                    <button
                         v-for="action in stubActions"
                         :key="action"
                         type="button"
@@ -124,6 +148,17 @@ function deleteResume() {
             @click.stop
             @confirm="deleteResume"
             @cancel="confirmingDelete = false"
+        />
+
+        <ConfirmDialog
+            :show="confirmingArchive"
+            title="Archive this resume?"
+            :message="`“${resume.title}” will be hidden from public view.`"
+            confirm-label="Archive"
+            :processing="archiving"
+            @click.stop
+            @confirm="archiveResume"
+            @cancel="confirmingArchive = false"
         />
 
         <div class="flex items-center justify-between">

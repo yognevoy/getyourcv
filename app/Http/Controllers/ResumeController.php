@@ -11,10 +11,10 @@ use App\Actions\Resume\UpdateResume;
 use App\Enums\ResumeStatus;
 use App\Http\Requests\StoreResumeRequest;
 use App\Http\Requests\UpdateResumeRequest;
+use App\Http\Requests\UpdateResumeStatusRequest;
 use App\Http\Resources\ResumeTemplateResource;
 use App\Models\Resume;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -114,15 +114,9 @@ class ResumeController extends Controller
         return redirect()->route('resumes.edit', $clone);
     }
 
-    public function updateStatus(Request $request, Resume $resume): RedirectResponse
+    public function updateStatus(UpdateResumeStatusRequest $request, Resume $resume): RedirectResponse
     {
-        $this->authorize('update', $resume);
-
-        $data = $request->validate([
-            'status' => ['required', 'string', 'in:draft,published,hidden,archived'],
-        ]);
-
-        $resume->update(['status' => ResumeStatus::from($data['status'])]);
+        $resume->update(['status' => ResumeStatus::from($request->validated('status'))]);
 
         return back();
     }
