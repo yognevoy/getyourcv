@@ -2,9 +2,8 @@
 import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import { onMounted } from 'vue';
 import PublicHeader from '@/Components/PublicHeader.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
+import PagedResumePreview from '@/Components/PagedResumePreview.vue';
 import ResumeForm from '@/Components/ResumeForm.vue';
-import ResumeTemplate from '@/Shared/ResumeTemplate.vue';
 
 const page = usePage();
 const DRAFT_KEY = 'getyourcv_draft_resume';
@@ -67,33 +66,30 @@ function submit() {
 <template>
     <Head title="Create your resume" />
 
-    <div class="min-h-screen bg-white text-black">
+    <div class="min-h-screen bg-paper text-ink">
         <PublicHeader />
 
-        <main class="mx-auto max-w-6xl px-6 py-10">
+        <main class="mx-auto max-w-screen-2xl px-6 py-10 lg:px-10">
             <div class="max-w-2xl">
                 <h1 class="text-2xl font-semibold tracking-tight">Build your resume</h1>
-                <p class="mt-1 text-sm text-black/60">
+                <p class="mt-1 text-sm text-ink/60">
                     Fill in the sections below - the preview on the right updates as you type.
                     We'll only ask you to sign in when you hit Save.
                 </p>
             </div>
 
-            <div class="mt-10 grid gap-10 lg:grid-cols-2">
-                <form class="space-y-12" @submit.prevent="submit">
-                    <ResumeForm :form="form" />
+            <div class="relative mt-10 grid gap-10 xl:grid-cols-2 xl:gap-12">
+                <div
+                    class="hidden xl:absolute xl:inset-y-0 xl:left-1/2 xl:block xl:w-px xl:-translate-x-1/2 xl:bg-ink/20"
+                    aria-hidden="true"
+                ></div>
 
-                    <PrimaryButton type="submit" :disabled="form.processing" class="w-full sm:w-auto">
-                        Save resume
-                    </PrimaryButton>
+                <form @submit.prevent="submit">
+                    <ResumeForm :form="form" submit-label="Save resume" />
                 </form>
 
-                <div class="lg:sticky lg:top-10 lg:self-start">
-                    <div class="mb-3 flex items-center gap-2 text-xs uppercase tracking-wide text-black/40">
-                        <span class="h-1.5 w-1.5 rounded-full bg-black"></span>
-                        Live preview
-                    </div>
-                    <ResumeTemplate :resume="form" />
+                <div class="xl:sticky xl:top-10 xl:self-start xl:pl-10">
+                    <PagedResumePreview :resume="form" />
                 </div>
             </div>
         </main>

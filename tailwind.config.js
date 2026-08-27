@@ -15,6 +15,14 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                // Off-black / off-white app-chrome palette. Kept separate from
+                // Tailwind's `black`/`white` so the resume template (Shared/ResumeTemplate.vue)
+                // stays pure black-on-white for ATS/print fidelity with the resume-gen reference.
+                ink: '#0a0a0a',
+                paper: '#fafafa',
+                charcoal: '#171717',
+            },
         },
     },
 

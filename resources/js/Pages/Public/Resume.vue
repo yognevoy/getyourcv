@@ -1,8 +1,9 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
+import DotGridBackground from '@/Components/DotGridBackground.vue';
 import PublicHeader from '@/Components/PublicHeader.vue';
 import PublicFooter from '@/Components/PublicFooter.vue';
-import ResumeTemplate from '@/Shared/ResumeTemplate.vue';
+import PagedResumePreview from '@/Components/PagedResumePreview.vue';
 
 const props = defineProps({
     available: {
@@ -19,16 +20,18 @@ const props = defineProps({
 <template>
     <Head :title="available ? resume.full_name || 'Resume' : 'Resume unavailable'" />
 
-    <div class="flex min-h-screen flex-col bg-white text-black">
+    <div class="isolate flex min-h-screen flex-col bg-paper text-ink">
+        <DotGridBackground />
+
         <PublicHeader />
 
-        <main class="mx-auto w-full max-w-2xl flex-1 px-6 py-16">
-            <p v-if="!available" class="text-center text-sm text-black/50">
-                This resume is no longer available.
-            </p>
+        <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
+            <div v-if="!available" class="rounded-md border border-ink/15 bg-white px-8 py-16 text-center">
+                <p class="text-sm text-ink/50">This resume is no longer available.</p>
+            </div>
 
             <template v-else>
-                <ResumeTemplate :resume="resume" />
+                <PagedResumePreview :resume="resume" max-width="3xl" />
             </template>
         </main>
 

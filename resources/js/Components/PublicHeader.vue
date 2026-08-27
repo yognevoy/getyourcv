@@ -5,9 +5,9 @@ const page = usePage();
 </script>
 
 <template>
-    <header class="border-b border-black">
+    <header class="bg-ink">
         <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-            <Link href="/" class="text-lg font-semibold tracking-tight text-black">
+            <Link href="/" class="text-lg font-semibold tracking-tight text-paper">
                 getyourcv
             </Link>
 
@@ -15,15 +15,15 @@ const page = usePage();
                 <Link
                     v-if="page.props.auth.user"
                     :href="route('dashboard')"
-                    class="text-black hover:opacity-60"
+                    class="text-paper/80 hover:text-paper"
                 >
                     Dashboard
                 </Link>
                 <template v-else>
-                    <Link :href="route('login')" class="text-black hover:opacity-60">
+                    <Link :href="route('login')" class="text-paper/80 hover:text-paper">
                         Sign in
                     </Link>
-                    <Link :href="route('register')" class="text-black hover:opacity-60">
+                    <Link :href="route('register')" class="text-paper/80 hover:text-paper">
                         Sign up
                     </Link>
                 </template>

@@ -38,13 +38,13 @@ function forceDelete() {
 </script>
 
 <template>
-    <div class="flex aspect-[3/4] flex-col justify-between border border-black p-5">
+    <div class="flex aspect-[3/4] flex-col justify-between rounded-md border border-ink p-5">
         <div class="flex items-start justify-between gap-3">
             <div class="min-w-0">
-                <p class="truncate text-base font-semibold text-black">
+                <p class="truncate text-base font-semibold text-ink">
                     {{ resume.title }}
                 </p>
-                <p class="truncate text-sm text-black/50">
+                <p class="truncate text-sm text-ink/50">
                     {{ resume.position || resume.full_name }}
                 </p>
             </div>
@@ -54,7 +54,7 @@ function forceDelete() {
                     <button
                         type="button"
                         aria-label="Resume actions"
-                        class="flex h-8 w-8 shrink-0 items-center justify-center text-black/50 transition-colors hover:text-black"
+                        class="flex h-8 w-8 shrink-0 items-center justify-center text-ink/50 transition-colors hover:text-ink"
                     >
                         <MenuIcon />
                     </button>
@@ -63,14 +63,14 @@ function forceDelete() {
                 <template #content>
                     <button
                         type="button"
-                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-black transition duration-150 ease-in-out hover:bg-black/5 focus:bg-black/5 focus:outline-none"
+                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
                         @click="restore"
                     >
                         Restore
                     </button>
                     <button
                         type="button"
-                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-black transition duration-150 ease-in-out hover:bg-black/5 focus:bg-black/5 focus:outline-none"
+                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
                         @click="confirmingForceDelete = true"
                     >
                         Delete permanently
@@ -90,7 +90,7 @@ function forceDelete() {
             @cancel="confirmingForceDelete = false"
         />
 
-        <p class="text-xs text-black/40">
+        <p class="text-xs text-ink/40">
             Deleted on {{ new Date(resume.deleted_at).toLocaleDateString() }}
         </p>
     </div>

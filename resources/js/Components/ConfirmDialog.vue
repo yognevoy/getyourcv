@@ -37,11 +37,11 @@ const emit = defineEmits(['confirm', 'cancel']);
 <template>
     <Modal :show="show" max-width="sm" @close="emit('cancel')">
         <div class="p-6">
-            <h2 class="text-lg font-medium text-black">
+            <h2 class="text-lg font-medium text-ink">
                 {{ title }}
             </h2>
 
-            <p v-if="message" class="mt-1 text-sm text-black/60">
+            <p v-if="message" class="mt-1 text-sm text-ink/60">
                 {{ message }}
             </p>
 

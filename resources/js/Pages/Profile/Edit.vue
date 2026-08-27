@@ -29,11 +29,11 @@ defineProps({
                     />
                 </div>
 
-                <div class="border-t border-black pt-10">
+                <div class="border-t border-ink pt-10">
                     <UpdatePasswordForm class="max-w-xl" />
                 </div>
 
-                <div class="border-t border-black pt-10">
+                <div class="border-t border-ink pt-10">
                     <DeleteUserForm class="max-w-xl" />
                 </div>
             </div>

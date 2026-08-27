@@ -12,7 +12,7 @@ defineProps({
         type="button"
         :aria-label="label"
         :title="label"
-        class="flex h-9 w-9 shrink-0 items-center justify-center border border-black/20 text-black/50 transition-colors hover:border-black hover:text-black"
+        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-ink/20 text-ink/50 transition-colors hover:border-ink hover:text-ink disabled:pointer-events-none disabled:opacity-30"
     >
         <slot />
     </button>

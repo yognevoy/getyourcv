@@ -12,15 +12,15 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-white">
-            <nav class="border-b border-black">
+        <div class="min-h-screen bg-paper">
+            <nav class="bg-ink">
                 <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 justify-between">
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
-                                <Link :href="route('home')" class="text-lg font-semibold tracking-tight text-black">
+                                <Link :href="route('home')" class="text-lg font-semibold tracking-tight text-paper">
                                     getyourcv
                                 </Link>
                             </div>
@@ -51,7 +51,7 @@ const showingNavigationDropdown = ref(false);
                                     <template #trigger>
                                         <button
                                             type="button"
-                                            class="inline-flex items-center border border-transparent px-3 py-2 text-sm font-medium leading-4 text-black/60 transition duration-150 ease-in-out hover:text-black focus:outline-none"
+                                            class="inline-flex items-center border border-transparent px-3 py-2 text-sm font-medium leading-4 text-paper/70 transition duration-150 ease-in-out hover:text-paper focus:outline-none"
                                         >
                                             {{ $page.props.auth.user.name }}
 
@@ -95,7 +95,7 @@ const showingNavigationDropdown = ref(false);
                                     showingNavigationDropdown =
                                         !showingNavigationDropdown
                                 "
-                                class="inline-flex items-center justify-center p-2 text-black/40 transition duration-150 ease-in-out hover:bg-black/5 hover:text-black focus:bg-black/5 focus:text-black focus:outline-none"
+                                class="inline-flex items-center justify-center p-2 text-paper/60 transition duration-150 ease-in-out hover:bg-paper/10 hover:text-paper focus:bg-paper/10 focus:text-paper focus:outline-none"
                             >
                                 <svg
                                     class="h-6 w-6"
@@ -155,12 +155,12 @@ const showingNavigationDropdown = ref(false);
                     </div>
 
                     <!-- Responsive Settings Options -->
-                    <div class="border-t border-black/20 pb-1 pt-4">
+                    <div class="border-t border-paper/20 pb-1 pt-4">
                         <div class="px-4">
-                            <div class="text-base font-medium text-black">
+                            <div class="text-base font-medium text-paper">
                                 {{ $page.props.auth.user.name }}
                             </div>
-                            <div class="text-sm font-medium text-black/50">
+                            <div class="text-sm font-medium text-paper/60">
                                 {{ $page.props.auth.user.email }}
                             </div>
                         </div>
@@ -183,7 +183,7 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Heading -->
             <header
-                class="border-b border-black"
+                class="bg-charcoal"
                 v-if="$slots.header"
             >
                 <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
