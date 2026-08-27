@@ -6,6 +6,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    bordered: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const skillGroups = computed(() =>
@@ -33,7 +37,7 @@ function period(item) {
 </script>
 
 <template>
-    <div class="border border-black bg-white p-10 text-black">
+    <div class="bg-white p-10 text-black" :class="bordered ? 'border border-black/20' : ''">
         <header>
             <h1 class="text-2xl font-semibold">{{ resume.full_name || 'Your Name' }}</h1>
             <p v-if="resume.position" class="mt-1 text-black/70">{{ resume.position }}</p>
