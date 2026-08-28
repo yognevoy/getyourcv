@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Pdf\PdfGeneratorInterface;
+use App\Services\Pdf\ResumePdfGenerator;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(PdfGeneratorInterface::class, ResumePdfGenerator::class);
     }
 
     /**

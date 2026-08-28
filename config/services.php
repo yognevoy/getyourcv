@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'resume_gen' => [
+        'binary' => env('RESUME_GEN_BINARY', '/usr/local/bin/resume-gen'),
+    ],
+
 ];
