@@ -1,7 +1,8 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import PagedResumePreview from '@/Components/PagedResumePreview.vue';
+import ResumePdfViewer from '@/Components/ResumePdfViewer.vue';
 import ResumeForm from '@/Components/ResumeForm.vue';
 
 const props = defineProps({
@@ -27,6 +28,16 @@ function submit() {
         title: data.full_name || 'Untitled resume',
     })).put(route('resumes.update', props.resume.id));
 }
+
+const previewPayload = computed(() => ({
+    full_name: form.full_name,
+    position: form.position,
+    email: form.email,
+    about: form.about,
+    links: form.links,
+    skill_groups: form.skill_groups,
+    experiences: form.experiences,
+}));
 </script>
 
 <template>
@@ -55,7 +66,7 @@ function submit() {
                 </form>
 
                 <div class="xl:sticky xl:top-10 xl:self-start xl:pl-10">
-                    <PagedResumePreview :resume="form" />
+                    <ResumePdfViewer :payload="previewPayload" />
                 </div>
             </div>
         </div>

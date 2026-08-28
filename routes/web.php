@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicResumeController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\ResumePreviewController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,6 +14,10 @@ Route::get('/policy', fn () => Inertia::render('Policy'))->name('policy');
 Route::get('/contacts', fn () => Inertia::render('Contacts'))->name('contacts');
 
 Route::get('/resume/new', [ResumeController::class, 'create'])->name('resumes.create');
+
+Route::post('/resume-preview', ResumePreviewController::class)
+    ->middleware('throttle:30,1')
+    ->name('resumes.preview');
 
 Route::get('/r/{resume:slug}', [PublicResumeController::class, 'show'])
     ->withTrashed()

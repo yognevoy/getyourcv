@@ -1,8 +1,8 @@
 <script setup>
 import { Head, router, useForm, usePage } from '@inertiajs/vue3';
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import PublicHeader from '@/Components/PublicHeader.vue';
-import PagedResumePreview from '@/Components/PagedResumePreview.vue';
+import ResumePdfViewer from '@/Components/ResumePdfViewer.vue';
 import ResumeForm from '@/Components/ResumeForm.vue';
 
 const page = usePage();
@@ -49,6 +49,8 @@ function draftData() {
     };
 }
 
+const previewPayload = computed(() => draftData());
+
 function submit() {
     if (!page.props.auth.user) {
         sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draftData()));
@@ -89,7 +91,7 @@ function submit() {
                 </form>
 
                 <div class="xl:sticky xl:top-10 xl:self-start xl:pl-10">
-                    <PagedResumePreview :resume="form" />
+                    <ResumePdfViewer :payload="previewPayload" />
                 </div>
             </div>
         </main>
