@@ -4,15 +4,18 @@ namespace App\Actions\Resume;
 
 use App\Actions\Resume\Concerns\PersistsResumeRelations;
 use App\Models\Resume;
+use App\Services\Pdf\ResumePdfStore;
 use Illuminate\Support\Facades\DB;
 
 class UpdateResume
 {
     use PersistsResumeRelations;
 
+    public function __construct(private readonly ResumePdfStore $pdfStore) {}
+
     public function execute(Resume $resume, array $data): Resume
     {
-        return DB::transaction(function () use ($resume, $data) {
+        $resume = DB::transaction(function () use ($resume, $data) {
             $resume->update([
                 'title' => $data['title'],
                 'full_name' => $data['full_name'],
@@ -25,5 +28,9 @@ class UpdateResume
 
             return $resume->fresh(self::RESUME_RELATIONS);
         });
+
+        $this->pdfStore->store($resume);
+
+        return $resume;
     }
 }

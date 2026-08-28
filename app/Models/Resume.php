@@ -66,4 +66,9 @@ class Resume extends Model
     {
         return $this->hasMany(ResumeCertification::class)->orderBy('position');
     }
+
+    public function isAvailable(): bool
+    {
+        return ! $this->trashed() && $this->status->isPublic();
+    }
 }

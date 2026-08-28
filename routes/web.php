@@ -23,6 +23,10 @@ Route::get('/r/{resume:slug}', [PublicResumeController::class, 'show'])
     ->withTrashed()
     ->name('resumes.public');
 
+Route::get('/r/{resume:slug}/file', [PublicResumeController::class, 'file'])
+    ->withTrashed()
+    ->name('resumes.public-file');
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [ResumeController::class, 'index'])->name('dashboard');
     Route::get('/trash', [ResumeController::class, 'trash'])->name('resumes.trash');
@@ -37,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/resumes/{resume}/force', [ResumeController::class, 'forceDestroy'])
         ->withTrashed()
         ->name('resumes.force-destroy');
+    Route::get('/resumes/{resume}/pdf', [ResumeController::class, 'pdf'])->name('resumes.pdf');
     Route::post('/resumes/{resume}/duplicate', [ResumeController::class, 'duplicate'])->name('resumes.duplicate');
     Route::post('/resumes/{resume}/archive', [ResumeController::class, 'archive'])->name('resumes.archive');
     Route::post('/resumes/{resume}/unarchive', [ResumeController::class, 'unarchive'])->name('resumes.unarchive');

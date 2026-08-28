@@ -6,17 +6,20 @@ use App\Actions\Resume\Concerns\GeneratesResumeSlug;
 use App\Actions\Resume\Concerns\PersistsResumeRelations;
 use App\Enums\ResumeStatus;
 use App\Models\Resume;
+use App\Services\Pdf\ResumePdfStore;
 use Illuminate\Support\Facades\DB;
 
 class DuplicateResume
 {
     use GeneratesResumeSlug, PersistsResumeRelations;
 
+    public function __construct(private readonly ResumePdfStore $pdfStore) {}
+
     public function execute(Resume $resume, ?string $title = null): Resume
     {
         $resume->loadMissing(self::RESUME_RELATIONS);
 
-        return DB::transaction(function () use ($resume, $title) {
+        $clone = DB::transaction(function () use ($resume, $title) {
             $clone = Resume::create([
                 'user_id' => $resume->user_id,
                 'slug' => $this->generateSlug($resume->title),
@@ -69,5 +72,9 @@ class DuplicateResume
 
             return $clone->fresh(self::RESUME_RELATIONS);
         });
+
+        $this->pdfStore->store($clone);
+
+        return $clone;
     }
 }

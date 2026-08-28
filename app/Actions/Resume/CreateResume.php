@@ -7,15 +7,18 @@ use App\Actions\Resume\Concerns\PersistsResumeRelations;
 use App\Enums\ResumeStatus;
 use App\Models\Resume;
 use App\Models\User;
+use App\Services\Pdf\ResumePdfStore;
 use Illuminate\Support\Facades\DB;
 
 class CreateResume
 {
     use GeneratesResumeSlug, PersistsResumeRelations;
 
+    public function __construct(private readonly ResumePdfStore $pdfStore) {}
+
     public function execute(?User $user, array $data): Resume
     {
-        return DB::transaction(function () use ($user, $data) {
+        $resume = DB::transaction(function () use ($user, $data) {
             $resume = Resume::create([
                 'user_id' => $user?->id,
                 'slug' => $this->generateSlug($data['title']),
@@ -31,5 +34,9 @@ class CreateResume
 
             return $resume->fresh(self::RESUME_RELATIONS);
         });
+
+        $this->pdfStore->store($resume);
+
+        return $resume;
     }
 }

@@ -13,10 +13,13 @@ use App\Http\Requests\StoreResumeRequest;
 use App\Http\Requests\UpdateResumeRequest;
 use App\Http\Resources\ResumeTemplateResource;
 use App\Models\Resume;
+use App\Services\Pdf\ResumePdfStore;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResumeController extends Controller
 {
@@ -75,6 +78,13 @@ class ResumeController extends Controller
         $action->execute($resume, $request->validated());
 
         return redirect()->route('dashboard');
+    }
+
+    public function pdf(Resume $resume, ResumePdfStore $pdfStore): StreamedResponse
+    {
+        $this->authorize('view', $resume);
+
+        return Storage::disk('local')->download($pdfStore->ensure($resume), "{$resume->slug}.pdf");
     }
 
     public function destroy(Resume $resume, DeleteResume $action): RedirectResponse

@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/vue3';
 import DotGridBackground from '@/Components/DotGridBackground.vue';
 import PublicHeader from '@/Components/PublicHeader.vue';
 import PublicFooter from '@/Components/PublicFooter.vue';
-import PagedResumePreview from '@/Components/PagedResumePreview.vue';
+import ResumePdfEmbed from '@/Components/ResumePdfEmbed.vue';
 
 const props = defineProps({
     available: {
@@ -25,13 +25,23 @@ const props = defineProps({
 
         <PublicHeader />
 
-        <main class="mx-auto w-full max-w-3xl flex-1 px-6 py-16">
+        <main class="mx-auto w-full max-w-3xl flex-1 px-6 pb-16 pt-8">
             <div v-if="!available" class="rounded-md border border-ink/15 bg-white px-8 py-16 text-center">
                 <p class="text-sm text-ink/50">This resume is no longer available.</p>
             </div>
 
             <template v-else>
-                <PagedResumePreview :resume="resume" max-width="3xl" />
+                <div class="mb-4 flex justify-end">
+                    <a
+                        :href="route('resumes.public-file', resume.slug)"
+                        download
+                        class="rounded-md border border-ink px-4 py-2 text-sm font-medium text-ink transition hover:bg-ink hover:text-paper"
+                    >
+                        Download PDF
+                    </a>
+                </div>
+
+                <ResumePdfEmbed :src="route('resumes.public-file', resume.slug)" />
             </template>
         </main>
 
