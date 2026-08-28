@@ -23,9 +23,6 @@ const props = defineProps({
 
 const STEPS = ['Contacts', 'About', 'Skills', 'Experience'];
 
-// Maps a validation error key (e.g. "links.0.url") back to the step that owns it,
-// so a failed submit jumps the user to the first step with an error instead of
-// leaving them staring at a step with no visible error.
 function stepForField(field) {
     if (field.startsWith('links') || ['full_name', 'position', 'email'].includes(field)) return 0;
     if (field === 'about') return 1;
@@ -38,7 +35,6 @@ const currentStep = ref(0);
 const isLastStep = computed(() => currentStep.value === STEPS.length - 1);
 const progressPercent = computed(() => ((currentStep.value + 1) / STEPS.length) * 100);
 const nextLabel = computed(() => (isLastStep.value ? props.submitLabel : `Next: ${STEPS[currentStep.value + 1]}`));
-const formTop = ref(null);
 
 function next() {
     if (!isLastStep.value) {
@@ -46,15 +42,20 @@ function next() {
     }
 }
 
+function onNextClick(event) {
+    if (isLastStep.value) {
+        return;
+    }
+
+    event.preventDefault();
+    next();
+}
+
 function back() {
     if (currentStep.value > 0) {
         currentStep.value -= 1;
     }
 }
-
-watch(currentStep, () => {
-    formTop.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
 
 watch(
     () => props.form.errors,
@@ -117,7 +118,7 @@ function removeBullet(experienceIndex, bulletIndex) {
 </script>
 
 <template>
-    <div ref="formTop">
+    <div>
         <div
             class="mb-10 h-1 w-full overflow-hidden rounded-full bg-ink/10"
             role="progressbar"
@@ -300,7 +301,7 @@ function removeBullet(experienceIndex, bulletIndex) {
             <PrimaryButton
                 :type="isLastStep ? 'submit' : 'button'"
                 :disabled="isLastStep && form.processing"
-                @click="!isLastStep && next()"
+                @click="onNextClick"
             >
                 {{ nextLabel }}
             </PrimaryButton>
