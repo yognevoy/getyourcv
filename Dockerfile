@@ -15,6 +15,10 @@ COPY . .
 COPY --from=composer-deps /app/vendor ./vendor
 RUN npm run build
 
+FROM golang:1.26-alpine AS resume-gen-build
+RUN apk add --no-cache git ca-certificates
+RUN CGO_ENABLED=0 GOOS=linux go install github.com/yognevoy/resume-gen@v0.1.0
+
 FROM php:8.4-fpm-alpine AS php-fpm
 RUN apk add --no-cache postgresql-libs libzip icu-libs oniguruma \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS postgresql-dev libzip-dev icu-dev oniguruma-dev \
@@ -25,6 +29,7 @@ WORKDIR /var/www/html
 COPY --from=composer-deps /app/vendor ./vendor
 COPY . .
 COPY --from=node-build /app/public/build ./public/build
+COPY --from=resume-gen-build /go/bin/resume-gen /usr/local/bin/resume-gen
 RUN rm -rf storage/framework/cache/data/* storage/framework/sessions/* storage/framework/views/* \
     && php artisan package:discover --ansi \
     && php artisan storage:link \
@@ -51,6 +56,7 @@ RUN apk add --no-cache postgresql-libs libzip icu-libs oniguruma shadow \
     && addgroup -g "$GID" dev \
     && adduser -D -u "$UID" -G dev dev
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=resume-gen-build /go/bin/resume-gen /usr/local/bin/resume-gen
 
 WORKDIR /var/www/html
 COPY docker/php/dev-entrypoint.sh /usr/local/bin/dev-entrypoint.sh
