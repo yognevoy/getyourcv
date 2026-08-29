@@ -6,7 +6,7 @@ const page = usePage();
 
 <template>
     <header class="bg-ink">
-        <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-5 sm:px-6 lg:px-8">
             <Link href="/" class="text-lg font-semibold tracking-tight text-paper">
                 getyourcv
             </Link>

@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/vue3';
 <template>
     <footer class="bg-ink">
         <div
-            class="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-8 text-sm text-paper/80 sm:flex-row sm:justify-between"
+            class="mx-auto flex max-w-7xl flex-col items-center gap-4 px-4 py-8 text-sm text-paper/80 sm:flex-row sm:justify-between sm:px-6 lg:px-8"
         >
             <span>&copy; {{ new Date().getFullYear() }} getyourcv</span>
 
