@@ -21,12 +21,13 @@ const submit = () => {
     <GuestLayout>
         <Head title="Confirm Password" />
 
-        <div class="mb-4 text-sm text-ink/60">
+        <h1 class="text-2xl font-semibold tracking-tight">Confirm password</h1>
+        <p class="mt-1 text-sm text-ink/60">
             This is a secure area of the application. Please confirm your
             password before continuing.
-        </div>
+        </p>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="mt-6">
             <div>
                 <InputLabel for="password" value="Password" />
                 <TextInput

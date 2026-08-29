@@ -27,7 +27,10 @@ const submit = () => {
     <GuestLayout>
         <Head title="Register" />
 
-        <form @submit.prevent="submit">
+        <h1 class="text-2xl font-semibold tracking-tight">Create your account</h1>
+        <p class="mt-1 text-sm text-ink/60">Start building your resume - it only takes a minute.</p>
+
+        <form @submit.prevent="submit" class="mt-6">
             <div>
                 <InputLabel for="name" value="Name" />
 

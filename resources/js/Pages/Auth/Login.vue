@@ -36,11 +36,14 @@ const submit = () => {
     <GuestLayout>
         <Head title="Log in" />
 
-        <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
+        <h1 class="text-2xl font-semibold tracking-tight">Log in</h1>
+        <p class="mt-1 text-sm text-ink/60">Welcome back. Enter your details to continue.</p>
+
+        <div v-if="status" class="mt-4 text-sm font-medium text-green-600">
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="mt-6">
             <div>
                 <InputLabel for="email" value="Email" />
 

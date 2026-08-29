@@ -35,7 +35,10 @@ const submit = () => {
     <GuestLayout>
         <Head title="Reset Password" />
 
-        <form @submit.prevent="submit">
+        <h1 class="text-2xl font-semibold tracking-tight">Reset password</h1>
+        <p class="mt-1 text-sm text-ink/60">Choose a new password for your account.</p>
+
+        <form @submit.prevent="submit" class="mt-6">
             <div>
                 <InputLabel for="email" value="Email" />
 

@@ -25,20 +25,20 @@ const submit = () => {
     <GuestLayout>
         <Head title="Forgot Password" />
 
-        <div class="mb-4 text-sm text-ink/60">
-            Forgot your password? No problem. Just let us know your email
-            address and we will email you a password reset link that will allow
-            you to choose a new one.
-        </div>
+        <h1 class="text-2xl font-semibold tracking-tight">Forgot your password?</h1>
+        <p class="mt-1 text-sm text-ink/60">
+            No problem. Let us know your email address and we'll email you a
+            password reset link.
+        </p>
 
         <div
             v-if="status"
-            class="mb-4 text-sm font-medium text-green-600"
+            class="mt-4 text-sm font-medium text-green-600"
         >
             {{ status }}
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="mt-6">
             <div>
                 <InputLabel for="email" value="Email" />
 

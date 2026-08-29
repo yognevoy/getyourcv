@@ -25,21 +25,22 @@ const verificationLinkSent = computed(
     <GuestLayout>
         <Head title="Email Verification" />
 
-        <div class="mb-4 text-sm text-ink/60">
+        <h1 class="text-2xl font-semibold tracking-tight">Verify your email</h1>
+        <p class="mt-1 text-sm text-ink/60">
             Thanks for signing up! Before getting started, could you verify your
             email address by clicking on the link we just emailed to you? If you
             didn't receive the email, we will gladly send you another.
-        </div>
+        </p>
 
         <div
-            class="mb-4 text-sm font-medium text-green-600"
+            class="mt-4 text-sm font-medium text-green-600"
             v-if="verificationLinkSent"
         >
             A new verification link has been sent to the email address you
             provided during registration.
         </div>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="mt-6">
             <div class="mt-4 flex items-center justify-between">
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
