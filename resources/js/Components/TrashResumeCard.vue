@@ -38,7 +38,12 @@ function forceDelete() {
 </script>
 
 <template>
-    <div class="flex aspect-[3/4] flex-col justify-between rounded-md border border-ink p-5">
+    <div class="group relative flex aspect-[3/4] flex-col justify-between rounded-md border border-ink/25 p-5 transition-colors hover:border-ink">
+        <span
+            class="pointer-events-none absolute right-0 top-0 h-6 w-6 scale-0 rounded-tr-md bg-ink opacity-0 transition-all duration-150 group-hover:scale-100 group-hover:opacity-100"
+            style="clip-path: polygon(100% 0, 100% 100%, 0 0)"
+        ></span>
+
         <div class="flex items-start justify-between gap-3">
             <div class="min-w-0">
                 <p class="truncate text-base font-semibold text-ink">
@@ -54,7 +59,7 @@ function forceDelete() {
                     <button
                         type="button"
                         aria-label="Resume actions"
-                        class="flex h-8 w-8 shrink-0 items-center justify-center text-ink/50 transition-colors hover:text-ink"
+                        class="flex h-8 w-8 shrink-0 items-center justify-center text-ink/50 opacity-0 transition hover:text-ink focus:opacity-100 focus-visible:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100"
                     >
                         <MenuIcon />
                     </button>
