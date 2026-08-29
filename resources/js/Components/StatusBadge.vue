@@ -20,7 +20,7 @@ const badge = computed(() => config[props.status] ?? { label: props.status, clas
 
 <template>
     <span
-        class="inline-block rounded-full border px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide"
+        class="inline-block rounded-full border px-2.5 py-0.5 text-[11px] font-medium"
         :class="badge.classes"
     >
         {{ badge.label }}
