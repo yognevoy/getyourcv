@@ -6,6 +6,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import MenuIcon from '@/Components/MenuIcon.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
+import VersionsDialog from '@/Components/VersionsDialog.vue';
 import { showToast } from '@/composables/useToast';
 import { formatRelativeDate } from '@/utils/formatRelativeDate';
 
@@ -16,14 +17,14 @@ const props = defineProps({
     },
 });
 
-const stubActions = ['Versions'];
-
 const confirmingDelete = ref(false);
 const deleting = ref(false);
 
 const confirmingArchive = ref(false);
 const archiving = ref(false);
 const unarchiving = ref(false);
+
+const showVersions = ref(false);
 
 function openEdit() {
     router.visit(route('resumes.edit', props.resume.id));
@@ -154,13 +155,11 @@ function unarchiveResume() {
                             Unarchive
                         </button>
                         <button
-                            v-for="action in stubActions"
-                            :key="action"
                             type="button"
-                            disabled
-                            class="block w-full cursor-not-allowed px-4 py-2 text-start text-sm leading-5 text-ink/30"
+                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                            @click="showVersions = true"
                         >
-                            {{ action }}
+                            Versions
                         </button>
                         <button
                             type="button"
@@ -199,6 +198,13 @@ function unarchiveResume() {
             @click.stop
             @confirm="archiveResume"
             @cancel="confirmingArchive = false"
+        />
+
+        <VersionsDialog
+            :show="showVersions"
+            :resume-id="resume.id"
+            @click.stop
+            @close="showVersions = false"
         />
 
         <div class="flex items-center justify-between">

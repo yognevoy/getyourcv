@@ -14,6 +14,10 @@ const props = defineProps({
         type: Boolean,
         default: true,
     },
+    bordered: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const emit = defineEmits(['close']);
@@ -112,8 +116,8 @@ const maxWidthClass = computed(() => {
             >
                 <div
                     v-show="show"
-                    class="transform overflow-hidden rounded-md border border-ink bg-paper transition-all sm:mx-auto sm:w-full"
-                    :class="maxWidthClass"
+                    class="transform overflow-hidden rounded-md bg-paper transition-all sm:mx-auto sm:w-full"
+                    :class="[maxWidthClass, { 'border border-ink': bordered }]"
                 >
                     <slot v-if="showSlot" />
                 </div>
