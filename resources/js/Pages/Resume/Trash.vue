@@ -15,6 +15,13 @@ defineProps({
     <Head title="Trash" />
 
     <AuthenticatedLayout>
+        <template #header>
+            <h1 class="text-xl font-semibold tracking-tight text-paper">Trash</h1>
+            <p class="mt-1 text-sm text-paper/60">
+                {{ resumes.length }} {{ resumes.length === 1 ? 'resume' : 'resumes' }}
+            </p>
+        </template>
+
         <div class="py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <p v-if="resumes.length === 0" class="text-center text-sm text-ink/50">
