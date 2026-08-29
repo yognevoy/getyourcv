@@ -23,6 +23,7 @@ class Resume extends Model
         'position',
         'email',
         'about',
+        'current_version_id',
     ];
 
     protected function casts(): array
@@ -65,6 +66,16 @@ class Resume extends Model
     public function certifications(): HasMany
     {
         return $this->hasMany(ResumeCertification::class)->orderBy('position');
+    }
+
+    public function versions(): HasMany
+    {
+        return $this->hasMany(ResumeVersion::class);
+    }
+
+    public function currentVersion(): BelongsTo
+    {
+        return $this->belongsTo(ResumeVersion::class, 'current_version_id');
     }
 
     public function isAvailable(): bool

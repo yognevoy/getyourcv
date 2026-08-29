@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicResumeController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Controllers\ResumePreviewController;
+use App\Http\Controllers\ResumeVersionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -45,6 +46,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/resumes/{resume}/duplicate', [ResumeController::class, 'duplicate'])->name('resumes.duplicate');
     Route::post('/resumes/{resume}/archive', [ResumeController::class, 'archive'])->name('resumes.archive');
     Route::post('/resumes/{resume}/unarchive', [ResumeController::class, 'unarchive'])->name('resumes.unarchive');
+
+    Route::get('/resumes/{resume}/versions', [ResumeVersionController::class, 'index'])->name('resumes.versions.index');
+    Route::get('/resumes/{resume}/versions/{version}/pdf', [ResumeVersionController::class, 'pdf'])->name('resumes.versions.pdf');
+    Route::post('/resumes/{resume}/versions/{version}/restore', [ResumeVersionController::class, 'restore'])->name('resumes.versions.restore');
+    Route::delete('/resumes/{resume}/versions/{version}', [ResumeVersionController::class, 'destroy'])->name('resumes.versions.destroy');
 });
 
 Route::middleware('auth')->group(function () {

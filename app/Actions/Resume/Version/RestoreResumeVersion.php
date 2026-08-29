@@ -1,38 +1,37 @@
 <?php
 
-namespace App\Actions\Resume;
+namespace App\Actions\Resume\Version;
 
-use App\Actions\Resume\Concerns\GeneratesResumeSlug;
 use App\Actions\Resume\Concerns\PersistsResumeRelations;
-use App\Actions\Resume\Concerns\SnapshotsResumeVersion;
-use App\Enums\ResumeStatus;
 use App\Models\Resume;
-use App\Models\User;
+use App\Models\ResumeVersion;
 use App\Services\Pdf\ResumePdfStore;
 use Illuminate\Support\Facades\DB;
 
-class CreateResume
+/**
+ * Makes a past version current.
+ */
+class RestoreResumeVersion
 {
-    use GeneratesResumeSlug, PersistsResumeRelations, SnapshotsResumeVersion;
+    use PersistsResumeRelations;
 
     public function __construct(private readonly ResumePdfStore $pdfStore) {}
 
-    public function execute(?User $user, array $data): Resume
+    public function execute(Resume $resume, ResumeVersion $version): Resume
     {
-        $resume = DB::transaction(function () use ($user, $data) {
-            $resume = Resume::create([
-                'user_id' => $user?->id,
-                'slug' => $this->generateSlug($data['title']),
+        $data = $version->snapshot;
+
+        $resume = DB::transaction(function () use ($resume, $version, $data) {
+            $resume->update([
                 'title' => $data['title'],
-                'status' => ResumeStatus::Draft,
                 'full_name' => $data['full_name'],
                 'position' => $data['position'] ?? null,
                 'email' => $data['email'] ?? null,
                 'about' => $data['about'] ?? null,
+                'current_version_id' => $version->id,
             ]);
 
             $this->persistRelations($resume, $data);
-            $this->recordVersion($resume, $data);
 
             return $resume->fresh(self::RESUME_RELATIONS);
         });

@@ -4,6 +4,7 @@ namespace App\Actions\Resume;
 
 use App\Actions\Resume\Concerns\GeneratesResumeSlug;
 use App\Actions\Resume\Concerns\PersistsResumeRelations;
+use App\Actions\Resume\Concerns\SnapshotsResumeVersion;
 use App\Enums\ResumeStatus;
 use App\Models\Resume;
 use App\Services\Pdf\ResumePdfStore;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class DuplicateResume
 {
-    use GeneratesResumeSlug, PersistsResumeRelations;
+    use GeneratesResumeSlug, PersistsResumeRelations, SnapshotsResumeVersion;
 
     public function __construct(private readonly ResumePdfStore $pdfStore) {}
 
@@ -32,7 +33,12 @@ class DuplicateResume
                 'about' => $resume->about,
             ]);
 
-            $this->persistRelations($clone, [
+            $data = [
+                'title' => $clone->title,
+                'full_name' => $clone->full_name,
+                'position' => $clone->position,
+                'email' => $clone->email,
+                'about' => $clone->about,
                 'links' => $resume->links->map(fn ($link) => [
                     'label' => $link->label,
                     'url' => $link->url,
@@ -46,8 +52,8 @@ class DuplicateResume
                 'experiences' => $resume->experiences->map(fn ($experience) => [
                     'company' => $experience->company,
                     'title' => $experience->title,
-                    'period_from' => $experience->period_from,
-                    'period_to' => $experience->period_to,
+                    'period_from' => $experience->period_from?->toDateString(),
+                    'period_to' => $experience->period_to?->toDateString(),
                     'is_current' => $experience->is_current,
                     'bullets' => $experience->bullets->map(fn ($bullet) => [
                         'type' => $bullet->type->value,
@@ -57,8 +63,8 @@ class DuplicateResume
                 'educations' => $resume->educations->map(fn ($education) => [
                     'institution' => $education->institution,
                     'field' => $education->field,
-                    'period_from' => $education->period_from,
-                    'period_to' => $education->period_to,
+                    'period_from' => $education->period_from?->toDateString(),
+                    'period_to' => $education->period_to?->toDateString(),
                 ])->all(),
                 'courses' => $resume->courses->map(fn ($course) => [
                     'title' => $course->title,
@@ -68,7 +74,10 @@ class DuplicateResume
                     'title' => $certification->title,
                     'provider' => $certification->provider,
                 ])->all(),
-            ]);
+            ];
+
+            $this->persistRelations($clone, $data);
+            $this->recordVersion($clone, $data);
 
             return $clone->fresh(self::RESUME_RELATIONS);
         });
