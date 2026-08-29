@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
+import Spinner from '@/Components/Spinner.vue';
 import { renderPdfContent } from '@/utils/pdfCanvasRenderer';
 
 const props = defineProps({
@@ -33,16 +34,17 @@ onMounted(async () => {
 
         <div
             v-if="status === 'error'"
-            class="flex aspect-[210/297] items-center justify-center border border-dashed border-ink/20 text-center text-sm text-ink/50"
+            class="flex aspect-[210/297] items-center justify-center border border-dashed border-ink/20 bg-white text-center text-sm text-ink/50"
         >
             Could not load this resume.
         </div>
 
         <div
             v-else-if="status === 'loading'"
-            class="flex aspect-[210/297] items-center justify-center text-sm text-ink/40"
+            class="flex aspect-[210/297] flex-col items-center justify-center gap-3 border border-dashed border-ink/20 bg-white text-sm text-ink/40"
         >
-            Loading…
+            <Spinner size="lg" />
+            <span>Loading resume…</span>
         </div>
     </div>
 </template>

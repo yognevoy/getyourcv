@@ -1,10 +1,12 @@
 <script setup>
 import { onBeforeUnmount, ref, watch } from 'vue';
 import axios from 'axios';
+import Spinner from '@/Components/Spinner.vue';
 import { isBlank } from '@/utils/isBlank';
 import { renderPdfContent } from '@/utils/pdfCanvasRenderer';
 
 const PREVIEW_DEBOUNCE_MS = 600;
+const MIN_LOADING_MS = 400;
 
 const props = defineProps({
     payload: {
@@ -15,6 +17,7 @@ const props = defineProps({
 
 const containerRef = ref(null);
 const status = ref('loading'); // loading | ready | empty | error
+const hasRendered = ref(false);
 
 let debounceTimer = null;
 let abortController = null;
@@ -31,9 +34,14 @@ function clearContainer() {
     }
 }
 
+function waitForMinLoadingDuration(startedAt) {
+    const remaining = MIN_LOADING_MS - (Date.now() - startedAt);
+    return remaining > 0 ? new Promise((resolve) => setTimeout(resolve, remaining)) : Promise.resolve();
+}
+
 async function generatePreview() {
     abortController?.abort();
-    
+
     if (isBlank(props.payload)) {
         renderToken += 1;
         clearContainer();
@@ -43,6 +51,7 @@ async function generatePreview() {
 
     abortController = new AbortController();
     const token = ++renderToken;
+    const loadingStartedAt = Date.now();
 
     status.value = 'loading';
 
@@ -52,11 +61,19 @@ async function generatePreview() {
             signal: abortController.signal,
         });
 
+        await waitForMinLoadingDuration(loadingStartedAt);
+
         if (token === renderToken) {
             await renderPdf(response.data, token);
         }
     } catch (error) {
         if (axios.isCancel(error) || token !== renderToken) {
+            return;
+        }
+
+        await waitForMinLoadingDuration(loadingStartedAt);
+
+        if (token !== renderToken) {
             return;
         }
 
@@ -79,6 +96,7 @@ async function renderPdf(data, token) {
     containerRef.value.innerHTML = '';
     pages.forEach((canvas) => containerRef.value.appendChild(canvas));
     status.value = 'ready';
+    hasRendered.value = true;
 }
 
 watch(() => props.payload, schedulePreview, { deep: true, immediate: true });
@@ -108,10 +126,19 @@ onBeforeUnmount(() => {
         </div>
 
         <div
-            v-if="status === 'loading'"
+            v-if="status === 'loading' && !hasRendered"
+            class="flex aspect-[210/297] flex-col items-center justify-center gap-3 border border-dashed border-ink/20 text-sm text-ink/40"
+        >
+            <Spinner size="lg" />
+            <span>Generating preview…</span>
+        </div>
+
+        <div
+            v-else-if="status === 'loading'"
             class="pointer-events-none absolute inset-x-0 top-0 flex justify-center pt-4"
         >
-            <span class="rounded-full border border-ink/20 bg-paper px-3 py-1 text-xs text-ink/60">
+            <span class="flex items-center gap-2 rounded-full border border-ink/20 bg-paper px-3 py-1 text-xs text-ink/60">
+                <Spinner size="sm" />
                 Updating preview…
             </span>
         </div>
