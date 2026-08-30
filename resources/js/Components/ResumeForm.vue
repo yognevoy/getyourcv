@@ -41,23 +41,30 @@ function formatMonthYear(value) {
     return `${MONTHS_FULL[month - 1]} ${year}`;
 }
 
-let rowKeyCounter = 0;
-const rowKeys = new WeakMap();
+let rowIdCounter = 0;
 
-function rowKey(item) {
-    if (!rowKeys.has(item)) {
-        rowKeys.set(item, rowKeyCounter++);
-    }
-
-    return rowKeys.get(item);
+function nextRowId() {
+    return rowIdCounter++;
 }
 
+function withIds(rows) {
+    rows.forEach((row) => {
+        row.id ??= nextRowId();
+    });
+
+    return rows;
+}
+
+withIds(props.form.links);
+withIds(props.form.skill_groups).forEach((group) => withIds(group.skills));
+withIds(props.form.experiences).forEach((experience) => withIds(experience.bullets));
+
 function linkLabelPlaceholder(link) {
-    return LINK_LABEL_PLACEHOLDERS[rowKey(link) % LINK_LABEL_PLACEHOLDERS.length];
+    return LINK_LABEL_PLACEHOLDERS[link.id % LINK_LABEL_PLACEHOLDERS.length];
 }
 
 function skillPlaceholder(skill) {
-    return SKILL_PLACEHOLDERS[rowKey(skill) % SKILL_PLACEHOLDERS.length];
+    return SKILL_PLACEHOLDERS[skill.id % SKILL_PLACEHOLDERS.length];
 }
 
 function bulletsOfType(experience, type) {
@@ -88,26 +95,24 @@ function experienceSummaryPeriod(experience) {
 const expandedExperienceKeys = ref(
     new Set(
         props.form.experiences.length <= 1
-            ? props.form.experiences.map((experience) => rowKey(experience))
+            ? props.form.experiences.map((experience) => experience.id)
             : [],
     ),
 );
 
 function isExperienceExpanded(experience) {
-    return expandedExperienceKeys.value.has(rowKey(experience));
+    return expandedExperienceKeys.value.has(experience.id);
 }
 
 function expandExperience(experience) {
-    expandedExperienceKeys.value.add(rowKey(experience));
+    expandedExperienceKeys.value.add(experience.id);
 }
 
 function toggleExperience(experience) {
-    const key = rowKey(experience);
-
-    if (expandedExperienceKeys.value.has(key)) {
-        expandedExperienceKeys.value.delete(key);
+    if (expandedExperienceKeys.value.has(experience.id)) {
+        expandedExperienceKeys.value.delete(experience.id);
     } else {
-        expandedExperienceKeys.value.add(key);
+        expandedExperienceKeys.value.add(experience.id);
     }
 }
 
@@ -167,7 +172,7 @@ watch(
 );
 
 function addLink() {
-    props.form.links.push({ label: '', url: '' });
+    props.form.links.push({ id: nextRowId(), label: '', url: '' });
 }
 
 function removeLink(index) {
@@ -175,7 +180,7 @@ function removeLink(index) {
 }
 
 function addSkillGroup() {
-    props.form.skill_groups.push({ label: '', skills: [] });
+    props.form.skill_groups.push({ id: nextRowId(), label: '', skills: [] });
 }
 
 function removeSkillGroup(index) {
@@ -183,7 +188,7 @@ function removeSkillGroup(index) {
 }
 
 function addSkill(groupIndex) {
-    props.form.skill_groups[groupIndex].skills.push({ value: '' });
+    props.form.skill_groups[groupIndex].skills.push({ id: nextRowId(), value: '' });
 }
 
 function removeSkill(groupIndex, skillIndex) {
@@ -192,6 +197,7 @@ function removeSkill(groupIndex, skillIndex) {
 
 function addExperience() {
     const experience = {
+        id: nextRowId(),
         company: '',
         title: '',
         period_from: '',
@@ -209,7 +215,7 @@ function removeExperience(index) {
 }
 
 function addBullet(experienceIndex, type) {
-    props.form.experiences[experienceIndex].bullets.push({ type, text: '' });
+    props.form.experiences[experienceIndex].bullets.push({ id: nextRowId(), type, text: '' });
 }
 
 function removeBullet(experienceIndex, bulletIndex) {
@@ -258,7 +264,7 @@ function removeBullet(experienceIndex, bulletIndex) {
                         <InputLabel value="Links" />
 
                         <TransitionGroup name="row" tag="div" class="space-y-2">
-                            <div v-for="(link, i) in form.links" :key="rowKey(link)" class="flex items-stretch gap-2">
+                            <div v-for="(link, i) in form.links" :key="link.id" class="flex items-stretch gap-2">
                                 <TextInput v-model="link.label" :placeholder="linkLabelPlaceholder(link)" class="w-1/3" />
                                 <TextInput v-model="link.url" placeholder="https://..." class="flex-1" />
                                 <IconButton label="Remove link" @click="removeLink(i)">
@@ -287,7 +293,7 @@ function removeBullet(experienceIndex, bulletIndex) {
                     <TransitionGroup name="row" tag="div" class="space-y-4">
                         <div
                             v-for="(group, gi) in form.skill_groups"
-                            :key="rowKey(group)"
+                            :key="group.id"
                             class="space-y-3 rounded-md border border-ink/15 p-4"
                         >
                             <div class="flex items-stretch gap-2">
@@ -304,7 +310,7 @@ function removeBullet(experienceIndex, bulletIndex) {
                             <TransitionGroup name="row" tag="div" class="ml-2 space-y-2 border-l border-ink/15 pl-4">
                                 <div
                                     v-for="(skill, si) in group.skills"
-                                    :key="rowKey(skill)"
+                                    :key="skill.id"
                                     class="flex items-stretch gap-2"
                                 >
                                     <TextInput v-model="skill.value" :placeholder="skillPlaceholder(skill)" class="flex-1" />
@@ -325,7 +331,7 @@ function removeBullet(experienceIndex, bulletIndex) {
                     <TransitionGroup name="row" tag="div" class="space-y-4">
                         <div
                             v-for="(experience, ei) in form.experiences"
-                            :key="rowKey(experience)"
+                            :key="experience.id"
                             class="rounded-md border border-ink/15"
                         >
                             <div class="flex items-stretch gap-2 p-4">
@@ -393,7 +399,7 @@ function removeBullet(experienceIndex, bulletIndex) {
                                             <TransitionGroup name="row" tag="div" class="space-y-2">
                                                 <div
                                                     v-for="item in bulletsOfType(experience, 'responsibility')"
-                                                    :key="rowKey(item.bullet)"
+                                                    :key="item.bullet.id"
                                                     class="flex items-stretch gap-2"
                                                 >
                                                     <Textarea v-model="item.bullet.text" class="flex-1" />
@@ -412,7 +418,7 @@ function removeBullet(experienceIndex, bulletIndex) {
                                             <TransitionGroup name="row" tag="div" class="space-y-2">
                                                 <div
                                                     v-for="item in bulletsOfType(experience, 'achievement')"
-                                                    :key="rowKey(item.bullet)"
+                                                    :key="item.bullet.id"
                                                     class="flex items-stretch gap-2"
                                                 >
                                                     <Textarea v-model="item.bullet.text" class="flex-1" />
