@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.row-enter-active,
+.row-leave-active {
+    transition: all 0.18s ease;
+}
+
+.row-enter-from,
+.row-leave-to {
+    opacity: 0;
+    transform: translateY(-4px);
+}
+
+.row-move {
+    transition: transform 0.18s ease;
+}
