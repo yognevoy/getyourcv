@@ -4,6 +4,10 @@ defineProps({
         type: String,
         required: true,
     },
+    alignTop: {
+        type: Boolean,
+        default: false,
+    },
 });
 </script>
 
@@ -12,7 +16,10 @@ defineProps({
         type="button"
         :aria-label="label"
         :title="label"
-        class="flex h-9 w-9 shrink-0 items-center justify-center rounded-md border border-ink/20 text-ink/50 transition-colors hover:border-ink hover:text-ink disabled:pointer-events-none disabled:opacity-30"
+        :class="[
+            'flex w-9 shrink-0 justify-center self-stretch rounded-md text-ink/50 transition-colors hover:text-ink disabled:pointer-events-none disabled:opacity-30',
+            alignTop ? 'items-start pt-2' : 'items-center',
+        ]"
     >
         <slot />
     </button>
