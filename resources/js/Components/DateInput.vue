@@ -85,7 +85,7 @@ function clear() {
     <div class="relative">
         <button
             type="button"
-            class="flex w-full items-center justify-between gap-2 rounded-md border border-ink/20 px-3 py-2 text-left text-ink transition-colors focus:border-ink focus:outline-none disabled:border-ink/10 disabled:bg-ink/5 disabled:text-ink/40"
+            class="flex w-full items-center justify-between gap-2 rounded-md border border-ink/20 bg-white px-3 py-2 text-left text-ink transition-colors focus:border-ink focus:outline-none disabled:border-ink/10 disabled:bg-ink/5 disabled:text-ink/40"
             :disabled="disabled"
             @click="toggle"
         >
