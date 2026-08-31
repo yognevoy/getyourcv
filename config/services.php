@@ -39,4 +39,10 @@ return [
         'binary' => env('RESUME_GEN_BINARY', '/usr/local/bin/resume-gen'),
     ],
 
+    'ai' => [
+        'base_url' => env('AI_BASE_URL', 'https://api.openai.com/v1'),
+        'api_key' => env('AI_API_KEY'),
+        'model' => env('AI_MODEL', 'gpt-4o-mini'),
+    ],
+
 ];

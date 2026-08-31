@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiRewriteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicResumeController;
 use App\Http\Controllers\ResumeController;
@@ -19,6 +20,10 @@ Route::get('/resume/new', [ResumeController::class, 'create'])->name('resumes.cr
 Route::post('/resume-preview', ResumePreviewController::class)
     ->middleware('throttle:30,1')
     ->name('resumes.preview');
+
+Route::post('/ai/rewrite', AiRewriteController::class)
+    ->middleware('throttle:10,1')
+    ->name('ai.rewrite');
 
 Route::get('/r/{resume:slug}', [PublicResumeController::class, 'show'])
     ->withTrashed()
