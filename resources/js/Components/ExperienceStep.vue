@@ -5,7 +5,11 @@ import DateInput from '@/Components/DateInput.vue';
 import Textarea from '@/Components/Textarea.vue';
 import IconButton from '@/Components/IconButton.vue';
 import RemoveIcon from '@/Components/RemoveIcon.vue';
+import MenuIcon from '@/Components/MenuIcon.vue';
+import Dropdown from '@/Components/Dropdown.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
+import AiSparkleIcon from '@/Components/AiSparkleIcon.vue';
+import AiRewriteDialog from '@/Components/AiRewriteDialog.vue';
 import { useRowIds } from '@/composables/useRowIds';
 
 const props = defineProps({
@@ -127,6 +131,22 @@ function addBullet(experienceIndex, type) {
 function removeBullet(experienceIndex, bulletIndex) {
     props.form.experiences[experienceIndex].bullets.splice(bulletIndex, 1);
 }
+
+const activeBullet = ref(null);
+
+function openAiDialog(bullet) {
+    activeBullet.value = bullet;
+}
+
+function closeAiDialog() {
+    activeBullet.value = null;
+}
+
+function applyRewrite(text) {
+    if (activeBullet.value) {
+        activeBullet.value.text = text;
+    }
+}
 </script>
 
 <template>
@@ -174,7 +194,7 @@ function removeBullet(experienceIndex, bulletIndex) {
                     class="grid transition-[grid-template-rows] duration-200 ease-out"
                     :style="{ gridTemplateRows: isExperienceExpanded(experience) ? '1fr' : '0fr' }"
                 >
-                    <div class="overflow-hidden">
+                    <div :class="isExperienceExpanded(experience) ? 'overflow-visible' : 'overflow-hidden'">
                         <div class="space-y-4 border-t border-ink/15 p-4">
                             <div class="grid gap-2 sm:grid-cols-2">
                                 <TextInput v-model="experience.title" placeholder="Title" />
@@ -206,9 +226,31 @@ function removeBullet(experienceIndex, bulletIndex) {
                                         class="flex items-stretch gap-2"
                                     >
                                         <Textarea v-model="item.bullet.text" class="flex-1" />
-                                        <IconButton label="Remove responsibility" align-top @click="removeBullet(ei, item.index)">
-                                            <RemoveIcon />
-                                        </IconButton>
+                                        <Dropdown align="left" class="self-stretch">
+                                            <template #trigger>
+                                                <IconButton label="Bullet actions" align-top class="h-full">
+                                                    <MenuIcon />
+                                                </IconButton>
+                                            </template>
+                                            <template #content>
+                                                <button
+                                                    type="button"
+                                                    :disabled="!item.bullet.text || item.bullet.text.trim().length < 3"
+                                                    class="flex w-full items-center gap-2 px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
+                                                    @click="openAiDialog(item.bullet)"
+                                                >
+                                                    <AiSparkleIcon />
+                                                    AI enhance
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                                                    @click="removeBullet(ei, item.index)"
+                                                >
+                                                    Remove
+                                                </button>
+                                            </template>
+                                        </Dropdown>
                                     </div>
                                 </TransitionGroup>
 
@@ -225,9 +267,31 @@ function removeBullet(experienceIndex, bulletIndex) {
                                         class="flex items-stretch gap-2"
                                     >
                                         <Textarea v-model="item.bullet.text" class="flex-1" />
-                                        <IconButton label="Remove achievement" align-top @click="removeBullet(ei, item.index)">
-                                            <RemoveIcon />
-                                        </IconButton>
+                                        <Dropdown align="left" class="self-stretch">
+                                            <template #trigger>
+                                                <IconButton label="Bullet actions" align-top class="h-full">
+                                                    <MenuIcon />
+                                                </IconButton>
+                                            </template>
+                                            <template #content>
+                                                <button
+                                                    type="button"
+                                                    :disabled="!item.bullet.text || item.bullet.text.trim().length < 3"
+                                                    class="flex w-full items-center gap-2 px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
+                                                    @click="openAiDialog(item.bullet)"
+                                                >
+                                                    <AiSparkleIcon />
+                                                    AI enhance
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                                                    @click="removeBullet(ei, item.index)"
+                                                >
+                                                    Remove
+                                                </button>
+                                            </template>
+                                        </Dropdown>
                                     </div>
                                 </TransitionGroup>
 
@@ -240,5 +304,13 @@ function removeBullet(experienceIndex, bulletIndex) {
         </TransitionGroup>
 
         <AddRowButton class="mt-4" @click="addExperience">Add experience</AddRowButton>
+
+        <AiRewriteDialog
+            :show="activeBullet !== null"
+            :text="activeBullet?.text || ''"
+            :target="activeBullet?.type || ''"
+            @close="closeAiDialog"
+            @apply="applyRewrite"
+        />
     </div>
 </template>
