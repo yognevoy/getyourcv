@@ -151,11 +151,13 @@ function applyRewrite(text) {
 
 <template>
     <div>
+        <h2 class="mb-4 text-base font-semibold text-ink">Experience</h2>
+
         <TransitionGroup name="row" tag="div" class="space-y-4">
             <div
                 v-for="(experience, ei) in form.experiences"
                 :key="experience.id"
-                class="rounded-md border border-ink/15"
+                class="rounded-md border border-ink/15 bg-white"
             >
                 <div class="flex items-stretch gap-2 p-4">
                     <button

@@ -113,21 +113,21 @@ onBeforeUnmount(() => {
 
         <div
             v-if="status === 'empty'"
-            class="flex aspect-[210/297] items-center justify-center border border-dashed border-ink/20 text-center text-sm text-ink/50"
+            class="flex aspect-[210/297] items-center justify-center border border-dashed border-ink/20 bg-white text-center text-sm text-ink/50"
         >
             Fill in the form to see the preview.
         </div>
 
         <div
             v-else-if="status === 'error'"
-            class="flex aspect-[210/297] items-center justify-center border border-dashed border-ink/20 text-center text-sm text-ink/50"
+            class="flex aspect-[210/297] items-center justify-center border border-dashed border-ink/20 bg-white text-center text-sm text-ink/50"
         >
             Could not generate the preview. Your changes are still saved in the form.
         </div>
 
         <div
             v-if="status === 'loading' && !hasRendered"
-            class="flex aspect-[210/297] flex-col items-center justify-center gap-3 border border-dashed border-ink/20 text-sm text-ink/40"
+            class="flex aspect-[210/297] flex-col items-center justify-center gap-3 border border-dashed border-ink/20 bg-white text-sm text-ink/40"
         >
             <Spinner size="lg" />
             <span>Generating preview…</span>

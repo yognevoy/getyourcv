@@ -21,9 +21,9 @@ function applyRewrite(text) {
 </script>
 
 <template>
-    <div class="space-y-4">
-        <div class="flex items-center justify-between">
-            <InputLabel for="about" value="About" />
+    <div>
+        <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-base font-semibold text-ink">About</h2>
             <IconButton
                 label="AI enhance"
                 :disabled="!form.about || form.about.trim().length < 3"
@@ -32,14 +32,18 @@ function applyRewrite(text) {
                 <AiSparkleIcon />
             </IconButton>
         </div>
-        <textarea
-            id="about"
-            v-model="form.about"
-            rows="10"
-            placeholder="A couple of sentences about you as a professional."
-            class="w-full rounded-md border border-ink/20 px-3 py-2 text-ink transition-colors focus:border-ink focus:outline-none"
-        />
-        <InputError :message="form.errors.about" />
+
+        <div class="rounded-md border border-ink/15 bg-white p-4">
+            <InputLabel for="about" value="Summary" />
+            <textarea
+                id="about"
+                v-model="form.about"
+                rows="10"
+                placeholder="A couple of sentences about you as a professional."
+                class="mt-1 w-full rounded-md border border-ink/20 px-3 py-2 text-ink transition-colors focus:border-ink focus:outline-none"
+            />
+            <InputError class="mt-1" :message="form.errors.about" />
+        </div>
 
         <AiRewriteDialog
             :show="showAiDialog"

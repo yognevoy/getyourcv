@@ -107,7 +107,7 @@ function clear() {
         >
             <div
                 v-show="open"
-                class="absolute z-50 mt-2 w-64 origin-top rounded-md border border-ink/20 bg-paper p-3"
+                class="absolute z-50 mt-2 w-64 origin-top rounded-md border border-ink/20 bg-white p-3"
                 style="display: none"
             >
                 <div class="mb-2 flex items-center justify-between">

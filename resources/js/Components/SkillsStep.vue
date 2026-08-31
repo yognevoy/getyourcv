@@ -40,11 +40,13 @@ function removeSkill(groupIndex, skillIndex) {
 
 <template>
     <div>
+        <h2 class="mb-4 text-base font-semibold text-ink">Skills</h2>
+
         <TransitionGroup name="row" tag="div" class="space-y-4">
             <div
                 v-for="(group, gi) in form.skill_groups"
                 :key="group.id"
-                class="space-y-3 rounded-md border border-ink/15 p-4"
+                class="space-y-3 rounded-md border border-ink/15 bg-white p-4"
             >
                 <div class="flex items-stretch gap-2">
                     <TextInput

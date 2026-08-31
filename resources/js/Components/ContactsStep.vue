@@ -33,39 +33,43 @@ function removeLink(index) {
 </script>
 
 <template>
-    <div class="space-y-4">
-        <div>
-            <InputLabel for="full_name" value="Full name" />
-            <TextInput id="full_name" v-model="form.full_name" class="mt-1 block w-full" required />
-            <InputError class="mt-1" :message="form.errors.full_name" />
-        </div>
+    <div>
+        <h2 class="mb-4 text-base font-semibold text-ink">Contacts</h2>
 
-        <div>
-            <InputLabel for="position" value="Position" />
-            <TextInput id="position" v-model="form.position" class="mt-1 block w-full" />
-            <InputError class="mt-1" :message="form.errors.position" />
-        </div>
+        <div class="space-y-4 rounded-md border border-ink/15 bg-white p-4">
+            <div>
+                <InputLabel for="full_name" value="Full name" />
+                <TextInput id="full_name" v-model="form.full_name" class="mt-1 block w-full" required />
+                <InputError class="mt-1" :message="form.errors.full_name" />
+            </div>
 
-        <div>
-            <InputLabel for="email" value="Email" />
-            <TextInput id="email" type="email" v-model="form.email" class="mt-1 block w-full" />
-            <InputError class="mt-1" :message="form.errors.email" />
-        </div>
+            <div>
+                <InputLabel for="position" value="Position" />
+                <TextInput id="position" v-model="form.position" class="mt-1 block w-full" />
+                <InputError class="mt-1" :message="form.errors.position" />
+            </div>
 
-        <div class="space-y-2 pt-2">
-            <InputLabel value="Links" />
+            <div>
+                <InputLabel for="email" value="Email" />
+                <TextInput id="email" type="email" v-model="form.email" class="mt-1 block w-full" />
+                <InputError class="mt-1" :message="form.errors.email" />
+            </div>
 
-            <TransitionGroup name="row" tag="div" class="space-y-2">
-                <div v-for="(link, i) in form.links" :key="link.id" class="flex items-stretch gap-2">
-                    <TextInput v-model="link.label" :placeholder="linkLabelPlaceholder(link)" class="w-1/3" />
-                    <TextInput v-model="link.url" placeholder="https://..." class="flex-1" />
-                    <IconButton label="Remove link" @click="removeLink(i)">
-                        <RemoveIcon />
-                    </IconButton>
-                </div>
-            </TransitionGroup>
+            <div class="space-y-2 pt-2">
+                <InputLabel value="Links" />
 
-            <AddRowButton @click="addLink">Add link</AddRowButton>
+                <TransitionGroup name="row" tag="div" class="space-y-2">
+                    <div v-for="(link, i) in form.links" :key="link.id" class="flex items-stretch gap-2">
+                        <TextInput v-model="link.label" :placeholder="linkLabelPlaceholder(link)" class="w-1/3" />
+                        <TextInput v-model="link.url" placeholder="https://..." class="flex-1" />
+                        <IconButton label="Remove link" @click="removeLink(i)">
+                            <RemoveIcon />
+                        </IconButton>
+                    </div>
+                </TransitionGroup>
+
+                <AddRowButton @click="addLink">Add link</AddRowButton>
+            </div>
         </div>
     </div>
 </template>
