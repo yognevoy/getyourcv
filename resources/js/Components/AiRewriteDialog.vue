@@ -3,6 +3,7 @@ import { ref, watch } from 'vue';
 import axios from 'axios';
 import CloseButton from '@/Components/CloseButton.vue';
 import Modal from '@/Components/Modal.vue';
+import Spinner from '@/Components/Spinner.vue';
 
 const props = defineProps({
     show: {
@@ -30,11 +31,13 @@ const VARIANTS = [
 const loading = ref(false);
 const error = ref(null);
 const variants = ref(null);
+const activeTab = ref(VARIANTS[0].key);
 
 watch(
     () => props.show,
     (show) => {
         if (show) {
+            activeTab.value = VARIANTS[0].key;
             fetchVariants();
         }
     },
@@ -73,9 +76,10 @@ function apply(text) {
                 <CloseButton @click="emit('close')" />
             </div>
 
-            <p v-if="loading" class="mt-6 text-sm text-ink/50">
-                Generating variants…
-            </p>
+            <div v-if="loading" class="mt-6 flex flex-col items-center gap-3 py-8">
+                <Spinner size="lg" />
+                <p class="text-sm text-ink/50">Generating variants…</p>
+            </div>
 
             <div v-else-if="error" class="mt-6 space-y-3">
                 <p class="text-sm text-ink/60">{{ error }}</p>
@@ -88,25 +92,28 @@ function apply(text) {
                 </button>
             </div>
 
-            <ul v-else-if="variants" class="mt-6 space-y-4">
-                <li
-                    v-for="variant in VARIANTS"
-                    :key="variant.key"
-                    class="rounded-md border border-ink/15 p-3"
-                >
-                    <span class="block text-xs font-medium uppercase tracking-wide text-ink/50">
-                        {{ variant.label }}
-                    </span>
-                    <p class="mt-1 whitespace-pre-wrap text-sm text-ink">{{ variants[variant.key] }}</p>
+            <div v-else-if="variants" class="mt-6">
+                <div class="flex border-b border-ink/15">
                     <button
+                        v-for="v in VARIANTS"
+                        :key="v.key"
                         type="button"
-                        class="mt-2 text-sm text-ink underline-offset-2 hover:underline"
-                        @click="apply(variants[variant.key])"
+                        class="flex-1 border-b-2 px-2 py-2 text-xs font-medium uppercase tracking-wide transition-colors"
+                        :class="activeTab === v.key ? 'border-ink text-ink' : 'border-transparent text-ink/40 hover:text-ink/70'"
+                        @click="activeTab = v.key"
                     >
-                        Use this
+                        {{ v.label }}
                     </button>
-                </li>
-            </ul>
+                </div>
+                <p class="mt-4 min-h-[4rem] whitespace-pre-wrap text-sm text-ink">{{ variants[activeTab] }}</p>
+                <button
+                    type="button"
+                    class="mt-4 text-sm text-ink underline-offset-2 hover:underline"
+                    @click="apply(variants[activeTab])"
+                >
+                    Use this
+                </button>
+            </div>
         </div>
     </Modal>
 </template>
