@@ -1,8 +1,8 @@
 <script setup>
 import DangerButton from '@/Components/DangerButton.vue';
+import LinkButton from '@/Components/LinkButton.vue';
 import Modal from '@/Components/Modal.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
 
 defineProps({
     show: {
@@ -46,9 +46,9 @@ const emit = defineEmits(['confirm', 'cancel']);
             </p>
 
             <div class="mt-6 flex justify-end gap-3">
-                <SecondaryButton @click="emit('cancel')">
+                <LinkButton @click="emit('cancel')">
                     Cancel
-                </SecondaryButton>
+                </LinkButton>
 
                 <DangerButton
                     v-if="danger"
