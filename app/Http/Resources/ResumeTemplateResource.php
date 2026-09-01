@@ -14,6 +14,8 @@ class ResumeTemplateResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'status' => $this->status->value,
+            'archived' => $this->archived_at !== null,
             'full_name' => $this->full_name,
             'position' => $this->position,
             'email' => $this->email,

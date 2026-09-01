@@ -11,7 +11,6 @@ const props = defineProps({
 const config = {
     draft: { label: 'Draft', classes: 'border-ink/30 text-ink/50' },
     published: { label: 'Published', classes: 'border-ink bg-ink text-paper' },
-    hidden: { label: 'Hidden', classes: 'border-ink/30 text-ink/50' },
     archived: { label: 'Archived', classes: 'border-yellow-600 bg-yellow-50 text-yellow-800' },
 };
 

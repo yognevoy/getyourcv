@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import ResumePdfViewer from '@/Components/ResumePdfViewer.vue';
 import ResumeForm from '@/Components/ResumeForm.vue';
+import StatusBadge from '@/Components/StatusBadge.vue';
 
 const props = defineProps({
     resume: {
@@ -22,10 +23,13 @@ const form = useForm({
     experiences: props.resume.experiences,
 });
 
-function submit() {
+function submit(event) {
+    const status = event.submitter.value;
+
     form.transform((data) => ({
         ...data,
         title: data.full_name || 'Untitled resume',
+        status,
     })).put(route('resumes.update', props.resume.id));
 }
 
@@ -49,7 +53,10 @@ const previewPayload = computed(() => ({
                 <Link :href="route('dashboard')" class="text-sm text-ink/50 hover:text-ink">
                     &larr; Dashboard
                 </Link>
-                <h1 class="mt-2 text-2xl font-semibold tracking-tight">Edit resume</h1>
+                <div class="mt-2 flex items-center gap-3">
+                    <h1 class="text-2xl font-semibold tracking-tight">Edit resume</h1>
+                    <StatusBadge :status="resume.archived ? 'archived' : resume.status" />
+                </div>
                 <p class="mt-1 text-sm text-ink/60">
                     Update the sections below - the preview on the right updates as you type.
                 </p>
@@ -62,7 +69,7 @@ const previewPayload = computed(() => ({
                 ></div>
 
                 <form @submit.prevent="submit">
-                    <ResumeForm :form="form" submit-label="Save changes" />
+                    <ResumeForm :form="form" publish-label="Save changes" />
                 </form>
 
                 <div class="xl:sticky xl:top-10 xl:self-start xl:pl-10">

@@ -12,9 +12,13 @@ const props = defineProps({
         type: Object,
         required: true,
     },
-    submitLabel: {
+    publishLabel: {
         type: String,
         default: 'Save',
+    },
+    draftLabel: {
+        type: String,
+        default: 'Save as draft',
     },
 });
 
@@ -31,21 +35,12 @@ function stepForField(field) {
 const currentStep = ref(0);
 const isLastStep = computed(() => currentStep.value === STEPS.length - 1);
 const progressPercent = computed(() => ((currentStep.value + 1) / STEPS.length) * 100);
-const nextLabel = computed(() => (isLastStep.value ? props.submitLabel : `Next: ${STEPS[currentStep.value + 1]}`));
+const nextStepLabel = computed(() => `Next: ${STEPS[currentStep.value + 1]}`);
 
 function next() {
     if (!isLastStep.value) {
         currentStep.value += 1;
     }
-}
-
-function onNextClick(event) {
-    if (isLastStep.value) {
-        return;
-    }
-
-    event.preventDefault();
-    next();
 }
 
 function back() {
@@ -98,12 +93,16 @@ watch(
             </SecondaryButton>
             <span v-else></span>
 
-            <PrimaryButton
-                :type="isLastStep ? 'submit' : 'button'"
-                :disabled="isLastStep && form.processing"
-                @click="onNextClick"
-            >
-                {{ nextLabel }}
+            <div v-if="isLastStep" class="flex items-center gap-3">
+                <SecondaryButton type="submit" value="draft" :disabled="form.processing">
+                    {{ draftLabel }}
+                </SecondaryButton>
+                <PrimaryButton type="submit" value="published" :disabled="form.processing">
+                    {{ publishLabel }}
+                </PrimaryButton>
+            </div>
+            <PrimaryButton v-else type="button" @click="next">
+                {{ nextStepLabel }}
             </PrimaryButton>
         </div>
     </div>

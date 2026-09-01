@@ -51,16 +51,19 @@ function draftData() {
 
 const previewPayload = computed(() => draftData());
 
-function submit() {
+function submit(event) {
     if (!page.props.auth.user) {
         sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draftData()));
         router.visit(route('register', { redirect: route('resumes.create', {}, false) }));
         return;
     }
 
+    const status = event.submitter.value;
+
     form.transform((data) => ({
         ...data,
         title: data.full_name || 'Untitled resume',
+        status,
     })).post(route('resumes.store'));
 }
 </script>
@@ -87,7 +90,7 @@ function submit() {
                 ></div>
 
                 <form @submit.prevent="submit">
-                    <ResumeForm :form="form" submit-label="Save resume" />
+                    <ResumeForm :form="form" publish-label="Save resume" />
                 </form>
 
                 <div class="xl:sticky xl:top-10 xl:self-start xl:pl-10">

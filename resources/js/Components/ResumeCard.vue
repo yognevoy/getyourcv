@@ -138,7 +138,7 @@ function unarchiveResume() {
                             Download PDF
                         </a>
                         <button
-                            v-if="resume.status !== 'archived'"
+                            v-if="!resume.archived_at"
                             type="button"
                             class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
                             @click="confirmingArchive = true"
@@ -208,7 +208,7 @@ function unarchiveResume() {
         />
 
         <div class="flex items-center justify-between">
-            <StatusBadge :status="resume.status" />
+            <StatusBadge :status="resume.archived_at ? 'archived' : resume.status" />
             <span class="text-xs text-ink/40" :title="new Date(resume.updated_at).toLocaleDateString()">
                 {{ formatRelativeDate(resume.updated_at) }}
             </span>
