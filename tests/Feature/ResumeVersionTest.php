@@ -8,23 +8,23 @@ use App\Models\User;
 
 test('creating a resume records its first version', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     expect($resume->versions()->count())->toBe(1);
 });
 
 test('updating a resume records a new version', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
-    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'about' => 'Updated']);
+    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft', 'about' => 'Updated']);
 
     expect($resume->versions()->count())->toBe(2);
 });
 
 test('guests are redirected to login when listing versions', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->get("/resumes/{$resume->id}/versions");
 
@@ -34,7 +34,7 @@ test('guests are redirected to login when listing versions', function () {
 test('a user cannot list another user\'s versions', function () {
     $owner = User::factory()->create();
     $intruder = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->actingAs($intruder)->get("/resumes/{$resume->id}/versions");
 
@@ -43,8 +43,8 @@ test('a user cannot list another user\'s versions', function () {
 
 test('the owner can list versions with the newest marked as current', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
-    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'about' => 'Updated']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
+    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft', 'about' => 'Updated']);
 
     $response = $this->actingAs($owner)->getJson("/resumes/{$resume->id}/versions");
 
@@ -57,7 +57,7 @@ test('the owner can list versions with the newest marked as current', function (
 
 test('the owner can view a past version as a PDF', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $version = $resume->versions()->firstOrFail();
 
     $response = $this->actingAs($owner)->get("/resumes/{$resume->id}/versions/{$version->id}/pdf");
@@ -68,8 +68,8 @@ test('the owner can view a past version as a PDF', function () {
 
 test('a version pdf from another resume 404s', function () {
     $owner = User::factory()->create();
-    $resumeA = app(CreateResume::class)->execute($owner, ['title' => 'Resume A', 'full_name' => 'Jane Doe']);
-    $resumeB = app(CreateResume::class)->execute($owner, ['title' => 'Resume B', 'full_name' => 'Jane Doe']);
+    $resumeA = app(CreateResume::class)->execute($owner, ['title' => 'Resume A', 'full_name' => 'Jane Doe', 'status' => 'draft']);
+    $resumeB = app(CreateResume::class)->execute($owner, ['title' => 'Resume B', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $versionOfA = $resumeA->versions()->firstOrFail();
 
     $response = $this->actingAs($owner)->get("/resumes/{$resumeB->id}/versions/{$versionOfA->id}/pdf");
@@ -79,9 +79,9 @@ test('a version pdf from another resume 404s', function () {
 
 test('the owner can restore a resume to a past version', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'about' => 'Original']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft', 'about' => 'Original']);
     $original = $resume->versions()->firstOrFail();
-    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'about' => 'Changed']);
+    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft', 'about' => 'Changed']);
 
     $response = $this->actingAs($owner)->post("/resumes/{$resume->id}/versions/{$original->id}/restore");
 
@@ -94,9 +94,9 @@ test('the owner can restore a resume to a past version', function () {
 
 test('restoring an older version moves it to the front of the list as current', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $original = $resume->versions()->firstOrFail();
-    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'about' => 'Changed']);
+    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft', 'about' => 'Changed']);
 
     $this->actingAs($owner)->post("/resumes/{$resume->id}/versions/{$original->id}/restore");
 
@@ -111,7 +111,7 @@ test('restoring an older version moves it to the front of the list as current', 
 test('a user cannot restore another user\'s resume version', function () {
     $owner = User::factory()->create();
     $intruder = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $version = $resume->versions()->firstOrFail();
 
     $response = $this->actingAs($intruder)->post("/resumes/{$resume->id}/versions/{$version->id}/restore");
@@ -121,9 +121,9 @@ test('a user cannot restore another user\'s resume version', function () {
 
 test('the owner can delete a past version', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $first = $resume->versions()->firstOrFail();
-    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'about' => 'Changed']);
+    app(UpdateResume::class)->execute($resume, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft', 'about' => 'Changed']);
 
     $response = $this->actingAs($owner)->delete("/resumes/{$resume->id}/versions/{$first->id}");
 
@@ -133,7 +133,7 @@ test('the owner can delete a past version', function () {
 
 test('the current version cannot be deleted', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $current = $resume->versions()->firstOrFail();
 
     $response = $this->actingAs($owner)->delete("/resumes/{$resume->id}/versions/{$current->id}");
@@ -144,7 +144,7 @@ test('the current version cannot be deleted', function () {
 
 test('deleting a resume permanently cascades to its versions', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resumeId = $resume->id;
 
     $resume->forceDelete();

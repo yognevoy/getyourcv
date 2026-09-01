@@ -9,6 +9,7 @@ test('guests are redirected to login when duplicating a resume', function () {
     $resume = app(CreateResume::class)->execute($owner, [
         'title' => 'My Resume',
         'full_name' => 'Jane Doe',
+        'status' => 'draft',
     ]);
 
     $response = $this->post("/resumes/{$resume->id}/duplicate");
@@ -22,6 +23,7 @@ test('a user cannot duplicate another user\'s resume', function () {
     $resume = app(CreateResume::class)->execute($owner, [
         'title' => 'My Resume',
         'full_name' => 'Jane Doe',
+        'status' => 'draft',
     ]);
 
     $response = $this->actingAs($intruder)->post("/resumes/{$resume->id}/duplicate");
@@ -34,6 +36,7 @@ test('the owner can duplicate a resume and is redirected to editing the copy', f
     $resume = app(CreateResume::class)->execute($owner, [
         'title' => 'My Resume',
         'full_name' => 'Jane Doe',
+        'status' => 'draft',
         'links' => [['label' => 'GitHub', 'url' => 'https://github.com/jane']],
     ]);
 

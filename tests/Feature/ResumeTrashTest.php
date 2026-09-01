@@ -6,7 +6,7 @@ use App\Models\User;
 
 test('the owner can see their trashed resumes', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resume->delete();
 
     $response = $this->actingAs($owner)->get('/trash');
@@ -20,7 +20,7 @@ test('the owner can see their trashed resumes', function () {
 
 test('the owner can restore a trashed resume', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resume->delete();
 
     $response = $this->actingAs($owner)->post("/resumes/{$resume->id}/restore");
@@ -32,7 +32,7 @@ test('the owner can restore a trashed resume', function () {
 test('a user cannot restore another user\'s resume', function () {
     $owner = User::factory()->create();
     $intruder = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resume->delete();
 
     $response = $this->actingAs($intruder)->post("/resumes/{$resume->id}/restore");
@@ -42,7 +42,7 @@ test('a user cannot restore another user\'s resume', function () {
 
 test('the owner can permanently delete a trashed resume', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resume->delete();
 
     $response = $this->actingAs($owner)->delete("/resumes/{$resume->id}/force");
@@ -54,7 +54,7 @@ test('the owner can permanently delete a trashed resume', function () {
 test('a user cannot permanently delete another user\'s resume', function () {
     $owner = User::factory()->create();
     $intruder = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resume->delete();
 
     $response = $this->actingAs($intruder)->delete("/resumes/{$resume->id}/force");

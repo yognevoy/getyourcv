@@ -6,7 +6,7 @@ use App\Models\User;
 
 test('guests are redirected to login when deleting a resume', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->delete("/resumes/{$resume->id}");
 
@@ -16,7 +16,7 @@ test('guests are redirected to login when deleting a resume', function () {
 test('a user cannot delete another user\'s resume', function () {
     $owner = User::factory()->create();
     $intruder = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->actingAs($intruder)->delete("/resumes/{$resume->id}");
 
@@ -25,7 +25,7 @@ test('a user cannot delete another user\'s resume', function () {
 
 test('the owner can soft delete a resume', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->actingAs($owner)->delete("/resumes/{$resume->id}");
 
@@ -35,7 +35,7 @@ test('the owner can soft delete a resume', function () {
 
 test('a soft deleted resume no longer appears on the dashboard', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resume->delete();
 
     $response = $this->actingAs($owner)->get('/dashboard');

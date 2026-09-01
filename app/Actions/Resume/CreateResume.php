@@ -5,7 +5,6 @@ namespace App\Actions\Resume;
 use App\Actions\Resume\Concerns\GeneratesResumeSlug;
 use App\Actions\Resume\Concerns\PersistsResumeRelations;
 use App\Actions\Resume\Concerns\SnapshotsResumeVersion;
-use App\Enums\ResumeStatus;
 use App\Models\Resume;
 use App\Models\User;
 use App\Services\Pdf\ResumePdfStore;
@@ -24,7 +23,7 @@ class CreateResume
                 'user_id' => $user?->id,
                 'slug' => $this->generateSlug($data['title']),
                 'title' => $data['title'],
-                'status' => ResumeStatus::Draft,
+                'status' => $data['status'],
                 'full_name' => $data['full_name'],
                 'position' => $data['position'] ?? null,
                 'email' => $data['email'] ?? null,

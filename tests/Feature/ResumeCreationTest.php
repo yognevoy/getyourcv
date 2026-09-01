@@ -24,6 +24,7 @@ test('authenticated users can save a resume', function () {
         'title' => 'My Resume',
         'full_name' => 'Jane Doe',
         'position' => 'Software Engineer',
+        'status' => 'published',
     ]);
 
     $response->assertRedirect(route('dashboard', absolute: false));

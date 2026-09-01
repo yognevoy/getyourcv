@@ -2,12 +2,16 @@
 
 namespace App\Http\Requests\Concerns;
 
+use App\Enums\ResumeStatus;
+use Illuminate\Validation\Rule;
+
 trait HasResumeRules
 {
     private function resumeRules(): array
     {
         return [
             'title' => ['required', 'string', 'max:255'],
+            'status' => ['required', Rule::enum(ResumeStatus::class)],
             'full_name' => ['required', 'string', 'max:255'],
             'position' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],

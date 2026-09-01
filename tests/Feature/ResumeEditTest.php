@@ -8,6 +8,7 @@ test('guests are redirected to login when opening the edit page', function () {
     $resume = app(CreateResume::class)->execute($owner, [
         'title' => 'My Resume',
         'full_name' => 'Jane Doe',
+        'status' => 'draft',
     ]);
 
     $response = $this->get("/resumes/{$resume->id}/edit");
@@ -21,6 +22,7 @@ test('a user cannot open another user\'s edit page', function () {
     $resume = app(CreateResume::class)->execute($owner, [
         'title' => 'My Resume',
         'full_name' => 'Jane Doe',
+        'status' => 'draft',
     ]);
 
     $response = $this->actingAs($intruder)->get("/resumes/{$resume->id}/edit");
@@ -33,6 +35,7 @@ test('the owner can open the edit page with the resume data', function () {
     $resume = app(CreateResume::class)->execute($owner, [
         'title' => 'My Resume',
         'full_name' => 'Jane Doe',
+        'status' => 'draft',
         'position' => 'Software Engineer',
         'links' => [['label' => 'GitHub', 'url' => 'https://github.com/jane']],
     ]);
@@ -53,12 +56,14 @@ test('the owner can update a resume', function () {
     $resume = app(CreateResume::class)->execute($owner, [
         'title' => 'My Resume',
         'full_name' => 'Jane Doe',
+        'status' => 'draft',
     ]);
 
     $response = $this->actingAs($owner)->put("/resumes/{$resume->id}", [
         'title' => 'My Resume',
         'full_name' => 'Jane Doe',
         'position' => 'Senior Engineer',
+        'status' => 'published',
     ]);
 
     $response->assertRedirect(route('dashboard', absolute: false));

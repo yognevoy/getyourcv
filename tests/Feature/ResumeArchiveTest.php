@@ -7,7 +7,7 @@ use App\Models\User;
 
 test('guests are redirected to login when archiving a resume', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->post("/resumes/{$resume->id}/archive");
 
@@ -17,7 +17,7 @@ test('guests are redirected to login when archiving a resume', function () {
 test('a user cannot archive another user\'s resume', function () {
     $owner = User::factory()->create();
     $intruder = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->actingAs($intruder)->post("/resumes/{$resume->id}/archive");
 
@@ -26,7 +26,7 @@ test('a user cannot archive another user\'s resume', function () {
 
 test('the owner can archive a resume', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->actingAs($owner)->post("/resumes/{$resume->id}/archive");
 
@@ -36,7 +36,7 @@ test('the owner can archive a resume', function () {
 
 test('an archived resume is no longer publicly available', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resume->update(['status' => ResumeStatus::Published]);
     $this->actingAs($owner)->post("/resumes/{$resume->id}/archive");
 
@@ -47,7 +47,7 @@ test('an archived resume is no longer publicly available', function () {
 
 test('guests are redirected to login when unarchiving a resume', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->post("/resumes/{$resume->id}/unarchive");
 
@@ -57,7 +57,7 @@ test('guests are redirected to login when unarchiving a resume', function () {
 test('a user cannot unarchive another user\'s resume', function () {
     $owner = User::factory()->create();
     $intruder = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
 
     $response = $this->actingAs($intruder)->post("/resumes/{$resume->id}/unarchive");
 
@@ -66,7 +66,7 @@ test('a user cannot unarchive another user\'s resume', function () {
 
 test('unarchiving restores the resume to its previous status without changing it', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resume->update(['status' => ResumeStatus::Published]);
     $this->actingAs($owner)->post("/resumes/{$resume->id}/archive");
 
@@ -80,7 +80,7 @@ test('unarchiving restores the resume to its previous status without changing it
 
 test('an unarchived resume is publicly available again', function () {
     $owner = User::factory()->create();
-    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe', 'status' => 'draft']);
     $resume->update(['status' => ResumeStatus::Published]);
     $this->actingAs($owner)->post("/resumes/{$resume->id}/archive");
     $this->actingAs($owner)->post("/resumes/{$resume->id}/unarchive");

@@ -19,6 +19,7 @@ class UpdateResume
         $resume = DB::transaction(function () use ($resume, $data) {
             $resume->update([
                 'title' => $data['title'],
+                'status' => $data['status'],
                 'full_name' => $data['full_name'],
                 'position' => $data['position'] ?? null,
                 'email' => $data['email'] ?? null,
