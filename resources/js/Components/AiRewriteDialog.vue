@@ -69,7 +69,7 @@ function apply(text) {
 </script>
 
 <template>
-    <Modal :show="show" max-width="lg" :bordered="false" @close="emit('close')">
+    <Modal :show="show" max-width="lg" @close="emit('close')">
         <div class="p-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-medium text-ink">AI rewrite</h2>

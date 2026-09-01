@@ -87,7 +87,7 @@ function confirmAction() {
 </script>
 
 <template>
-    <Modal :show="show" max-width="md" :bordered="false" @close="emit('close')">
+    <Modal :show="show" max-width="md" @close="emit('close')">
         <div class="p-6">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-medium text-ink">Versions</h2>
