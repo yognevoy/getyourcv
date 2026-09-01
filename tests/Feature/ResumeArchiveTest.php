@@ -31,12 +31,13 @@ test('the owner can archive a resume', function () {
     $response = $this->actingAs($owner)->post("/resumes/{$resume->id}/archive");
 
     $response->assertRedirect();
-    expect(Resume::find($resume->id)->status)->toBe(ResumeStatus::Archived);
+    expect(Resume::find($resume->id)->archived_at)->not->toBeNull();
 });
 
 test('an archived resume is no longer publicly available', function () {
     $owner = User::factory()->create();
     $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume->update(['status' => ResumeStatus::Published]);
     $this->actingAs($owner)->post("/resumes/{$resume->id}/archive");
 
     $response = $this->get("/r/{$resume->slug}");
@@ -63,20 +64,24 @@ test('a user cannot unarchive another user\'s resume', function () {
     $response->assertForbidden();
 });
 
-test('the owner can unarchive a resume back to draft', function () {
+test('unarchiving restores the resume to its previous status without changing it', function () {
     $owner = User::factory()->create();
     $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume->update(['status' => ResumeStatus::Published]);
     $this->actingAs($owner)->post("/resumes/{$resume->id}/archive");
 
     $response = $this->actingAs($owner)->post("/resumes/{$resume->id}/unarchive");
 
     $response->assertRedirect();
-    expect(Resume::find($resume->id)->status)->toBe(ResumeStatus::Draft);
+    $resume->refresh();
+    expect($resume->archived_at)->toBeNull();
+    expect($resume->status)->toBe(ResumeStatus::Published);
 });
 
 test('an unarchived resume is publicly available again', function () {
     $owner = User::factory()->create();
     $resume = app(CreateResume::class)->execute($owner, ['title' => 'My Resume', 'full_name' => 'Jane Doe']);
+    $resume->update(['status' => ResumeStatus::Published]);
     $this->actingAs($owner)->post("/resumes/{$resume->id}/archive");
     $this->actingAs($owner)->post("/resumes/{$resume->id}/unarchive");
 

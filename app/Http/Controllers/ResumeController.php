@@ -8,7 +8,6 @@ use App\Actions\Resume\DuplicateResume;
 use App\Actions\Resume\ForceDeleteResume;
 use App\Actions\Resume\RestoreResume;
 use App\Actions\Resume\UpdateResume;
-use App\Enums\ResumeStatus;
 use App\Http\Requests\StoreResumeRequest;
 use App\Http\Requests\UpdateResumeRequest;
 use App\Http\Resources\ResumeTemplateResource;
@@ -127,7 +126,7 @@ class ResumeController extends Controller
     {
         $this->authorize('update', $resume);
 
-        $resume->update(['status' => ResumeStatus::Archived]);
+        $resume->update(['archived_at' => now()]);
 
         return back();
     }
@@ -136,7 +135,7 @@ class ResumeController extends Controller
     {
         $this->authorize('update', $resume);
 
-        $resume->update(['status' => ResumeStatus::Draft]);
+        $resume->update(['archived_at' => null]);
 
         return back();
     }

@@ -18,6 +18,7 @@ class Resume extends Model
         'slug',
         'title',
         'status',
+        'archived_at',
         'photo_path',
         'full_name',
         'position',
@@ -30,6 +31,7 @@ class Resume extends Model
     {
         return [
             'status' => ResumeStatus::class,
+            'archived_at' => 'datetime',
         ];
     }
 
@@ -80,6 +82,8 @@ class Resume extends Model
 
     public function isAvailable(): bool
     {
-        return ! $this->trashed() && $this->status->isPublic();
+        return ! $this->trashed()
+            && $this->archived_at === null
+            && $this->status === ResumeStatus::Published;
     }
 }
