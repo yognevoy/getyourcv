@@ -21,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'email_verified_at',
         'password',
     ];
 
@@ -50,5 +51,10 @@ class User extends Authenticatable
     public function resumes(): HasMany
     {
         return $this->hasMany(Resume::class);
+    }
+
+    public function providers(): HasMany
+    {
+        return $this->hasMany(UserProvider::class);
     }
 }

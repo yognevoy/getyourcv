@@ -1,5 +1,6 @@
 <script setup>
 import Checkbox from '@/Components/Checkbox.vue';
+import GoogleSignInButton from '@/Components/GoogleSignInButton.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -102,5 +103,15 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+
+        <div class="mt-6 flex items-center gap-3">
+            <div class="h-px flex-1 bg-ink/15" />
+            <span class="text-xs uppercase tracking-widest text-ink/40">or</span>
+            <div class="h-px flex-1 bg-ink/15" />
+        </div>
+
+        <div class="mt-6">
+            <GoogleSignInButton :redirect="redirect" />
+        </div>
     </GuestLayout>
 </template>
