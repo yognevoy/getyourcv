@@ -12,7 +12,7 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-paper">
+        <div class="flex min-h-screen flex-col bg-paper">
             <nav class="bg-ink">
                 <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -192,9 +192,15 @@ const showingNavigationDropdown = ref(false);
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="flex-1">
                 <slot />
             </main>
+
+            <footer class="mt-10 bg-ink">
+                <div class="mx-auto max-w-7xl px-4 py-6 text-center text-xs text-paper/60 sm:px-6 lg:px-8">
+                    &copy; {{ new Date().getFullYear() }} getyourcv
+                </div>
+            </footer>
         </div>
 
         <Toast />
