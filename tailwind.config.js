@@ -17,7 +17,7 @@ export default {
             },
             colors: {
                 ink: '#0a0a0a',
-                paper: '#fafafa',
+                paper: '#fdfdfd',
                 charcoal: '#171717',
             },
         },
