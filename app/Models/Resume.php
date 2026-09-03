@@ -75,6 +75,11 @@ class Resume extends Model
         return $this->hasMany(ResumeVersion::class);
     }
 
+    public function vacancyMatches(): HasMany
+    {
+        return $this->hasMany(ResumeVacancyMatch::class)->latest();
+    }
+
     public function currentVersion(): BelongsTo
     {
         return $this->belongsTo(ResumeVersion::class, 'current_version_id');

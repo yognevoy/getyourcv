@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
-use App\Services\Ai\AiServiceInterface;
-use App\Services\Ai\OpenAiCompatibleAiService;
+use App\Services\Ai\Match\MatchServiceInterface;
+use App\Services\Ai\Match\VacancyMatchService;
+use App\Services\Ai\OpenAiChatCompletionsClient;
+use App\Services\Ai\Rewrite\RewriteService;
+use App\Services\Ai\Rewrite\RewriteServiceInterface;
 use App\Services\Pdf\PdfGeneratorInterface;
 use App\Services\Pdf\ResumePdfGenerator;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -19,15 +22,18 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(PdfGeneratorInterface::class, ResumePdfGenerator::class);
 
-        $this->app->bind(AiServiceInterface::class, function ($app) {
+        $this->app->singleton(OpenAiChatCompletionsClient::class, function ($app) {
             $config = $app['config']->get('services.ai');
 
-            return new OpenAiCompatibleAiService(
+            return new OpenAiChatCompletionsClient(
                 baseUrl: $config['base_url'],
                 apiKey: (string) $config['api_key'],
                 model: $config['model'],
             );
         });
+
+        $this->app->bind(RewriteServiceInterface::class, RewriteService::class);
+        $this->app->bind(MatchServiceInterface::class, VacancyMatchService::class);
     }
 
     /**
