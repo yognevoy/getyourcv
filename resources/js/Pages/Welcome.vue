@@ -194,17 +194,17 @@ onUnmounted(() => {
             <canvas ref="canvas" class="pointer-events-none absolute inset-0" aria-hidden="true"></canvas>
 
             <h1 class="relative max-w-3xl text-5xl font-semibold tracking-tighter sm:text-6xl md:text-7xl">
-                One resume. One link. Ready for any HR.
+                Your resume, shipped. Ready to go.
             </h1>
             <p class="relative mt-5 max-w-xl text-base text-ink/70">
-                Fill it in once, publish it at a link, and share it anywhere in the world.
+                Fill it in once and share a link with any HR, anywhere.
             </p>
 
             <Link
                 :href="route('resumes.create')"
                 class="relative mt-10 rounded-md border border-ink bg-ink px-8 py-3 text-sm font-medium text-paper transition-colors hover:bg-paper hover:text-ink"
             >
-                Get started
+                Get your CV
             </Link>
         </main>
 
