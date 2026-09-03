@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Services\Ai;
+namespace App\Services\Ai\Rewrite;
 
 use App\Services\Ai\Exceptions\AiServiceException;
+use App\Services\Ai\ToolSchema;
 
-class RewriteVariantsSchema
+class RewriteVariantsSchema implements ToolSchema
 {
     private const TOOL_NAME = 'submit_rewrite_variants';
 

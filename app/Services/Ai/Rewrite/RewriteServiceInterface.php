@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Ai;
+namespace App\Services\Ai\Rewrite;
 
 use App\Services\Ai\Exceptions\AiServiceException;
 
-interface AiServiceInterface
+interface RewriteServiceInterface
 {
     /**
      * Rewrites the given resume text into three variants.

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services\Ai\RewriteTarget;
+namespace App\Services\Ai\Rewrite\RewriteTarget;
 
-use App\Services\Ai\RewriteTarget;
+use App\Services\Ai\Rewrite\RewriteTarget;
 
 final class Achievement extends RewriteTarget
 {

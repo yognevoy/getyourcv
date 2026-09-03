@@ -1,18 +1,19 @@
 <?php
 
 use App\Services\Ai\Exceptions\AiServiceException;
-use App\Services\Ai\OpenAiCompatibleAiService;
-use App\Services\Ai\RewriteTarget\About;
-use App\Services\Ai\RewriteTarget\Achievement;
+use App\Services\Ai\OpenAiChatCompletionsClient;
+use App\Services\Ai\Rewrite\RewriteService;
+use App\Services\Ai\Rewrite\RewriteTarget\About;
+use App\Services\Ai\Rewrite\RewriteTarget\Achievement;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
 beforeEach(function () {
-    $this->service = new OpenAiCompatibleAiService(
+    $this->service = new RewriteService(new OpenAiChatCompletionsClient(
         baseUrl: 'https://api.example.com/v1',
         apiKey: 'sk-test',
         model: 'test-model',
-    );
+    ));
 
     $this->toolResponse = fn (array $variants) => [
         'choices' => [[

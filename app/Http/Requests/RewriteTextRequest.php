@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Services\Ai\RewriteTarget;
+use App\Services\Ai\Rewrite\RewriteTarget;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

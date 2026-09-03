@@ -1,12 +1,12 @@
 <?php
 
-use App\Services\Ai\AiServiceInterface;
 use App\Services\Ai\Exceptions\AiServiceException;
-use App\Services\Ai\RewriteTarget;
-use App\Services\Ai\RewriteTarget\Achievement;
+use App\Services\Ai\Rewrite\RewriteServiceInterface;
+use App\Services\Ai\Rewrite\RewriteTarget;
+use App\Services\Ai\Rewrite\RewriteTarget\Achievement;
 
 test('a guest can rewrite text into three variants', function () {
-    $this->app->instance(AiServiceInterface::class, new class implements AiServiceInterface
+    $this->app->instance(RewriteServiceInterface::class, new class implements RewriteServiceInterface
     {
         public function rewrite(string $text, RewriteTarget $target): array
         {
@@ -30,7 +30,7 @@ test('a guest can rewrite text into three variants', function () {
 });
 
 test('a failing AI service turns into a 503 with a message, not a crash', function () {
-    $this->app->instance(AiServiceInterface::class, new class implements AiServiceInterface
+    $this->app->instance(RewriteServiceInterface::class, new class implements RewriteServiceInterface
     {
         public function rewrite(string $text, RewriteTarget $target): array
         {

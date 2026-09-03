@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Ai;
+namespace App\Services\Ai\Rewrite;
 
-use App\Services\Ai\RewriteTarget\About;
-use App\Services\Ai\RewriteTarget\Achievement;
-use App\Services\Ai\RewriteTarget\Responsibility;
+use App\Services\Ai\Rewrite\RewriteTarget\About;
+use App\Services\Ai\Rewrite\RewriteTarget\Achievement;
+use App\Services\Ai\Rewrite\RewriteTarget\Responsibility;
 use InvalidArgumentException;
 
 abstract class RewriteTarget

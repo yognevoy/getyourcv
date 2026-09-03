@@ -1,7 +1,7 @@
 <?php
 
 use App\Services\Ai\Exceptions\AiServiceException;
-use App\Services\Ai\RewriteVariantsSchema;
+use App\Services\Ai\Rewrite\RewriteVariantsSchema;
 
 beforeEach(function () {
     $this->schema = new RewriteVariantsSchema;

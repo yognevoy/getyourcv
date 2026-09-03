@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RewriteTextRequest;
-use App\Services\Ai\AiServiceInterface;
 use App\Services\Ai\Exceptions\AiServiceException;
-use App\Services\Ai\RewriteTarget;
+use App\Services\Ai\Rewrite\RewriteServiceInterface;
+use App\Services\Ai\Rewrite\RewriteTarget;
 use Illuminate\Http\JsonResponse;
 
 class AiRewriteController extends Controller
 {
-    public function __invoke(RewriteTextRequest $request, AiServiceInterface $ai): JsonResponse
+    public function __invoke(RewriteTextRequest $request, RewriteServiceInterface $ai): JsonResponse
     {
         try {
             $variants = $ai->rewrite(

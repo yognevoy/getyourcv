@@ -1,9 +1,9 @@
 <?php
 
-use App\Services\Ai\RewriteTarget;
-use App\Services\Ai\RewriteTarget\About;
-use App\Services\Ai\RewriteTarget\Achievement;
-use App\Services\Ai\RewriteTarget\Responsibility;
+use App\Services\Ai\Rewrite\RewriteTarget;
+use App\Services\Ai\Rewrite\RewriteTarget\About;
+use App\Services\Ai\Rewrite\RewriteTarget\Achievement;
+use App\Services\Ai\Rewrite\RewriteTarget\Responsibility;
 
 test('fromValue resolves the matching concrete target', function () {
     expect(RewriteTarget::fromValue('about'))->toBeInstanceOf(About::class);

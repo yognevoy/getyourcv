@@ -8,9 +8,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Http;
 
 /**
- * OpenAI-compatible chat/completions client.
+ * Transport for OpenAI-compatible chat/completions forced tool calls.
  */
-class OpenAiCompatibleAiService implements AiServiceInterface
+class OpenAiChatCompletionsClient
 {
     private const CHAT_COMPLETIONS_PATH = '/chat/completions';
 
@@ -20,24 +20,24 @@ class OpenAiCompatibleAiService implements AiServiceInterface
         private readonly string $baseUrl,
         private readonly string $apiKey,
         private readonly string $model,
-        private readonly RewritePromptBuilder $builder = new RewritePromptBuilder(),
-        private readonly RewriteVariantsSchema $schema = new RewriteVariantsSchema(),
-    ) {
-    }
+    ) {}
 
-    public function rewrite(string $text, RewriteTarget $target): array
+    /**
+     * @throws AiServiceException
+     */
+    public function send(ChatPrompt $prompt, ToolSchema $schema, int $timeout): mixed
     {
         try {
             $response = Http::withToken($this->apiKey)
-                ->timeout(20)
+                ->timeout($timeout)
                 ->post(rtrim($this->baseUrl, '/').self::CHAT_COMPLETIONS_PATH, [
                     'model' => $this->model,
                     'messages' => [
-                        ['role' => 'system', 'content' => $this->builder->build($target, $this->schema->toolName())],
-                        ['role' => 'user', 'content' => $text],
+                        ['role' => 'system', 'content' => $prompt->system],
+                        ['role' => 'user', 'content' => $prompt->user],
                     ],
-                    'tools' => [$this->schema->toolDefinition()],
-                    'tool_choice' => ['type' => 'function', 'function' => ['name' => $this->schema->toolName()]],
+                    'tools' => [$schema->toolDefinition()],
+                    'tool_choice' => ['type' => 'function', 'function' => ['name' => $schema->toolName()]],
                 ]);
         } catch (ConnectionException $e) {
             throw new AiServiceException('AI service is unreachable. Please try again later.', previous: $e);
@@ -55,6 +55,6 @@ class OpenAiCompatibleAiService implements AiServiceInterface
             throw new AiServiceException('AI service request failed. Please try again later.');
         }
 
-        return $this->schema->parse($response->json(self::TOOL_CALL_ARGUMENTS_PATH));
+        return $response->json(self::TOOL_CALL_ARGUMENTS_PATH);
     }
 }

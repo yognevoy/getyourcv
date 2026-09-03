@@ -1,9 +1,9 @@
 <?php
 
-use App\Services\Ai\RewritePromptBuilder;
-use App\Services\Ai\RewriteTarget\About;
-use App\Services\Ai\RewriteTarget\Achievement;
-use App\Services\Ai\RewriteTarget\Responsibility;
+use App\Services\Ai\Rewrite\RewritePromptBuilder;
+use App\Services\Ai\Rewrite\RewriteTarget\About;
+use App\Services\Ai\Rewrite\RewriteTarget\Achievement;
+use App\Services\Ai\Rewrite\RewriteTarget\Responsibility;
 
 beforeEach(function () {
     $this->builder = new RewritePromptBuilder;
