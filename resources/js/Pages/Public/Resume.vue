@@ -1,6 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
 import DotGridBackground from '@/Components/DotGridBackground.vue';
+import DownloadIcon from '@/Components/DownloadIcon.vue';
 import PublicHeader from '@/Components/PublicHeader.vue';
 import PublicFooter from '@/Components/PublicFooter.vue';
 import ResumePdfEmbed from '@/Components/ResumePdfEmbed.vue';
@@ -35,8 +36,9 @@ const props = defineProps({
                     <a
                         :href="route('resumes.public-file', resume.slug)"
                         download
-                        class="rounded-md border border-ink px-4 py-2 text-sm font-medium text-ink transition hover:bg-ink hover:text-paper"
+                        class="inline-flex items-center gap-2 rounded-md border border-ink bg-ink px-4 py-2 text-sm font-medium text-paper transition-colors hover:bg-paper hover:text-ink"
                     >
+                        <DownloadIcon />
                         Download PDF
                     </a>
                 </div>
