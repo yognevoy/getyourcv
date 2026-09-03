@@ -125,19 +125,6 @@ function unarchiveResume() {
                             Duplicate
                         </DropdownLink>
                         <button
-                            type="button"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                            @click="copyLink"
-                        >
-                            Get link
-                        </button>
-                        <a
-                            :href="route('resumes.pdf', resume.id)"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                        >
-                            Download PDF
-                        </a>
-                        <button
                             v-if="!resume.archived_at"
                             type="button"
                             class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
@@ -157,17 +144,36 @@ function unarchiveResume() {
                         <button
                             type="button"
                             class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                            @click="showVersions = true"
-                        >
-                            Versions
-                        </button>
-                        <button
-                            type="button"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
                             @click="confirmingDelete = true"
                         >
                             Delete
                         </button>
+
+                        <div class="my-1 border-t border-ink/10"></div>
+
+                        <button
+                            type="button"
+                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                            @click="copyLink"
+                        >
+                            Get link
+                        </button>
+                        <a
+                            :href="route('resumes.pdf', resume.id)"
+                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                        >
+                            Download PDF
+                        </a>
+                        <button
+                            type="button"
+                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                            @click="showVersions = true"
+                        >
+                            Versions
+                        </button>
+                        <DropdownLink :href="route('resumes.match.index', resume.id)">
+                            Match with vacancy
+                        </DropdownLink>
                     </template>
                 </Dropdown>
             </div>
