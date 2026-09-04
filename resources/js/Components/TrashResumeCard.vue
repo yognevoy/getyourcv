@@ -46,7 +46,7 @@ function forceDelete() {
 
         <div class="flex items-start justify-between gap-3">
             <div class="min-w-0">
-                <p class="truncate text-base font-semibold text-ink">
+                <p class="truncate text-xl font-bold tracking-tight text-ink">
                     {{ resume.title }}
                 </p>
                 <p class="truncate text-sm text-ink/50">

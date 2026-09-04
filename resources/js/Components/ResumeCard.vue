@@ -98,7 +98,7 @@ function unarchiveResume() {
         <div class="flex flex-1 flex-col gap-3">
             <div class="flex items-start justify-between gap-3">
                 <div class="min-w-0">
-                    <p class="truncate text-base font-semibold text-ink">
+                    <p class="truncate text-xl font-bold tracking-tight text-ink">
                         {{ resume.title }}
                     </p>
                     <p class="truncate text-sm text-ink/50">
@@ -185,7 +185,7 @@ function unarchiveResume() {
                 </div>
             </div>
 
-            <p v-if="resume.about" class="line-clamp-4 text-sm text-ink/60">
+            <p v-if="resume.about" class="line-clamp-2 text-xs text-ink/40">
                 {{ resume.about }}
             </p>
         </div>
