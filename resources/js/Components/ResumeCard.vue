@@ -4,6 +4,7 @@ import { router } from '@inertiajs/vue3';
 import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
+import EyeIcon from '@/Components/EyeIcon.vue';
 import MenuIcon from '@/Components/MenuIcon.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
 import VersionsDialog from '@/Components/VersionsDialog.vue';
@@ -174,6 +175,9 @@ function unarchiveResume() {
                         <DropdownLink :href="route('resumes.match.index', resume.id)">
                             Match with vacancy
                         </DropdownLink>
+                        <DropdownLink :href="route('resumes.statistics.index', resume.id)">
+                            Statistics
+                        </DropdownLink>
                     </template>
                 </Dropdown>
             </div>
@@ -215,9 +219,15 @@ function unarchiveResume() {
 
         <div class="flex items-center justify-between">
             <StatusBadge :status="resume.archived_at ? 'archived' : resume.status" />
-            <span class="text-xs text-ink/40" :title="new Date(resume.updated_at).toLocaleDateString()">
-                {{ formatRelativeDate(resume.updated_at) }}
-            </span>
+            <div class="flex items-center gap-3">
+                <span class="flex items-center gap-1 text-xs text-ink/40" title="Views">
+                    <EyeIcon class="h-3.5 w-3.5" />
+                    {{ resume.views_count }}
+                </span>
+                <span class="text-xs text-ink/40" :title="new Date(resume.updated_at).toLocaleDateString()">
+                    {{ formatRelativeDate(resume.updated_at) }}
+                </span>
+            </div>
         </div>
     </div>
 </template>
