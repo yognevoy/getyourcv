@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { EllipsisVerticalIcon } from '@heroicons/vue/20/solid';
 import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 import Dropdown from '@/Components/Dropdown.vue';
-import MenuIcon from '@/Components/MenuIcon.vue';
 import { showToast } from '@/composables/useToast';
 
 const props = defineProps({
@@ -61,7 +61,7 @@ function forceDelete() {
                         aria-label="Resume actions"
                         class="flex h-8 w-8 shrink-0 items-center justify-center text-ink/50 opacity-0 transition hover:text-ink focus:opacity-100 focus-visible:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100"
                     >
-                        <MenuIcon />
+                        <EllipsisVerticalIcon class="h-4 w-4" />
                     </button>
                 </template>
 

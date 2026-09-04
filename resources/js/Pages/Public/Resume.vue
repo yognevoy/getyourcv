@@ -1,7 +1,7 @@
 <script setup>
 import { Head } from '@inertiajs/vue3';
+import { ArrowDownTrayIcon } from '@heroicons/vue/20/solid';
 import DotGridBackground from '@/Components/DotGridBackground.vue';
-import DownloadIcon from '@/Components/DownloadIcon.vue';
 import PublicHeader from '@/Components/PublicHeader.vue';
 import PublicFooter from '@/Components/PublicFooter.vue';
 import ResumePdfEmbed from '@/Components/ResumePdfEmbed.vue';
@@ -38,7 +38,7 @@ const props = defineProps({
                         download
                         class="inline-flex items-center gap-2 rounded-md border border-ink bg-ink px-4 py-2 text-sm font-medium text-paper transition-colors hover:bg-paper hover:text-ink"
                     >
-                        <DownloadIcon />
+                        <ArrowDownTrayIcon class="h-4 w-4" />
                         Download PDF
                     </a>
                 </div>

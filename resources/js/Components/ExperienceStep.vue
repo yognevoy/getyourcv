@@ -1,14 +1,12 @@
 <script setup>
 import { ref, watch } from 'vue';
+import { EllipsisVerticalIcon, SparklesIcon, XMarkIcon } from '@heroicons/vue/20/solid';
 import TextInput from '@/Components/TextInput.vue';
 import DateInput from '@/Components/DateInput.vue';
 import Textarea from '@/Components/Textarea.vue';
 import IconButton from '@/Components/IconButton.vue';
-import RemoveIcon from '@/Components/RemoveIcon.vue';
-import MenuIcon from '@/Components/MenuIcon.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
-import AiSparkleIcon from '@/Components/AiSparkleIcon.vue';
 import AiRewriteDialog from '@/Components/AiRewriteDialog.vue';
 import { useRowIds } from '@/composables/useRowIds';
 
@@ -188,7 +186,7 @@ function applyRewrite(text) {
                     </button>
 
                     <IconButton label="Remove experience" @click="removeExperience(ei)">
-                        <RemoveIcon />
+                        <XMarkIcon class="h-4 w-4" />
                     </IconButton>
                 </div>
 
@@ -231,7 +229,7 @@ function applyRewrite(text) {
                                         <Dropdown align="left" class="self-stretch">
                                             <template #trigger>
                                                 <IconButton label="Bullet actions" align-top class="h-full">
-                                                    <MenuIcon />
+                                                    <EllipsisVerticalIcon class="h-4 w-4" />
                                                 </IconButton>
                                             </template>
                                             <template #content>
@@ -241,7 +239,7 @@ function applyRewrite(text) {
                                                     class="flex w-full items-center gap-2 px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
                                                     @click="openAiDialog(item.bullet)"
                                                 >
-                                                    <AiSparkleIcon />
+                                                    <SparklesIcon class="h-4 w-4" />
                                                     AI enhance
                                                 </button>
                                                 <button
@@ -272,7 +270,7 @@ function applyRewrite(text) {
                                         <Dropdown align="left" class="self-stretch">
                                             <template #trigger>
                                                 <IconButton label="Bullet actions" align-top class="h-full">
-                                                    <MenuIcon />
+                                                    <EllipsisVerticalIcon class="h-4 w-4" />
                                                 </IconButton>
                                             </template>
                                             <template #content>
@@ -282,7 +280,7 @@ function applyRewrite(text) {
                                                     class="flex w-full items-center gap-2 px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
                                                     @click="openAiDialog(item.bullet)"
                                                 >
-                                                    <AiSparkleIcon />
+                                                    <SparklesIcon class="h-4 w-4" />
                                                     AI enhance
                                                 </button>
                                                 <button

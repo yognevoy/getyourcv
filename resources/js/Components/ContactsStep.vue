@@ -1,9 +1,9 @@
 <script setup>
+import { XMarkIcon } from '@heroicons/vue/20/solid';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import InputError from '@/Components/InputError.vue';
 import IconButton from '@/Components/IconButton.vue';
-import RemoveIcon from '@/Components/RemoveIcon.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
 import { useRowIds } from '@/composables/useRowIds';
 
@@ -63,7 +63,7 @@ function removeLink(index) {
                         <TextInput v-model="link.label" :placeholder="linkLabelPlaceholder(link)" class="w-1/3" />
                         <TextInput v-model="link.url" placeholder="https://..." class="flex-1" />
                         <IconButton label="Remove link" @click="removeLink(i)">
-                            <RemoveIcon />
+                            <XMarkIcon class="h-4 w-4" />
                         </IconButton>
                     </div>
                 </TransitionGroup>

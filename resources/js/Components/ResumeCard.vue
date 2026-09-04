@@ -1,11 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { EllipsisVerticalIcon, EyeIcon, LinkIcon } from '@heroicons/vue/20/solid';
 import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import EyeIcon from '@/Components/EyeIcon.vue';
-import MenuIcon from '@/Components/MenuIcon.vue';
 import StatusBadge from '@/Components/StatusBadge.vue';
 import VersionsDialog from '@/Components/VersionsDialog.vue';
 import { showToast } from '@/composables/useToast';
@@ -107,79 +106,83 @@ function unarchiveResume() {
                     </p>
                 </div>
 
-                <Dropdown align="left" width="48" @click.stop>
-                    <template #trigger>
-                        <button
-                            type="button"
-                            aria-label="Resume actions"
-                            class="flex h-8 w-8 shrink-0 items-center justify-center text-ink/50 opacity-0 transition hover:text-ink focus:opacity-100 focus-visible:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100"
-                        >
-                            <MenuIcon />
-                        </button>
-                    </template>
+                <div class="flex shrink-0 items-center">
+                    <button
+                        type="button"
+                        aria-label="Copy link"
+                        class="flex h-8 w-8 shrink-0 items-center justify-center text-ink/50 opacity-0 transition hover:text-ink focus:opacity-100 focus-visible:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100"
+                        @click.stop="copyLink"
+                    >
+                        <LinkIcon class="h-4 w-4" />
+                    </button>
 
-                    <template #content>
-                        <DropdownLink :href="route('resumes.edit', resume.id)">
-                            Edit
-                        </DropdownLink>
-                        <DropdownLink :href="route('resumes.duplicate', resume.id)" method="post" as="button">
-                            Duplicate
-                        </DropdownLink>
-                        <button
-                            v-if="!resume.archived_at"
-                            type="button"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                            @click="confirmingArchive = true"
-                        >
-                            Archive
-                        </button>
-                        <button
-                            v-else
-                            type="button"
-                            :disabled="unarchiving"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
-                            @click="unarchiveResume"
-                        >
-                            Unarchive
-                        </button>
-                        <button
-                            type="button"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                            @click="confirmingDelete = true"
-                        >
-                            Delete
-                        </button>
+                    <Dropdown align="left" width="48" @click.stop>
+                        <template #trigger>
+                            <button
+                                type="button"
+                                aria-label="Resume actions"
+                                class="flex h-8 w-8 shrink-0 items-center justify-center text-ink/50 opacity-0 transition hover:text-ink focus:opacity-100 focus-visible:opacity-100 group-hover:opacity-100 group-focus-within:opacity-100"
+                            >
+                                <EllipsisVerticalIcon class="h-4 w-4" />
+                            </button>
+                        </template>
 
-                        <div class="my-1 border-t border-ink/10"></div>
+                        <template #content>
+                            <DropdownLink :href="route('resumes.edit', resume.id)">
+                                Edit
+                            </DropdownLink>
+                            <DropdownLink :href="route('resumes.duplicate', resume.id)" method="post" as="button">
+                                Duplicate
+                            </DropdownLink>
+                            <button
+                                v-if="!resume.archived_at"
+                                type="button"
+                                class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                                @click="confirmingArchive = true"
+                            >
+                                Archive
+                            </button>
+                            <button
+                                v-else
+                                type="button"
+                                :disabled="unarchiving"
+                                class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
+                                @click="unarchiveResume"
+                            >
+                                Unarchive
+                            </button>
+                            <button
+                                type="button"
+                                class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                                @click="confirmingDelete = true"
+                            >
+                                Delete
+                            </button>
 
-                        <button
-                            type="button"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                            @click="copyLink"
-                        >
-                            Get link
-                        </button>
-                        <a
-                            :href="route('resumes.pdf', resume.id)"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                        >
-                            Download PDF
-                        </a>
-                        <button
-                            type="button"
-                            class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                            @click="showVersions = true"
-                        >
-                            Versions
-                        </button>
-                        <DropdownLink :href="route('resumes.match.index', resume.id)">
-                            Match with vacancy
-                        </DropdownLink>
-                        <DropdownLink :href="route('resumes.statistics.index', resume.id)">
-                            Statistics
-                        </DropdownLink>
-                    </template>
-                </Dropdown>
+                            <div class="my-1 border-t border-ink/10"></div>
+
+                            <a
+                                :href="route('resumes.pdf', resume.id)"
+                                class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                            >
+                                Download PDF
+                            </a>
+                            <button
+                                type="button"
+                                class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                                @click="showVersions = true"
+                            >
+                                Versions
+                            </button>
+                            <DropdownLink :href="route('resumes.match.index', resume.id)">
+                                Match with vacancy
+                            </DropdownLink>
+                            <DropdownLink :href="route('resumes.statistics.index', resume.id)">
+                                Statistics
+                            </DropdownLink>
+                        </template>
+                    </Dropdown>
+                </div>
             </div>
 
             <p v-if="resume.about" class="line-clamp-4 text-sm text-ink/60">

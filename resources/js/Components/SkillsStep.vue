@@ -1,7 +1,7 @@
 <script setup>
+import { XMarkIcon } from '@heroicons/vue/20/solid';
 import TextInput from '@/Components/TextInput.vue';
 import IconButton from '@/Components/IconButton.vue';
-import RemoveIcon from '@/Components/RemoveIcon.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
 import { useRowIds } from '@/composables/useRowIds';
 
@@ -55,7 +55,7 @@ function removeSkill(groupIndex, skillIndex) {
                         class="flex-1"
                     />
                     <IconButton label="Remove skill group" @click="removeSkillGroup(gi)">
-                        <RemoveIcon />
+                        <XMarkIcon class="h-4 w-4" />
                     </IconButton>
                 </div>
 
@@ -67,7 +67,7 @@ function removeSkill(groupIndex, skillIndex) {
                     >
                         <TextInput v-model="skill.value" :placeholder="skillPlaceholder(skill)" class="flex-1" />
                         <IconButton label="Remove skill" @click="removeSkill(gi, si)">
-                            <RemoveIcon />
+                            <XMarkIcon class="h-4 w-4" />
                         </IconButton>
                     </div>
                 </TransitionGroup>

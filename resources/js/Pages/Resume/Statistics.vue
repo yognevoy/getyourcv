@@ -1,7 +1,7 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
+import { EyeIcon } from '@heroicons/vue/20/solid';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import EyeIcon from '@/Components/EyeIcon.vue';
 import ViewsSparkline from '@/Components/ViewsSparkline.vue';
 import ViewsChart from '@/Components/ViewsChart.vue';
 import { formatRelativeDate } from '@/utils/formatRelativeDate';

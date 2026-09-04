@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
+import { SparklesIcon } from '@heroicons/vue/20/solid';
 import InputLabel from '@/Components/InputLabel.vue';
 import InputError from '@/Components/InputError.vue';
 import IconButton from '@/Components/IconButton.vue';
-import AiSparkleIcon from '@/Components/AiSparkleIcon.vue';
 import AiRewriteDialog from '@/Components/AiRewriteDialog.vue';
 
 const props = defineProps({
@@ -29,7 +29,7 @@ function applyRewrite(text) {
                 :disabled="!form.about || form.about.trim().length < 3"
                 @click="showAiDialog = true"
             >
-                <AiSparkleIcon />
+                <SparklesIcon class="h-4 w-4" />
             </IconButton>
         </div>
 
