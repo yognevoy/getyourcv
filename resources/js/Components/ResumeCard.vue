@@ -224,7 +224,7 @@ function unarchiveResume() {
             <StatusBadge :status="resume.archived_at ? 'archived' : resume.status" />
             <div class="flex items-center gap-3">
                 <span class="flex items-center gap-1 text-xs text-ink/40" title="Views">
-                    <EyeIcon class="h-3.5 w-3.5" />
+                    <EyeIcon class="h-4 w-4" />
                     {{ resume.views_count }}
                 </span>
                 <span class="text-xs text-ink/40" :title="new Date(resume.updated_at).toLocaleDateString()">

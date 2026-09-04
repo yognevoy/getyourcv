@@ -87,7 +87,7 @@ defineProps({
                             class="flex items-center justify-between gap-3 py-2 text-sm"
                         >
                             <span class="flex items-center gap-2 text-ink/70">
-                                <EyeIcon class="h-3.5 w-3.5 shrink-0 text-ink/40" />
+                                <EyeIcon class="h-4 w-4 shrink-0 text-ink/40" />
                                 Resume viewed {{ formatRelativeDate(viewedAt) }}
                             </span>
                             <span class="shrink-0 tabular-nums text-xs text-ink/40">{{ formatDate(viewedAt, { withYear: true, withTime: true }) }}</span>
