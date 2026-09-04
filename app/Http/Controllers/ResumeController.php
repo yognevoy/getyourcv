@@ -26,6 +26,7 @@ class ResumeController extends Controller
     {
         $resumes = Auth::user()
             ->resumes()
+            ->withCount('views')
             ->latest()
             ->get();
 
