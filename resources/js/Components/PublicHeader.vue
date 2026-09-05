@@ -1,6 +1,7 @@
 <script setup>
 import { Link, usePage } from '@inertiajs/vue3';
 import NavLink from '@/Components/NavLink.vue';
+import logoMark from '@/assets/logomark.png';
 
 const page = usePage();
 </script>
@@ -9,7 +10,8 @@ const page = usePage();
     <header class="bg-ink">
         <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <div class="flex items-center">
-                <Link href="/" class="text-lg font-semibold tracking-tight text-paper">
+                <Link href="/" class="flex items-center gap-2 text-lg font-semibold tracking-tight text-paper">
+                    <img :src="logoMark" alt="" class="h-4 w-auto" />
                     getyourcv
                 </Link>
 

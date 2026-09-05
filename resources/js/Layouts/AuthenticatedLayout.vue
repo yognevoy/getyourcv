@@ -6,6 +6,7 @@ import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import Toast from '@/Components/Toast.vue';
 import { Link } from '@inertiajs/vue3';
+import logoMark from '@/assets/logomark.png';
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -20,7 +21,8 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="flex shrink-0 items-center">
-                                <Link :href="route('home')" class="text-lg font-semibold tracking-tight text-paper">
+                                <Link :href="route('home')" class="flex items-center gap-2 text-lg font-semibold tracking-tight text-paper">
+                                    <img :src="logoMark" alt="" class="h-4 w-auto" />
                                     getyourcv
                                 </Link>
                             </div>
