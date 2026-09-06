@@ -74,7 +74,7 @@ function addSkillGroup() {
     const group = { id: nextRowId(), label: '', skills: [] };
 
     props.form.skill_groups.push(group);
-    expandSkillGroup(group);
+    expandedSkillGroupKeys.value = new Set([group.id]);
 }
 
 function removeSkillGroup(index) {

@@ -115,7 +115,7 @@ function addExperience() {
     };
 
     props.form.experiences.push(experience);
-    expandExperience(experience);
+    expandedExperienceKeys.value = new Set([experience.id]);
 }
 
 function removeExperience(index) {
