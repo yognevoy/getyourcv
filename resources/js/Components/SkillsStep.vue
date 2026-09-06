@@ -1,4 +1,5 @@
 <script setup>
+import { ref, watch } from 'vue';
 import { XMarkIcon } from '@heroicons/vue/20/solid';
 import TextInput from '@/Components/TextInput.vue';
 import IconButton from '@/Components/IconButton.vue';
@@ -21,8 +22,59 @@ function skillPlaceholder(skill) {
     return SKILL_PLACEHOLDERS[skill.id % SKILL_PLACEHOLDERS.length];
 }
 
+function skillGroupSummaryTitle(group) {
+    return group.label || 'New skill group';
+}
+
+function skillGroupSummaryDetail(group) {
+    const values = group.skills.map((skill) => skill.value).filter(Boolean);
+
+    return values.length ? values.join(', ') : 'No skills yet';
+}
+
+const expandedSkillGroupKeys = ref(
+    new Set(
+        props.form.skill_groups.length <= 1
+            ? props.form.skill_groups.map((group) => group.id)
+            : [],
+    ),
+);
+
+function isSkillGroupExpanded(group) {
+    return expandedSkillGroupKeys.value.has(group.id);
+}
+
+function expandSkillGroup(group) {
+    expandedSkillGroupKeys.value.add(group.id);
+}
+
+function toggleSkillGroup(group) {
+    if (expandedSkillGroupKeys.value.has(group.id)) {
+        expandedSkillGroupKeys.value.delete(group.id);
+    } else {
+        expandedSkillGroupKeys.value.add(group.id);
+    }
+}
+
+watch(
+    () => props.form.errors,
+    (errors) => {
+        const firstField = Object.keys(errors)[0];
+        const groupMatch = firstField && firstField.match(/^skill_groups\.(\d+)\./);
+        const group = groupMatch && props.form.skill_groups[Number(groupMatch[1])];
+
+        if (group) {
+            expandSkillGroup(group);
+        }
+    },
+    { deep: true },
+);
+
 function addSkillGroup() {
-    props.form.skill_groups.push({ id: nextRowId(), label: '', skills: [] });
+    const group = { id: nextRowId(), label: '', skills: [] };
+
+    props.form.skill_groups.push(group);
+    expandSkillGroup(group);
 }
 
 function removeSkillGroup(index) {
@@ -46,33 +98,70 @@ function removeSkill(groupIndex, skillIndex) {
             <div
                 v-for="(group, gi) in form.skill_groups"
                 :key="group.id"
-                class="space-y-3 rounded-md border border-ink/15 bg-white p-4"
+                class="rounded-md border border-ink/15 bg-white"
             >
-                <div class="flex items-stretch gap-2">
-                    <TextInput
-                        v-model="group.label"
-                        placeholder="Languages, Frameworks..."
-                        class="flex-1"
-                    />
+                <div class="flex items-stretch gap-2 p-4">
+                    <button
+                        type="button"
+                        class="flex min-w-0 flex-1 items-center gap-3 text-left"
+                        :aria-expanded="isSkillGroupExpanded(group)"
+                        @click="toggleSkillGroup(group)"
+                    >
+                        <svg
+                            class="h-3 w-3 shrink-0 text-ink/40 transition-transform"
+                            :class="{ 'rotate-90': isSkillGroupExpanded(group) }"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                        >
+                            <path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+
+                        <span class="min-w-0 flex-1">
+                            <span class="block truncate text-sm font-medium text-ink">
+                                {{ skillGroupSummaryTitle(group) }}
+                            </span>
+                            <span class="block truncate text-xs text-ink/60">
+                                {{ skillGroupSummaryDetail(group) }}
+                            </span>
+                        </span>
+                    </button>
+
                     <IconButton label="Remove skill group" @click="removeSkillGroup(gi)">
                         <XMarkIcon class="h-4 w-4" />
                     </IconButton>
                 </div>
 
-                <TransitionGroup name="row" tag="div" class="ml-2 space-y-2 border-l border-ink/15 pl-4">
-                    <div
-                        v-for="(skill, si) in group.skills"
-                        :key="skill.id"
-                        class="flex items-stretch gap-2"
-                    >
-                        <TextInput v-model="skill.value" :placeholder="skillPlaceholder(skill)" class="flex-1" />
-                        <IconButton label="Remove skill" @click="removeSkill(gi, si)">
-                            <XMarkIcon class="h-4 w-4" />
-                        </IconButton>
-                    </div>
-                </TransitionGroup>
+                <div
+                    class="grid transition-[grid-template-rows] duration-200 ease-out"
+                    :style="{ gridTemplateRows: isSkillGroupExpanded(group) ? '1fr' : '0fr' }"
+                >
+                    <div :class="isSkillGroupExpanded(group) ? 'overflow-visible' : 'overflow-hidden'">
+                        <div class="space-y-3 border-t border-ink/15 p-4">
+                            <TextInput
+                                v-model="group.label"
+                                placeholder="Languages, Frameworks..."
+                                class="w-full"
+                            />
 
-                <AddRowButton :full-width="false" @click="addSkill(gi)">Add skill</AddRowButton>
+                            <TransitionGroup name="row" tag="div" class="ml-2 space-y-2 border-l border-ink/15 pl-4">
+                                <div
+                                    v-for="(skill, si) in group.skills"
+                                    :key="skill.id"
+                                    class="flex items-stretch gap-2"
+                                >
+                                    <TextInput v-model="skill.value" :placeholder="skillPlaceholder(skill)" class="flex-1" />
+                                    <IconButton label="Remove skill" @click="removeSkill(gi, si)">
+                                        <XMarkIcon class="h-4 w-4" />
+                                    </IconButton>
+                                </div>
+                            </TransitionGroup>
+
+                            <AddRowButton :full-width="false" @click="addSkill(gi)">Add skill</AddRowButton>
+                        </div>
+                    </div>
+                </div>
             </div>
         </TransitionGroup>
 
