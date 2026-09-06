@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { EllipsisVerticalIcon, SparklesIcon, XMarkIcon } from '@heroicons/vue/20/solid';
 import TextInput from '@/Components/TextInput.vue';
 import DateInput from '@/Components/DateInput.vue';
@@ -9,6 +9,7 @@ import Dropdown from '@/Components/Dropdown.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
 import AiRewriteDialog from '@/Components/AiRewriteDialog.vue';
 import { useRowIds } from '@/composables/useRowIds';
+import { useCollapsibleRows } from '@/composables/useCollapsibleRows';
 
 const props = defineProps({
     form: {
@@ -60,48 +61,14 @@ function experienceSummaryPeriod(experience) {
     return `${from || '…'} – ${to || '…'}`;
 }
 
-// A card full of everything (title, company, dates, both bullet lists) reads
-// as clutter once there is more than one experience - collapse to a one-line
-// summary by default and let the person open the ones they need.
-const expandedExperienceKeys = ref(
-    new Set(
-        props.form.experiences.length <= 1
-            ? props.form.experiences.map((experience) => experience.id)
-            : [],
-    ),
-);
-
-function isExperienceExpanded(experience) {
-    return expandedExperienceKeys.value.has(experience.id);
-}
-
-function expandExperience(experience) {
-    expandedExperienceKeys.value.add(experience.id);
-}
-
-function toggleExperience(experience) {
-    if (expandedExperienceKeys.value.has(experience.id)) {
-        expandedExperienceKeys.value.delete(experience.id);
-    } else {
-        expandedExperienceKeys.value.add(experience.id);
-    }
-}
-
-// A validation error can land on a field inside a collapsed card - expand
-// that specific experience so the error is actually visible.
-watch(
-    () => props.form.errors,
-    (errors) => {
-        const firstField = Object.keys(errors)[0];
-        const experienceMatch = firstField && firstField.match(/^experiences\.(\d+)\./);
-        const experience = experienceMatch && props.form.experiences[Number(experienceMatch[1])];
-
-        if (experience) {
-            expandExperience(experience);
-        }
-    },
-    { deep: true },
-);
+const {
+    isExpanded: isExperienceExpanded,
+    toggle: toggleExperience,
+    expandOnly: expandOnlyExperience,
+} = useCollapsibleRows(props.form.experiences, {
+    errors: () => props.form.errors,
+    errorPrefix: 'experiences',
+});
 
 function addExperience() {
     const experience = {
@@ -115,7 +82,7 @@ function addExperience() {
     };
 
     props.form.experiences.push(experience);
-    expandedExperienceKeys.value = new Set([experience.id]);
+    expandOnlyExperience(experience);
 }
 
 function removeExperience(index) {

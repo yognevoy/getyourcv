@@ -1,10 +1,10 @@
 <script setup>
-import { ref, watch } from 'vue';
 import { XMarkIcon } from '@heroicons/vue/20/solid';
 import TextInput from '@/Components/TextInput.vue';
 import IconButton from '@/Components/IconButton.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
 import { useRowIds } from '@/composables/useRowIds';
+import { useCollapsibleRows } from '@/composables/useCollapsibleRows';
 
 const props = defineProps({
     form: {
@@ -32,49 +32,20 @@ function skillGroupSummaryDetail(group) {
     return values.length ? values.join(', ') : 'No skills yet';
 }
 
-const expandedSkillGroupKeys = ref(
-    new Set(
-        props.form.skill_groups.length <= 1
-            ? props.form.skill_groups.map((group) => group.id)
-            : [],
-    ),
-);
-
-function isSkillGroupExpanded(group) {
-    return expandedSkillGroupKeys.value.has(group.id);
-}
-
-function expandSkillGroup(group) {
-    expandedSkillGroupKeys.value.add(group.id);
-}
-
-function toggleSkillGroup(group) {
-    if (expandedSkillGroupKeys.value.has(group.id)) {
-        expandedSkillGroupKeys.value.delete(group.id);
-    } else {
-        expandedSkillGroupKeys.value.add(group.id);
-    }
-}
-
-watch(
-    () => props.form.errors,
-    (errors) => {
-        const firstField = Object.keys(errors)[0];
-        const groupMatch = firstField && firstField.match(/^skill_groups\.(\d+)\./);
-        const group = groupMatch && props.form.skill_groups[Number(groupMatch[1])];
-
-        if (group) {
-            expandSkillGroup(group);
-        }
-    },
-    { deep: true },
-);
+const {
+    isExpanded: isSkillGroupExpanded,
+    toggle: toggleSkillGroup,
+    expandOnly: expandOnlySkillGroup,
+} = useCollapsibleRows(props.form.skill_groups, {
+    errors: () => props.form.errors,
+    errorPrefix: 'skill_groups',
+});
 
 function addSkillGroup() {
     const group = { id: nextRowId(), label: '', skills: [] };
 
     props.form.skill_groups.push(group);
-    expandedSkillGroupKeys.value = new Set([group.id]);
+    expandOnlySkillGroup(group);
 }
 
 function removeSkillGroup(index) {
