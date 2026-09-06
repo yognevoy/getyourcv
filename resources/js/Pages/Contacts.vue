@@ -14,8 +14,8 @@ import PublicFooter from '@/Components/PublicFooter.vue';
             <h1 class="text-2xl font-semibold tracking-tight">Contacts</h1>
             <p class="mt-4 text-ink/70">
                 Questions or feedback? Reach out at
-                <a href="mailto:hello@getyourcv.app" class="underline hover:opacity-60">
-                    hello@getyourcv.app
+                <a href="mailto:getyourcv.team@gmail.com" class="underline hover:opacity-60">
+                    getyourcv.team@gmail.com
                 </a>.
             </p>
         </main>
