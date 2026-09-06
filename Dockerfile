@@ -22,7 +22,7 @@ RUN CGO_ENABLED=0 GOOS=linux go install github.com/yognevoy/resume-gen@v0.1.0
 FROM php:8.4-fpm-alpine AS php-fpm
 RUN apk add --no-cache postgresql-libs libzip icu-libs oniguruma \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS postgresql-dev libzip-dev icu-dev oniguruma-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring bcmath zip intl opcache \
+    && docker-php-ext-install -j$(nproc) pdo pdo_pgsql mbstring bcmath zip intl opcache \
     && apk del .build-deps
 
 WORKDIR /var/www/html
@@ -51,7 +51,7 @@ ARG UID=1000
 ARG GID=1000
 RUN apk add --no-cache postgresql-libs libzip icu-libs oniguruma shadow \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS postgresql-dev libzip-dev icu-dev oniguruma-dev \
-    && docker-php-ext-install pdo pdo_pgsql mbstring bcmath zip intl opcache \
+    && docker-php-ext-install -j$(nproc) pdo pdo_pgsql mbstring bcmath zip intl opcache \
     && apk del .build-deps \
     && addgroup -g "$GID" dev \
     && adduser -D -u "$UID" -G dev dev
