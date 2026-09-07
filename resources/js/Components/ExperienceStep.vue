@@ -158,7 +158,7 @@ function applyRewrite(text) {
                 </div>
 
                 <div
-                    class="grid transition-[grid-template-rows] duration-200 ease-out"
+                    class="grid grid-cols-1 transition-[grid-template-rows] duration-200 ease-out"
                     :style="{ gridTemplateRows: isExperienceExpanded(experience) ? '1fr' : '0fr' }"
                 >
                     <div :class="isExperienceExpanded(experience) ? 'overflow-visible' : 'overflow-hidden'">
@@ -183,17 +183,17 @@ function applyRewrite(text) {
                                 />
                             </div>
 
-                            <div class="space-y-2">
+                            <div>
                                 <span class="block text-xs font-medium uppercase tracking-wide text-ink/50">Responsibilities</span>
 
-                                <TransitionGroup name="row" tag="div" class="space-y-2">
+                                <TransitionGroup name="row" tag="div" class="mt-2 space-y-2">
                                     <div
                                         v-for="item in bulletsOfType(experience, 'responsibility')"
                                         :key="item.bullet.id"
                                         class="flex items-stretch gap-2"
                                     >
                                         <Textarea v-model="item.bullet.text" class="flex-1" />
-                                        <Dropdown align="left" class="self-stretch">
+                                        <Dropdown align="right" class="self-stretch">
                                             <template #trigger>
                                                 <IconButton label="Bullet actions" align-top class="h-full">
                                                     <EllipsisVerticalIcon class="h-4 w-4" />
@@ -221,20 +221,20 @@ function applyRewrite(text) {
                                     </div>
                                 </TransitionGroup>
 
-                                <AddRowButton :full-width="false" @click="addBullet(ei, 'responsibility')">Add responsibility</AddRowButton>
+                                <AddRowButton :full-width="false" class="mt-3" @click="addBullet(ei, 'responsibility')">Add responsibility</AddRowButton>
                             </div>
 
-                            <div class="space-y-2">
+                            <div>
                                 <span class="block text-xs font-medium uppercase tracking-wide text-ink/50">Achievements</span>
 
-                                <TransitionGroup name="row" tag="div" class="space-y-2">
+                                <TransitionGroup name="row" tag="div" class="mt-2 space-y-2">
                                     <div
                                         v-for="item in bulletsOfType(experience, 'achievement')"
                                         :key="item.bullet.id"
                                         class="flex items-stretch gap-2"
                                     >
                                         <Textarea v-model="item.bullet.text" class="flex-1" />
-                                        <Dropdown align="left" class="self-stretch">
+                                        <Dropdown align="right" class="self-stretch">
                                             <template #trigger>
                                                 <IconButton label="Bullet actions" align-top class="h-full">
                                                     <EllipsisVerticalIcon class="h-4 w-4" />
@@ -262,7 +262,7 @@ function applyRewrite(text) {
                                     </div>
                                 </TransitionGroup>
 
-                                <AddRowButton :full-width="false" @click="addBullet(ei, 'achievement')">Add achievement</AddRowButton>
+                                <AddRowButton :full-width="false" class="mt-3" @click="addBullet(ei, 'achievement')">Add achievement</AddRowButton>
                             </div>
                         </div>
                     </div>
