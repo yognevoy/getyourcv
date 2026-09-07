@@ -87,21 +87,21 @@ watch(
             </section>
         </Transition>
 
-        <div class="mt-8 flex items-center justify-between border-t border-ink/10 pt-6">
-            <SecondaryButton v-if="currentStep > 0" type="button" @click="back">
+        <div class="mt-8 flex flex-col-reverse gap-3 border-t border-ink/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <SecondaryButton v-if="currentStep > 0" type="button" class="justify-center" @click="back">
                 Back
             </SecondaryButton>
             <span v-else></span>
 
             <div v-if="isLastStep" class="flex items-center gap-3">
-                <SecondaryButton type="submit" value="draft" :disabled="form.processing">
+                <SecondaryButton type="submit" value="draft" :disabled="form.processing" class="flex-1 justify-center sm:flex-none">
                     {{ draftLabel }}
                 </SecondaryButton>
-                <PrimaryButton type="submit" value="published" :disabled="form.processing">
+                <PrimaryButton type="submit" value="published" :disabled="form.processing" class="flex-1 justify-center sm:flex-none">
                     {{ publishLabel }}
                 </PrimaryButton>
             </div>
-            <PrimaryButton v-else type="button" @click="next">
+            <PrimaryButton v-else type="button" class="justify-center" @click="next">
                 {{ nextStepLabel }}
             </PrimaryButton>
         </div>

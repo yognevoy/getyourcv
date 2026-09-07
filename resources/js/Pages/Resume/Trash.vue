@@ -28,7 +28,7 @@ defineProps({
                     Trash is empty.
                 </p>
 
-                <div v-else class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                <div v-else class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     <TrashResumeCard
                         v-for="resume in resumes"
                         :key="resume.id"

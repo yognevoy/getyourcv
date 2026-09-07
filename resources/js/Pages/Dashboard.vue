@@ -24,7 +24,7 @@ defineProps({
 
         <div class="py-12">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     <Link
                         :href="route('resumes.create')"
                         class="flex aspect-[3/4] flex-col items-center justify-center gap-2 rounded-md border border-dashed border-ink/30 text-ink/50 transition-colors hover:border-ink hover:text-ink"

@@ -28,7 +28,7 @@ defineExpose({ focus: () => textarea.value.focus() });
         ref="textarea"
         v-model="model"
         rows="1"
-        class="block w-full resize-none overflow-hidden rounded-md border border-ink/20 px-3 py-2 text-ink transition-colors focus:border-ink focus:outline-none focus:ring-0"
+        class="block w-full min-w-0 resize-none overflow-hidden rounded-md border border-ink/20 px-3 py-2 text-ink transition-colors focus:border-ink focus:outline-none focus:ring-0"
         @input="resize"
     />
 </template>

@@ -20,7 +20,7 @@ defineProps({
 
     <AuthenticatedLayout>
         <div class="py-12">
-            <div class="mx-auto max-w-7xl space-y-10 sm:px-6 lg:px-8">
+            <div class="mx-auto max-w-7xl space-y-10 px-4 sm:px-6 lg:px-8">
                 <div>
                     <UpdateProfileInformationForm
                         :must-verify-email="mustVerifyEmail"
