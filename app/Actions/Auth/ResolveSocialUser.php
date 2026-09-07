@@ -42,6 +42,7 @@ class ResolveSocialUser
                     'email' => $email,
                     'email_verified_at' => now(),
                     'password' => null,
+                    'policy_accepted_at' => now(),
                 ]);
             } elseif (! $user->email_verified_at) {
                 $user->forceFill(['email_verified_at' => now()])->save();

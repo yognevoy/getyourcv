@@ -126,5 +126,10 @@ const submit = () => {
         <div class="mt-6">
             <GoogleSignInButton :redirect="redirect" />
         </div>
+
+        <p class="mt-6 text-center text-xs text-ink/50">
+            By creating an account, you agree to our
+            <Link :href="route('policy')" class="underline hover:text-ink">Privacy Policy</Link>.
+        </p>
     </GuestLayout>
 </template>
