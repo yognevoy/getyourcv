@@ -19,7 +19,9 @@ const props = defineProps({
 </script>
 
 <template>
-    <Head :title="available ? resume.full_name || 'Resume' : 'Resume unavailable'" />
+    <Head :title="available ? resume.full_name || 'Resume' : 'Resume unavailable'">
+        <meta name="robots" content="noindex, nofollow" />
+    </Head>
 
     <div class="isolate flex min-h-screen flex-col bg-paper text-ink">
         <DotGridBackground />
