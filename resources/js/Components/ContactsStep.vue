@@ -55,20 +55,32 @@ function removeLink(index) {
                 <InputError class="mt-1" :message="form.errors.email" />
             </div>
 
-            <div class="space-y-2 pt-2">
+            <div class="pt-2">
                 <InputLabel value="Links" />
 
-                <TransitionGroup name="row" tag="div" class="space-y-2">
-                    <div v-for="(link, i) in form.links" :key="link.id" class="flex items-stretch gap-2">
-                        <TextInput v-model="link.label" :placeholder="linkLabelPlaceholder(link)" class="w-1/3" />
-                        <TextInput v-model="link.url" placeholder="https://..." class="flex-1" />
-                        <IconButton label="Remove link" @click="removeLink(i)">
+                <TransitionGroup name="row" tag="div" class="mt-2 divide-y divide-ink/10 sm:space-y-2 sm:divide-y-0">
+                    <div
+                        v-for="(link, i) in form.links"
+                        :key="link.id"
+                        class="flex flex-wrap items-stretch gap-2 py-3 first:pt-0 sm:py-0"
+                    >
+                        <TextInput
+                            v-model="link.label"
+                            :placeholder="linkLabelPlaceholder(link)"
+                            class="order-1 min-w-0 flex-1 sm:w-1/3 sm:flex-none"
+                        />
+                        <IconButton label="Remove link" class="order-2 sm:order-3" @click="removeLink(i)">
                             <XMarkIcon class="h-4 w-4" />
                         </IconButton>
+                        <TextInput
+                            v-model="link.url"
+                            placeholder="https://..."
+                            class="order-3 min-w-0 w-full sm:order-2 sm:w-auto sm:flex-1"
+                        />
                     </div>
                 </TransitionGroup>
 
-                <AddRowButton @click="addLink">Add link</AddRowButton>
+                <AddRowButton class="mt-3" @click="addLink">Add link</AddRowButton>
             </div>
         </div>
     </div>
