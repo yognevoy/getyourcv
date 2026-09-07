@@ -83,7 +83,7 @@ function submit(event) {
                 </p>
             </div>
 
-            <div class="relative mt-10 grid gap-10 xl:grid-cols-2 xl:gap-12">
+            <div class="relative mt-10 grid grid-cols-1 gap-10 xl:grid-cols-2 xl:gap-12">
                 <div
                     class="hidden xl:absolute xl:inset-y-0 xl:left-1/2 xl:block xl:w-px xl:-translate-x-1/2 xl:bg-ink/20"
                     aria-hidden="true"

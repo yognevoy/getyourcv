@@ -202,7 +202,7 @@ function submit() {
                                 </button>
 
                                 <div
-                                    class="grid transition-[grid-template-rows] duration-200 ease-out"
+                                    class="grid grid-cols-1 transition-[grid-template-rows] duration-200 ease-out"
                                     :style="{ gridTemplateRows: historyOpen ? '1fr' : '0fr' }"
                                 >
                                     <div class="overflow-hidden">
