@@ -54,7 +54,7 @@ function forceDelete() {
                 </p>
             </div>
 
-            <Dropdown align="left" width="48">
+            <Dropdown align="right" width="48">
                 <template #trigger>
                     <button
                         type="button"

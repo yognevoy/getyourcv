@@ -116,7 +116,7 @@ function unarchiveResume() {
                         <LinkIcon class="h-4 w-4" />
                     </button>
 
-                    <Dropdown align="left" width="48" @click.stop>
+                    <Dropdown align="right" width="48" @click.stop>
                         <template #trigger>
                             <button
                                 type="button"
