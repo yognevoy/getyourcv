@@ -15,8 +15,6 @@ class ExperienceMapper
         foreach ($data['experiences'] ?? [] as $experience) {
             $groups = $this->mapBulletGroups($experience['bullets'] ?? []);
 
-            // Skip a row the moment "Add experience" is clicked, before anything is typed into
-            // it - otherwise the live preview would show an empty Company/Title block.
             if (empty($experience['company']) && empty($experience['title']) && $groups === []) {
                 continue;
             }
