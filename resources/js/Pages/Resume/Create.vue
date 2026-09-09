@@ -1,6 +1,6 @@
 <script setup>
 import { Head, router, useForm, usePage } from '@inertiajs/vue3';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
 import PublicHeader from '@/Components/PublicHeader.vue';
 import ResumePdfViewer from '@/Components/ResumePdfViewer.vue';
 import ResumeForm from '@/Components/ResumeForm.vue';
@@ -22,21 +22,15 @@ const form = useForm({
 });
 
 onMounted(() => {
-    if (!page.props.auth.user) {
-        return;
-    }
-
     const raw = sessionStorage.getItem(DRAFT_KEY);
     if (!raw) {
         return;
     }
 
-    sessionStorage.removeItem(DRAFT_KEY);
-
     try {
         Object.assign(form, JSON.parse(raw));
     } catch {
-        // malformed draft, nothing to restore
+        return;
     }
 });
 
@@ -57,9 +51,16 @@ function draftData() {
 
 const previewPayload = computed(() => draftData());
 
+watch(
+    previewPayload,
+    (data) => {
+        sessionStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+    },
+    { deep: true },
+);
+
 function submit(event) {
     if (!page.props.auth.user) {
-        sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draftData()));
         router.visit(route('register', { redirect: route('resumes.create', {}, false) }));
         return;
     }
@@ -70,7 +71,9 @@ function submit(event) {
         ...data,
         title: data.full_name || 'Untitled resume',
         status,
-    })).post(route('resumes.store'));
+    })).post(route('resumes.store'), {
+        onSuccess: () => sessionStorage.removeItem(DRAFT_KEY),
+    });
 }
 </script>
 
