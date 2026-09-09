@@ -38,7 +38,13 @@ function stepForField(field) {
     return 0;
 }
 
-const currentStep = ref(0);
+function stepFromQuery() {
+    const step = Number(new URLSearchParams(window.location.search).get('step'));
+
+    return Number.isInteger(step) && step >= 1 && step <= STEPS.length ? step - 1 : 0;
+}
+
+const currentStep = ref(stepFromQuery());
 const isLastStep = computed(() => currentStep.value === STEPS.length - 1);
 const progressPercent = computed(() => ((currentStep.value + 1) / STEPS.length) * 100);
 const nextStepLabel = computed(() => `Next: ${STEPS[currentStep.value + 1]}`);
@@ -66,6 +72,12 @@ watch(
     },
     { deep: true },
 );
+
+watch(currentStep, (value) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set('step', value + 1);
+    window.history.replaceState(window.history.state, '', url);
+});
 </script>
 
 <template>
