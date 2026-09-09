@@ -18,6 +18,7 @@ class ResumeEducation extends Model
         'field',
         'period_from',
         'period_to',
+        'is_current',
         'position',
     ];
 
@@ -26,6 +27,7 @@ class ResumeEducation extends Model
         return [
             'period_from' => 'date',
             'period_to' => 'date',
+            'is_current' => 'boolean',
         ];
     }
 

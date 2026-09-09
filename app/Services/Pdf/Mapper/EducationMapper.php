@@ -18,7 +18,11 @@ class EducationMapper
 
             $entries[] = [
                 'title' => $education['institution'],
-                'period' => $periodFormatter->format($education['period_from'] ?? null, $education['period_to'] ?? null, false),
+                'period' => $periodFormatter->format(
+                    $education['period_from'] ?? null,
+                    $education['period_to'] ?? null,
+                    (bool) ($education['is_current'] ?? false),
+                ),
                 'lines' => ! empty($education['field']) ? [$education['field']] : [],
             ];
         }

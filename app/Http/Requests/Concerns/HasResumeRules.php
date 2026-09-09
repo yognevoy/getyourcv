@@ -41,6 +41,7 @@ trait HasResumeRules
             'educations.*.field' => ['nullable', 'string', 'max:255'],
             'educations.*.period_from' => ['nullable', 'date'],
             'educations.*.period_to' => ['nullable', 'date'],
+            'educations.*.is_current' => ['boolean'],
 
             'courses' => ['array'],
             'courses.*.title' => ['required', 'string', 'max:255'],

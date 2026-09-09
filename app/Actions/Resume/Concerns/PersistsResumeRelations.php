@@ -63,6 +63,7 @@ trait PersistsResumeRelations
                 'field' => $education['field'] ?? null,
                 'period_from' => $education['period_from'] ?? null,
                 'period_to' => $education['period_to'] ?? null,
+                'is_current' => $education['is_current'] ?? false,
                 'position' => $i,
             ]);
         }

@@ -48,6 +48,7 @@ class PreviewResumeRequest extends FormRequest
             'educations.*.field' => ['nullable', 'string', 'max:255'],
             'educations.*.period_from' => ['nullable', 'date'],
             'educations.*.period_to' => ['nullable', 'date'],
+            'educations.*.is_current' => ['boolean'],
 
             'courses' => ['array'],
             'courses.*.title' => ['nullable', 'string', 'max:255'],

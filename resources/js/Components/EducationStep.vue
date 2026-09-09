@@ -23,6 +23,7 @@ function addEducation() {
         field: '',
         period_from: '',
         period_to: '',
+        is_current: false,
     });
 }
 
@@ -49,7 +50,13 @@ function removeEducation(index) {
 
                     <div class="flex flex-wrap items-center gap-3">
                         <DateInput v-model="education.period_from" placeholder="Start date" class="min-w-[9rem] flex-1" />
-                        <DateInput v-model="education.period_to" placeholder="End date" class="min-w-[9rem] flex-1" />
+                        <DateInput
+                            v-model="education.period_to"
+                            v-model:current="education.is_current"
+                            presentable
+                            placeholder="End date"
+                            class="min-w-[9rem] flex-1"
+                        />
                     </div>
                 </div>
 
