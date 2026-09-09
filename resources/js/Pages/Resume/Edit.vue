@@ -21,6 +21,9 @@ const form = useForm({
     links: props.resume.links,
     skill_groups: props.resume.skill_groups,
     experiences: props.resume.experiences,
+    educations: props.resume.educations,
+    courses: props.resume.courses,
+    certifications: props.resume.certifications,
 });
 
 function submit(event) {
@@ -41,6 +44,9 @@ const previewPayload = computed(() => ({
     links: form.links,
     skill_groups: form.skill_groups,
     experiences: form.experiences,
+    educations: form.educations,
+    courses: form.courses,
+    certifications: form.certifications,
 }));
 </script>
 

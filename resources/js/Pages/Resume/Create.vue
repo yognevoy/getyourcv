@@ -16,6 +16,9 @@ const form = useForm({
     links: [],
     skill_groups: [],
     experiences: [],
+    educations: [],
+    courses: [],
+    certifications: [],
 });
 
 onMounted(() => {
@@ -46,6 +49,9 @@ function draftData() {
         links: form.links,
         skill_groups: form.skill_groups,
         experiences: form.experiences,
+        educations: form.educations,
+        courses: form.courses,
+        certifications: form.certifications,
     };
 }
 
