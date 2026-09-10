@@ -2,6 +2,7 @@
 
 namespace App\Services\Pdf;
 
+use Illuminate\Process\Exceptions\ProcessTimedOutException;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -12,6 +13,8 @@ use RuntimeException;
  */
 class ResumePdfGenerator implements PdfGeneratorInterface
 {
+    private const TIMEOUT_SECONDS = 10;
+
     public function generate(array $payload): string
     {
         $inputPath = sys_get_temp_dir().'/'.Str::uuid().'.json';
@@ -20,11 +23,15 @@ class ResumePdfGenerator implements PdfGeneratorInterface
         file_put_contents($inputPath, json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR));
 
         try {
-            $result = Process::run([
-                config('services.resume_gen.binary'),
-                '-i', $inputPath,
-                '-o', $outputPath,
-            ]);
+            try {
+                $result = Process::timeout(self::TIMEOUT_SECONDS)->run([
+                    config('services.resume_gen.binary'),
+                    '-i', $inputPath,
+                    '-o', $outputPath,
+                ]);
+            } catch (ProcessTimedOutException $e) {
+                throw new RuntimeException('resume-gen timed out after '.self::TIMEOUT_SECONDS.'s', previous: $e);
+            }
 
             if ($result->failed()) {
                 throw new RuntimeException('resume-gen failed: '.$result->errorOutput());
