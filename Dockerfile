@@ -30,6 +30,7 @@ COPY --from=composer-deps /app/vendor ./vendor
 COPY . .
 COPY --from=node-build /app/public/build ./public/build
 COPY --from=resume-gen-build /go/bin/resume-gen /usr/local/bin/resume-gen
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/zz-pool-tuning.conf
 RUN rm -rf storage/framework/cache/data/* storage/framework/sessions/* storage/framework/views/* \
     && php artisan package:discover --ansi \
     && php artisan storage:link \
