@@ -7,6 +7,8 @@ import PublicFooter from '@/Components/PublicFooter.vue';
 const hero = ref(null);
 const canvas = ref(null);
 
+const HEADING_LINES = ['Your resume, shipped.', 'Ready to go.'];
+
 const SPACING = 32;
 const DOT_RADIUS = 1.5;
 const REPEL_RADIUS = 110;
@@ -194,7 +196,12 @@ onUnmounted(() => {
             <canvas ref="canvas" class="pointer-events-none absolute inset-0" aria-hidden="true"></canvas>
 
             <h1 class="relative max-w-3xl text-5xl font-semibold tracking-tighter sm:text-6xl md:text-7xl">
-                Your resume, shipped. Ready to go.
+                <span v-for="(line, i) in HEADING_LINES" :key="i" class="heading-line">
+                    <span class="heading-base">{{ line }}</span>
+                    <span :class="['heading-overlay', `heading-overlay--line-${i + 1}`]" aria-hidden="true">{{
+                        line
+                    }}</span>
+                </span>
             </h1>
             <p class="relative mt-5 max-w-xl text-base text-ink/70">
                 Fill it in once and share a link with any HR, anywhere.
@@ -211,3 +218,81 @@ onUnmounted(() => {
         <PublicFooter />
     </div>
 </template>
+
+<style scoped>
+.heading-line {
+    position: relative;
+    display: block;
+    width: fit-content;
+    margin-inline: auto;
+}
+
+.heading-overlay {
+    position: absolute;
+    inset: 0;
+    color: #fafafa;
+    background-color: #0a0a0a;
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+}
+
+.heading-overlay--line-1 {
+    animation: gyc-select-sweep-line1 1.5s ease-in-out forwards;
+}
+
+.heading-overlay--line-2 {
+    animation: gyc-select-sweep-line2 1.5s ease-in-out forwards;
+}
+
+@keyframes gyc-select-sweep-line1 {
+    0% {
+        clip-path: inset(0 100% 0 0);
+        opacity: 1;
+    }
+    30% {
+        clip-path: inset(0 0% 0 0);
+        opacity: 1;
+    }
+    70% {
+        clip-path: inset(0 0% 0 0);
+        opacity: 1;
+    }
+    100% {
+        clip-path: inset(0 0% 0 0);
+        opacity: 0;
+    }
+}
+
+@keyframes gyc-select-sweep-line2 {
+    0% {
+        clip-path: inset(0 100% 0 0);
+        opacity: 0;
+    }
+    30% {
+        clip-path: inset(0 100% 0 0);
+        opacity: 1;
+    }
+    55% {
+        clip-path: inset(0 0% 0 0);
+        opacity: 1;
+    }
+    70% {
+        clip-path: inset(0 0% 0 0);
+        opacity: 1;
+    }
+    100% {
+        clip-path: inset(0 0% 0 0);
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .heading-overlay,
+    .heading-overlay--line-1,
+    .heading-overlay--line-2 {
+        animation: none;
+        clip-path: inset(0 100% 0 0);
+        opacity: 0;
+    }
+}
+</style>
