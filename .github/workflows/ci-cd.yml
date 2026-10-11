@@ -57,6 +57,7 @@ jobs:
       - uses: actions/setup-go@v7
         with:
           go-version: '1.26'
+          cache: false
       - run: go install github.com/yognevoy/resume-gen@v0.1.0
       - run: sudo cp "$(go env GOPATH)/bin/resume-gen" /usr/local/bin/resume-gen
       - run: cp .env.example .env
