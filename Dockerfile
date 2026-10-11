@@ -19,10 +19,11 @@ FROM golang:1.26-alpine AS resume-gen-build
 RUN apk add --no-cache git ca-certificates
 RUN CGO_ENABLED=0 GOOS=linux go install github.com/yognevoy/resume-gen@v0.1.0
 
-FROM php:8.4-fpm-alpine AS php-fpm
+FROM dunglas/frankenphp:1-php8.4-alpine AS frankenphp
 RUN apk add --no-cache postgresql-libs libzip icu-libs oniguruma \
-    && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS postgresql-dev libzip-dev icu-dev oniguruma-dev \
+    && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS postgresql-dev libzip-dev icu-dev oniguruma-dev libcap \
     && docker-php-ext-install -j$(nproc) pdo pdo_pgsql mbstring bcmath zip intl opcache \
+    && setcap cap_net_bind_service=+ep "$(readlink -f "$(which frankenphp)")" \
     && apk del .build-deps
 
 WORKDIR /var/www/html
@@ -30,23 +31,19 @@ COPY --from=composer-deps /app/vendor ./vendor
 COPY . .
 COPY --from=node-build /app/public/build ./public/build
 COPY --from=resume-gen-build /go/bin/resume-gen /usr/local/bin/resume-gen
-COPY docker/php/www.conf /usr/local/etc/php-fpm.d/zz-pool-tuning.conf
 COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/zz-opcache-tuning.ini
+COPY Caddyfile /etc/frankenphp/Caddyfile
 RUN rm -rf storage/framework/cache/data/* storage/framework/sessions/* storage/framework/views/* \
     && php artisan package:discover --ansi \
     && php artisan storage:link \
-    && chown -R www-data:www-data /var/www/html
+    && chown -R www-data:www-data /var/www/html /data /config
 
 COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 USER www-data
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["php-fpm"]
-
-FROM caddy:2-alpine AS caddy
-COPY Caddyfile /etc/caddy/Caddyfile
-COPY --from=php-fpm /var/www/html/public /var/www/html/public
+CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]
 
 FROM php:8.4-cli-alpine AS dev
 ARG UID=1000

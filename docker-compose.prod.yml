@@ -1,34 +1,24 @@
 name: getyourcv-prod
 
 services:
-    caddy:
-        image: ghcr.io/yognevoy/getyourcv-caddy:${IMAGE_TAG:-latest}
+    app:
+        image: ghcr.io/yognevoy/getyourcv:${IMAGE_TAG:-latest}
         build:
             context: .
-            target: caddy
+            target: frankenphp
         restart: unless-stopped
         ports:
             - '80:80'
             - '443:443'
-        volumes:
-            - caddy_data:/data
-            - caddy_config:/config
-            - storage_data:/var/www/html/storage/app:ro
+            - '443:443/udp'
+        env_file:
+            - .env.production
         environment:
             DOMAIN: ${DOMAIN}
             LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
-        depends_on:
-            - php-fpm
-
-    php-fpm:
-        image: ghcr.io/yognevoy/getyourcv-php-fpm:${IMAGE_TAG:-latest}
-        build:
-            context: .
-            target: php-fpm
-        restart: unless-stopped
-        env_file:
-            - .env.production
         volumes:
+            - caddy_data:/data
+            - caddy_config:/config
             - storage_data:/var/www/html/storage/app
         depends_on:
             postgres:
