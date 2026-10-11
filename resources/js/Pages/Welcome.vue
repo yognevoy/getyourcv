@@ -195,7 +195,7 @@ onUnmounted(() => {
         >
             <canvas ref="canvas" class="pointer-events-none absolute inset-0" aria-hidden="true"></canvas>
 
-            <h1 class="relative max-w-3xl text-5xl font-semibold tracking-tighter sm:text-6xl md:text-7xl">
+            <h1 class="relative max-w-3xl text-[clamp(1.75rem,8.5vw,3rem)] font-semibold tracking-tighter sm:text-6xl md:text-7xl">
                 <span v-for="(line, i) in HEADING_LINES" :key="i" class="heading-line">
                     <span class="heading-base">{{ line }}</span>
                     <span :class="['heading-overlay', `heading-overlay--line-${i + 1}`]" aria-hidden="true">{{
