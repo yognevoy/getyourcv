@@ -1,3 +1,5 @@
+docs/
+CLAUDE.md
 /.phpunit.cache
 /node_modules
 /public/build
