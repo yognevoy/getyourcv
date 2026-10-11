@@ -2,6 +2,7 @@ name: getyourcv-prod
 
 services:
     caddy:
+        image: ghcr.io/yognevoy/getyourcv-caddy:${IMAGE_TAG:-latest}
         build:
             context: .
             target: caddy
@@ -20,6 +21,7 @@ services:
             - php-fpm
 
     php-fpm:
+        image: ghcr.io/yognevoy/getyourcv-php-fpm:${IMAGE_TAG:-latest}
         build:
             context: .
             target: php-fpm

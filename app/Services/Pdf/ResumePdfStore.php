@@ -36,7 +36,7 @@ class ResumePdfStore
     {
         $path = $this->path($resume);
 
-        if (!Storage::disk('local')->exists($path)) {
+        if (! Storage::disk('local')->exists($path)) {
             $this->store($resume);
         }
 

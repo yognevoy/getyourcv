@@ -9,9 +9,7 @@ use Illuminate\Http\RedirectResponse;
  */
 final class SafeRedirect
 {
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Returns $path if it's a same-site relative path, null otherwise.
