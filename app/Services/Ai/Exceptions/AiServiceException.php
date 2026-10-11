@@ -8,6 +8,4 @@ use RuntimeException;
  * Thrown for any recoverable AI provider failure (timeout, rate limit,
  * malformed response).
  */
-class AiServiceException extends RuntimeException
-{
-}
+class AiServiceException extends RuntimeException {}

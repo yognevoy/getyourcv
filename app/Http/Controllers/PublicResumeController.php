@@ -8,13 +8,14 @@ use App\Services\Pdf\ResumePdfStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Inertia\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class PublicResumeController extends Controller
 {
-    public function show(Request $request, Resume $resume, LogResumeView $action): \Inertia\Response
+    public function show(Request $request, Resume $resume, LogResumeView $action): Response
     {
-        if (!$resume->isAvailable()) {
+        if (! $resume->isAvailable()) {
             return Inertia::render('Public/Resume', [
                 'available' => false,
             ]);
