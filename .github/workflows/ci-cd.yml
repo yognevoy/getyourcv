@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 env:
-  IMAGE_PREFIX: ghcr.io/yognevoy/getyourcv
+  IMAGE_NAME: ghcr.io/yognevoy/getyourcv
 
 jobs:
   lint:
@@ -89,21 +89,11 @@ jobs:
       - uses: docker/build-push-action@v7
         with:
           context: .
-          target: php-fpm
+          target: frankenphp
           push: true
           tags: |
-            ${{ env.IMAGE_PREFIX }}-php-fpm:latest
-            ${{ env.IMAGE_PREFIX }}-php-fpm:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - uses: docker/build-push-action@v7
-        with:
-          context: .
-          target: caddy
-          push: true
-          tags: |
-            ${{ env.IMAGE_PREFIX }}-caddy:latest
-            ${{ env.IMAGE_PREFIX }}-caddy:${{ github.sha }}
+            ${{ env.IMAGE_NAME }}:latest
+            ${{ env.IMAGE_NAME }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
