@@ -4,9 +4,11 @@ import { computed, onMounted, watch } from 'vue';
 import PublicHeader from '@/Components/PublicHeader.vue';
 import ResumePdfViewer from '@/Components/ResumePdfViewer.vue';
 import ResumeForm from '@/Components/ResumeForm.vue';
+import { DRAFT_KEY, PENDING_SAVE_KEY } from '@/composables/usePendingDraft';
 
 const page = usePage();
-const DRAFT_KEY = 'getyourcv_draft_resume';
+
+const isAuthorized = computed(() => !!page.props.auth.user);
 
 const form = useForm({
     full_name: '',
@@ -60,12 +62,13 @@ watch(
 );
 
 function submit(event) {
-    if (!page.props.auth.user) {
-        router.visit(route('register', { redirect: route('resumes.create', {}, false) }));
+    const status = event.submitter.value;
+
+    if (!isAuthorized.value) {
+        sessionStorage.setItem(PENDING_SAVE_KEY, status);
+        router.visit(route('register'));
         return;
     }
-
-    const status = event.submitter.value;
 
     form.transform((data) => ({
         ...data,

@@ -1,14 +1,26 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import Toast from '@/Components/Toast.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import logoMark from '@/assets/logomark.png';
+import { usePendingDraft } from '@/composables/usePendingDraft';
+import { showToast } from '@/composables/useToast';
 
 const showingNavigationDropdown = ref(false);
+
+onMounted(() => {
+    usePendingDraft(() => {
+        showToast('Resume saved');
+
+        if (route().current('dashboard')) {
+            router.reload({ only: ['resumes'] });
+        }
+    });
+});
 </script>
 
 <template>
