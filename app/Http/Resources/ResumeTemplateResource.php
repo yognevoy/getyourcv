@@ -23,6 +23,9 @@ class ResumeTemplateResource extends JsonResource
             'links' => ResumeLinkResource::collection($this->links),
             'skill_groups' => ResumeSkillGroupResource::collection($this->skillGroups),
             'experiences' => ResumeExperienceResource::collection($this->experiences),
+            'educations' => ResumeEducationResource::collection($this->educations),
+            'courses' => ResumeCourseResource::collection($this->courses),
+            'certifications' => ResumeCertificationResource::collection($this->certifications),
         ];
     }
 }
