@@ -1,6 +1,7 @@
 <script setup>
 import { onBeforeUnmount, ref, watch } from 'vue';
 import axios from 'axios';
+import ResumePdfPager from '@/Components/ResumePdfPager.vue';
 import Spinner from '@/Components/Spinner.vue';
 import { isBlank } from '@/utils/isBlank';
 import { renderPdfContent } from '@/utils/pdfCanvasRenderer';
@@ -18,6 +19,7 @@ const props = defineProps({
 const containerRef = ref(null);
 const status = ref('loading'); // loading | ready | empty | error
 const hasRendered = ref(false);
+const pages = ref([]);
 
 let debounceTimer = null;
 let abortController = null;
@@ -29,9 +31,7 @@ function schedulePreview() {
 }
 
 function clearContainer() {
-    if (containerRef.value) {
-        containerRef.value.innerHTML = '';
-    }
+    pages.value = [];
 }
 
 function waitForMinLoadingDuration(startedAt) {
@@ -87,14 +87,13 @@ async function renderPdf(data, token) {
         return;
     }
 
-    const pages = await renderPdfContent(data, containerRef.value.clientWidth);
+    const rendered = await renderPdfContent(data, containerRef.value.clientWidth);
 
     if (token !== renderToken || !containerRef.value) {
         return;
     }
 
-    containerRef.value.innerHTML = '';
-    pages.forEach((canvas) => containerRef.value.appendChild(canvas));
+    pages.value = rendered;
     status.value = 'ready';
     hasRendered.value = true;
 }
@@ -109,7 +108,9 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="relative min-h-[600px]">
-        <div ref="containerRef" class="space-y-4"></div>
+        <div ref="containerRef">
+            <ResumePdfPager v-if="pages.length > 0" :pages="pages" />
+        </div>
 
         <div
             v-if="status === 'empty'"
