@@ -11,10 +11,10 @@ const HEADING_LINES = ['Your resume, shipped.', 'Ready to go.'];
 
 const WHY_CHOOSE_US_ITEMS = [
     'Build your resume in 5 minutes.',
-    "Don't waste your time choosing a template - there is only one =)",
-    'Get a little help from AI.',
-    "Don't get weighed down by extra features.",
-    'Export to PDF or share a public link, totally free.',
+    'Only one template - so you never waste time picking one.',
+    'Let AI sharpen your wording for you.',
+    "We kept it simple, so extra features don't get in your way.",
+    'Export to PDF or share a link, always free.',
 ];
 
 const whyChooseUsOpen = ref(false);
