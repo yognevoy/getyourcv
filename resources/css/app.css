@@ -26,3 +26,17 @@
 .fade-leave-to {
     opacity: 0;
 }
+
+.sortable-ghost,
+.sortable-chosen,
+.sortable-drag {
+    user-select: none;
+}
+
+.sortable-ghost {
+    opacity: 0.3;
+}
+
+.sortable-fallback {
+    display: none !important;
+}

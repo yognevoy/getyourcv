@@ -1,8 +1,10 @@
 <script setup>
 import { XMarkIcon } from '@heroicons/vue/20/solid';
+import draggable from 'vuedraggable';
 import TextInput from '@/Components/TextInput.vue';
 import IconButton from '@/Components/IconButton.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
+import DragHandle from '@/Components/DragHandle.vue';
 import { useRowIds } from '@/composables/useRowIds';
 import { useCollapsibleRows } from '@/composables/useCollapsibleRows';
 
@@ -65,13 +67,19 @@ function removeSkill(groupIndex, skillIndex) {
     <div>
         <h2 class="mb-4 text-base font-semibold text-ink">Skills</h2>
 
-        <TransitionGroup name="row" tag="div" class="space-y-4">
-            <div
-                v-for="(group, gi) in form.skill_groups"
-                :key="group.id"
-                class="rounded-md border border-ink/15 bg-white"
-            >
+        <draggable
+            v-model="form.skill_groups"
+            item-key="id"
+            handle=".drag-handle"
+            tag="div"
+            class="space-y-4"
+            :animation="150"
+                    :force-fallback="true"
+        >
+            <template #item="{ element: group, index: gi }">
+            <div class="rounded-md border border-ink/15 bg-white">
                 <div class="flex items-stretch gap-2 p-4">
+                    <DragHandle />
                     <button
                         type="button"
                         class="flex min-w-0 flex-1 items-center gap-3 text-left"
@@ -116,25 +124,33 @@ function removeSkill(groupIndex, skillIndex) {
                                 class="w-full"
                             />
 
-                            <TransitionGroup name="row" tag="div" class="ml-2 space-y-2 border-l border-ink/15 pl-4">
-                                <div
-                                    v-for="(skill, si) in group.skills"
-                                    :key="skill.id"
-                                    class="flex items-stretch gap-2"
-                                >
-                                    <TextInput v-model="skill.value" :placeholder="skillPlaceholder(skill)" class="flex-1" />
-                                    <IconButton label="Remove skill" @click="removeSkill(gi, si)">
-                                        <XMarkIcon class="h-4 w-4" />
-                                    </IconButton>
-                                </div>
-                            </TransitionGroup>
+                            <draggable
+                                v-model="group.skills"
+                                item-key="id"
+                                handle=".drag-handle"
+                                tag="div"
+                                class="ml-2 space-y-2 border-l border-ink/15 pl-4"
+                                :animation="150"
+                                :force-fallback="true"
+                            >
+                                <template #item="{ element: skill, index: si }">
+                                    <div class="flex items-stretch gap-2">
+                                        <DragHandle />
+                                        <TextInput v-model="skill.value" :placeholder="skillPlaceholder(skill)" class="flex-1" />
+                                        <IconButton label="Remove skill" @click="removeSkill(gi, si)">
+                                            <XMarkIcon class="h-4 w-4" />
+                                        </IconButton>
+                                    </div>
+                                </template>
+                            </draggable>
 
                             <AddRowButton :full-width="false" @click="addSkill(gi)">Add skill</AddRowButton>
                         </div>
                     </div>
                 </div>
             </div>
-        </TransitionGroup>
+            </template>
+        </draggable>
 
         <AddRowButton class="mt-4" @click="addSkillGroup">Add skill group</AddRowButton>
     </div>

@@ -1,9 +1,11 @@
 <script setup>
 import { XMarkIcon } from '@heroicons/vue/20/solid';
+import draggable from 'vuedraggable';
 import TextInput from '@/Components/TextInput.vue';
 import DateInput from '@/Components/DateInput.vue';
 import IconButton from '@/Components/IconButton.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
+import DragHandle from '@/Components/DragHandle.vue';
 import { useRowIds } from '@/composables/useRowIds';
 
 const props = defineProps({
@@ -36,35 +38,42 @@ function removeEducation(index) {
     <div>
         <h2 class="mb-4 text-base font-semibold text-ink">Education</h2>
 
-        <TransitionGroup name="row" tag="div" class="space-y-4">
-            <div
-                v-for="(education, i) in form.educations"
-                :key="education.id"
-                class="flex items-start gap-2 rounded-md border border-ink/15 bg-white p-4"
-            >
-                <div class="min-w-0 flex-1 space-y-2">
-                    <div class="grid gap-2 sm:grid-cols-2">
-                        <TextInput v-model="education.institution" placeholder="Institution" />
-                        <TextInput v-model="education.field" placeholder="Field of study" />
+        <draggable
+            v-model="form.educations"
+            item-key="id"
+            handle=".drag-handle"
+            tag="div"
+            class="space-y-4"
+            :animation="150"
+                    :force-fallback="true"
+        >
+            <template #item="{ element: education, index: i }">
+                <div class="flex items-start gap-2 rounded-md border border-ink/15 bg-white p-4">
+                    <DragHandle align-top />
+                    <div class="min-w-0 flex-1 space-y-2">
+                        <div class="grid gap-2 sm:grid-cols-2">
+                            <TextInput v-model="education.institution" placeholder="Institution" />
+                            <TextInput v-model="education.field" placeholder="Field of study" />
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-3">
+                            <DateInput v-model="education.period_from" placeholder="Start date" class="min-w-[9rem] flex-1" />
+                            <DateInput
+                                v-model="education.period_to"
+                                v-model:current="education.is_current"
+                                presentable
+                                placeholder="End date"
+                                class="min-w-[9rem] flex-1"
+                            />
+                        </div>
                     </div>
 
-                    <div class="flex flex-wrap items-center gap-3">
-                        <DateInput v-model="education.period_from" placeholder="Start date" class="min-w-[9rem] flex-1" />
-                        <DateInput
-                            v-model="education.period_to"
-                            v-model:current="education.is_current"
-                            presentable
-                            placeholder="End date"
-                            class="min-w-[9rem] flex-1"
-                        />
-                    </div>
+                    <IconButton label="Remove education" align-top @click="removeEducation(i)">
+                        <XMarkIcon class="h-4 w-4" />
+                    </IconButton>
                 </div>
-
-                <IconButton label="Remove education" align-top @click="removeEducation(i)">
-                    <XMarkIcon class="h-4 w-4" />
-                </IconButton>
-            </div>
-        </TransitionGroup>
+            </template>
+        </draggable>
 
         <AddRowButton class="mt-4" @click="addEducation">Add education</AddRowButton>
     </div>
