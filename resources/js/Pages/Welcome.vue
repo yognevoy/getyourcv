@@ -9,6 +9,16 @@ const canvas = ref(null);
 
 const HEADING_LINES = ['Your resume, shipped.', 'Ready to go.'];
 
+const WHY_CHOOSE_US_ITEMS = [
+    'Build your resume in 5 minutes.',
+    "Don't waste your time choosing a template - there is only one =)",
+    'Get a little help from AI.',
+    "Don't get weighed down by extra features.",
+    'Export to PDF or share a public link, totally free.',
+];
+
+const whyChooseUsOpen = ref(false);
+
 const SPACING = 32;
 const DOT_RADIUS = 1.5;
 const REPEL_RADIUS = 110;
@@ -181,6 +191,7 @@ onUnmounted(() => {
     hero.value.removeEventListener('mousemove', handleMouseMove);
     hero.value.removeEventListener('mouseleave', handleMouseLeave);
 });
+
 </script>
 
 <template>
@@ -215,11 +226,35 @@ onUnmounted(() => {
             </Link>
         </main>
 
+        <div class="flex flex-col items-center px-6 pb-2">
+            <button
+                type="button"
+                @click="whyChooseUsOpen = !whyChooseUsOpen"
+                class="text-sm font-light text-ink/50 hover:text-ink"
+            >
+                Why choose us?
+            </button>
+        </div>
+
+        <div class="overflow-hidden bg-charcoal text-paper transition-[height] duration-300 ease-in-out" :style="{ height: whyChooseUsOpen ? '4rem' : '0px' }">
+            <div class="fade-edges flex h-16 items-center justify-start gap-3 overflow-x-auto whitespace-nowrap px-6 text-sm sm:justify-center">
+                <template v-for="(item, i) in WHY_CHOOSE_US_ITEMS" :key="item">
+                    <span>{{ item }}</span>
+                    <span v-if="i < WHY_CHOOSE_US_ITEMS.length - 1" class="text-paper/40">/</span>
+                </template>
+            </div>
+        </div>
+
         <PublicFooter />
     </div>
 </template>
 
 <style scoped>
+.fade-edges {
+    mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+}
+
 .heading-line {
     position: relative;
     display: block;
