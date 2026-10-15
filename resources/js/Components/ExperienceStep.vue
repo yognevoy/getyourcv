@@ -1,12 +1,14 @@
 <script setup>
 import { ref } from 'vue';
 import { EllipsisVerticalIcon, SparklesIcon, XMarkIcon } from '@heroicons/vue/20/solid';
+import draggable from 'vuedraggable';
 import TextInput from '@/Components/TextInput.vue';
 import DateInput from '@/Components/DateInput.vue';
 import Textarea from '@/Components/Textarea.vue';
 import IconButton from '@/Components/IconButton.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
+import DragHandle from '@/Components/DragHandle.vue';
 import AiRewriteDialog from '@/Components/AiRewriteDialog.vue';
 import { useRowIds } from '@/composables/useRowIds';
 import { useCollapsibleRows } from '@/composables/useCollapsibleRows';
@@ -37,9 +39,12 @@ const { nextRowId, withIds } = useRowIds();
 withIds(props.form.experiences).forEach((experience) => withIds(experience.bullets));
 
 function bulletsOfType(experience, type) {
-    return experience.bullets
-        .map((bullet, index) => ({ bullet, index }))
-        .filter((item) => item.bullet.type === type);
+    return experience.bullets.filter((bullet) => bullet.type === type);
+}
+
+function reorderBullets(experience, type, reordered) {
+    const otherBullets = experience.bullets.filter((bullet) => bullet.type !== type);
+    experience.bullets = reordered.concat(otherBullets);
 }
 
 function experienceSummaryTitle(experience) {
@@ -85,16 +90,16 @@ function addExperience() {
     expandOnlyExperience(experience);
 }
 
-function removeExperience(index) {
-    props.form.experiences.splice(index, 1);
+function removeExperience(experience) {
+    props.form.experiences.splice(props.form.experiences.indexOf(experience), 1);
 }
 
-function addBullet(experienceIndex, type) {
-    props.form.experiences[experienceIndex].bullets.push({ id: nextRowId(), type, text: '' });
+function addBullet(experience, type) {
+    experience.bullets.push({ id: nextRowId(), type, text: '' });
 }
 
-function removeBullet(experienceIndex, bulletIndex) {
-    props.form.experiences[experienceIndex].bullets.splice(bulletIndex, 1);
+function removeBullet(experience, bullet) {
+    experience.bullets.splice(experience.bullets.indexOf(bullet), 1);
 }
 
 const activeBullet = ref(null);
@@ -118,13 +123,19 @@ function applyRewrite(text) {
     <div>
         <h2 class="mb-4 text-base font-semibold text-ink">Experience</h2>
 
-        <TransitionGroup name="row" tag="div" class="space-y-4">
-            <div
-                v-for="(experience, ei) in form.experiences"
-                :key="experience.id"
-                class="rounded-md border border-ink/15 bg-white"
-            >
+        <draggable
+            v-model="form.experiences"
+            item-key="id"
+            handle=".drag-handle"
+            tag="div"
+            class="space-y-4"
+            :animation="150"
+                    :force-fallback="true"
+        >
+            <template #item="{ element: experience }">
+            <div class="rounded-md border border-ink/15 bg-white">
                 <div class="flex items-stretch gap-2 p-4">
+                    <DragHandle />
                     <button
                         type="button"
                         class="flex min-w-0 flex-1 items-center gap-3 text-left"
@@ -152,7 +163,7 @@ function applyRewrite(text) {
                         </span>
                     </button>
 
-                    <IconButton label="Remove experience" @click="removeExperience(ei)">
+                    <IconButton label="Remove experience" @click="removeExperience(experience)">
                         <XMarkIcon class="h-4 w-4" />
                     </IconButton>
                 </div>
@@ -186,89 +197,106 @@ function applyRewrite(text) {
                             <div>
                                 <span class="block text-xs font-medium uppercase tracking-wide text-ink/50">Responsibilities</span>
 
-                                <TransitionGroup name="row" tag="div" class="mt-2 space-y-2">
-                                    <div
-                                        v-for="item in bulletsOfType(experience, 'responsibility')"
-                                        :key="item.bullet.id"
-                                        class="flex items-stretch gap-2"
-                                    >
-                                        <Textarea v-model="item.bullet.text" class="flex-1" />
-                                        <Dropdown align="right" class="self-stretch">
-                                            <template #trigger>
-                                                <IconButton label="Bullet actions" align-top class="h-full">
-                                                    <EllipsisVerticalIcon class="h-4 w-4" />
-                                                </IconButton>
-                                            </template>
-                                            <template #content>
-                                                <button
-                                                    type="button"
-                                                    :disabled="!item.bullet.text || item.bullet.text.trim().length < 3"
-                                                    class="flex w-full items-center gap-2 px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
-                                                    @click="openAiDialog(item.bullet)"
-                                                >
-                                                    <SparklesIcon class="h-4 w-4" />
-                                                    AI enhance
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                                                    @click="removeBullet(ei, item.index)"
-                                                >
-                                                    Remove
-                                                </button>
-                                            </template>
-                                        </Dropdown>
-                                    </div>
-                                </TransitionGroup>
+                                <draggable
+                                    :model-value="bulletsOfType(experience, 'responsibility')"
+                                    item-key="id"
+                                    handle=".drag-handle"
+                                    tag="div"
+                                    class="mt-2 space-y-2"
+                                    :animation="150"
+                                    :force-fallback="true"
+                                    @update:model-value="(reordered) => reorderBullets(experience, 'responsibility', reordered)"
+                                >
+                                    <template #item="{ element: bullet }">
+                                        <div class="flex items-stretch gap-2">
+                                            <DragHandle align-top />
+                                            <Textarea v-model="bullet.text" class="flex-1" />
+                                            <Dropdown align="right" class="self-stretch">
+                                                <template #trigger>
+                                                    <IconButton label="Bullet actions" align-top class="h-full">
+                                                        <EllipsisVerticalIcon class="h-4 w-4" />
+                                                    </IconButton>
+                                                </template>
+                                                <template #content>
+                                                    <button
+                                                        type="button"
+                                                        :disabled="!bullet.text || bullet.text.trim().length < 3"
+                                                        class="flex w-full items-center gap-2 px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
+                                                        @click="openAiDialog(bullet)"
+                                                    >
+                                                        <SparklesIcon class="h-4 w-4" />
+                                                        AI enhance
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                                                        @click="removeBullet(experience, bullet)"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </template>
+                                            </Dropdown>
+                                        </div>
+                                    </template>
+                                </draggable>
 
-                                <AddRowButton :full-width="false" class="mt-3" @click="addBullet(ei, 'responsibility')">Add responsibility</AddRowButton>
+                                <AddRowButton :full-width="false" class="mt-3" @click="addBullet(experience, 'responsibility')">Add responsibility</AddRowButton>
                             </div>
 
                             <div>
                                 <span class="block text-xs font-medium uppercase tracking-wide text-ink/50">Achievements</span>
 
-                                <TransitionGroup name="row" tag="div" class="mt-2 space-y-2">
-                                    <div
-                                        v-for="item in bulletsOfType(experience, 'achievement')"
-                                        :key="item.bullet.id"
-                                        class="flex items-stretch gap-2"
-                                    >
-                                        <Textarea v-model="item.bullet.text" class="flex-1" />
-                                        <Dropdown align="right" class="self-stretch">
-                                            <template #trigger>
-                                                <IconButton label="Bullet actions" align-top class="h-full">
-                                                    <EllipsisVerticalIcon class="h-4 w-4" />
-                                                </IconButton>
-                                            </template>
-                                            <template #content>
-                                                <button
-                                                    type="button"
-                                                    :disabled="!item.bullet.text || item.bullet.text.trim().length < 3"
-                                                    class="flex w-full items-center gap-2 px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
-                                                    @click="openAiDialog(item.bullet)"
-                                                >
-                                                    <SparklesIcon class="h-4 w-4" />
-                                                    AI enhance
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
-                                                    @click="removeBullet(ei, item.index)"
-                                                >
-                                                    Remove
-                                                </button>
-                                            </template>
-                                        </Dropdown>
-                                    </div>
-                                </TransitionGroup>
+                                <draggable
+                                    :model-value="bulletsOfType(experience, 'achievement')"
+                                    item-key="id"
+                                    handle=".drag-handle"
+                                    tag="div"
+                                    class="mt-2 space-y-2"
+                                    :animation="150"
+                                    :force-fallback="true"
+                                    @update:model-value="(reordered) => reorderBullets(experience, 'achievement', reordered)"
+                                >
+                                    <template #item="{ element: bullet }">
+                                        <div class="flex items-stretch gap-2">
+                                            <DragHandle align-top />
+                                            <Textarea v-model="bullet.text" class="flex-1" />
+                                            <Dropdown align="right" class="self-stretch">
+                                                <template #trigger>
+                                                    <IconButton label="Bullet actions" align-top class="h-full">
+                                                        <EllipsisVerticalIcon class="h-4 w-4" />
+                                                    </IconButton>
+                                                </template>
+                                                <template #content>
+                                                    <button
+                                                        type="button"
+                                                        :disabled="!bullet.text || bullet.text.trim().length < 3"
+                                                        class="flex w-full items-center gap-2 px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none disabled:cursor-not-allowed disabled:text-ink/30"
+                                                        @click="openAiDialog(bullet)"
+                                                    >
+                                                        <SparklesIcon class="h-4 w-4" />
+                                                        AI enhance
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-ink transition duration-150 ease-in-out hover:bg-ink/5 focus:bg-ink/5 focus:outline-none"
+                                                        @click="removeBullet(experience, bullet)"
+                                                    >
+                                                        Remove
+                                                    </button>
+                                                </template>
+                                            </Dropdown>
+                                        </div>
+                                    </template>
+                                </draggable>
 
-                                <AddRowButton :full-width="false" class="mt-3" @click="addBullet(ei, 'achievement')">Add achievement</AddRowButton>
+                                <AddRowButton :full-width="false" class="mt-3" @click="addBullet(experience, 'achievement')">Add achievement</AddRowButton>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </TransitionGroup>
+            </template>
+        </draggable>
 
         <AddRowButton class="mt-4" @click="addExperience">Add experience</AddRowButton>
 
