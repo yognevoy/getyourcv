@@ -4,6 +4,7 @@ use App\Http\Controllers\AiRewriteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PublicResumeController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\ResumePhotoController;
 use App\Http\Controllers\ResumePreviewController;
 use App\Http\Controllers\ResumeStatisticsController;
 use App\Http\Controllers\ResumeVacancyMatchController;
@@ -22,6 +23,10 @@ Route::get('/resume/new', [ResumeController::class, 'create'])->name('resumes.cr
 Route::post('/resume-preview', ResumePreviewController::class)
     ->middleware('throttle:30,1')
     ->name('resumes.preview');
+
+Route::post('/resume-photos', [ResumePhotoController::class, 'store'])
+    ->middleware('throttle:20,1')
+    ->name('resume-photos.store');
 
 Route::post('/ai/rewrite', AiRewriteController::class)
     ->middleware('throttle:10,1')
