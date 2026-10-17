@@ -55,6 +55,11 @@ class Resume extends Model
         return $this->hasMany(ResumeExperience::class)->orderBy('position');
     }
 
+    public function projects(): HasMany
+    {
+        return $this->hasMany(ResumeProject::class)->orderBy('position');
+    }
+
     public function educations(): HasMany
     {
         return $this->hasMany(ResumeEducation::class)->orderBy('position');

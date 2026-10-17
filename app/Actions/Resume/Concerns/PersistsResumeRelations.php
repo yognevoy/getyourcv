@@ -56,6 +56,15 @@ trait PersistsResumeRelations
             }
         }
 
+        $resume->projects()->delete();
+        foreach ($data['projects'] ?? [] as $i => $project) {
+            $resume->projects()->create([
+                'title' => $project['title'],
+                'description' => $project['description'] ?? null,
+                'position' => $i,
+            ]);
+        }
+
         $resume->educations()->delete();
         foreach ($data['educations'] ?? [] as $i => $education) {
             $resume->educations()->create([
@@ -91,6 +100,7 @@ trait PersistsResumeRelations
         'links',
         'skillGroups.skills',
         'experiences.bullets',
+        'projects',
         'educations',
         'courses',
         'certifications',
