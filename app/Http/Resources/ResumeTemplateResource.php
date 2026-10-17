@@ -20,6 +20,7 @@ class ResumeTemplateResource extends JsonResource
             'position' => $this->position,
             'email' => $this->email,
             'about' => $this->about,
+            'photo_path' => $this->photo_path,
             'links' => ResumeLinkResource::collection($this->links),
             'skill_groups' => ResumeSkillGroupResource::collection($this->skillGroups),
             'experiences' => ResumeExperienceResource::collection($this->experiences),

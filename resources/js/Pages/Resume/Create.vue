@@ -15,6 +15,8 @@ const form = useForm({
     position: '',
     email: '',
     about: '',
+    photo_path: '',
+    photo_preview_url: '',
     links: [],
     skill_groups: [],
     experiences: [],
@@ -42,6 +44,7 @@ function draftData() {
         position: form.position,
         email: form.email,
         about: form.about,
+        photo_path: form.photo_path,
         links: form.links,
         skill_groups: form.skill_groups,
         experiences: form.experiences,
@@ -56,7 +59,8 @@ const previewPayload = computed(() => draftData());
 watch(
     previewPayload,
     (data) => {
-        sessionStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+        const draft = { ...data, photo_preview_url: form.photo_preview_url };
+        sessionStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
     },
     { deep: true },
 );
@@ -70,7 +74,7 @@ function submit(event) {
         return;
     }
 
-    form.transform((data) => ({
+    form.transform(({ photo_preview_url, ...data }) => ({
         ...data,
         title: data.full_name || 'Untitled resume',
         status,

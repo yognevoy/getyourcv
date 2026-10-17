@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ResumePhotoRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PreviewResumeRequest extends FormRequest
@@ -23,6 +24,7 @@ class PreviewResumeRequest extends FormRequest
             'position' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'max:255'],
             'about' => ['nullable', 'string'],
+            'photo_path' => ['nullable', 'string', new ResumePhotoRule],
 
             'links' => ['array'],
             'links.*.label' => ['nullable', 'string', 'max:255'],

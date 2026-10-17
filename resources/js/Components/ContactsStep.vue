@@ -1,5 +1,6 @@
 <script setup>
-import { XMarkIcon } from '@heroicons/vue/20/solid';
+import { ref } from 'vue';
+import { CameraIcon, XMarkIcon } from '@heroicons/vue/20/solid';
 import draggable from 'vuedraggable';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
@@ -7,6 +8,7 @@ import InputError from '@/Components/InputError.vue';
 import IconButton from '@/Components/IconButton.vue';
 import AddRowButton from '@/Components/AddRowButton.vue';
 import DragHandle from '@/Components/DragHandle.vue';
+import PhotoUploadModal from '@/Components/PhotoUploadModal.vue';
 import { useRowIds } from '@/composables/useRowIds';
 
 const props = defineProps({
@@ -15,6 +17,18 @@ const props = defineProps({
         required: true,
     },
 });
+
+const showPhotoModal = ref(false);
+
+function onPhotoUploaded({ photoPath, previewUrl }) {
+    props.form.photo_path = photoPath;
+    props.form.photo_preview_url = previewUrl;
+}
+
+function removePhoto() {
+    props.form.photo_path = '';
+    props.form.photo_preview_url = '';
+}
 
 const LINK_LABEL_PLACEHOLDERS = ['GitHub', 'LinkedIn', 'Portfolio', 'Telegram', 'Twitter'];
 
@@ -39,6 +53,34 @@ function removeLink(index) {
         <h2 class="mb-4 text-base font-semibold text-ink">Contacts</h2>
 
         <div class="space-y-4 rounded-md border border-ink/15 bg-white p-4">
+            <div class="relative inline-block">
+                <button
+                    type="button"
+                    class="flex h-20 w-20 flex-col items-center justify-center gap-1 overflow-hidden rounded-md border transition-colors"
+                    :class="form.photo_preview_url ? 'border-ink/15' : 'border-dashed border-ink/25 hover:border-ink/50'"
+                    @click="showPhotoModal = true"
+                >
+                    <img v-if="form.photo_preview_url" :src="form.photo_preview_url" alt="" class="h-full w-full object-cover" />
+                    <CameraIcon v-else class="h-5 w-5 text-ink/40" />
+                </button>
+                <button
+                    v-if="form.photo_preview_url"
+                    type="button"
+                    aria-label="Remove photo"
+                    class="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full border border-ink/20 bg-white text-ink/50 transition-colors hover:border-ink hover:bg-ink hover:text-paper"
+                    @click="removePhoto"
+                >
+                    <XMarkIcon class="h-3 w-3" />
+                </button>
+            </div>
+
+            <PhotoUploadModal
+                :show="showPhotoModal"
+                :edit-photo-url="form.photo_preview_url"
+                @close="showPhotoModal = false"
+                @uploaded="onPhotoUploaded"
+            />
+
             <div>
                 <InputLabel for="full_name" value="Full name" />
                 <TextInput id="full_name" v-model="form.full_name" class="mt-1 block w-full" required />

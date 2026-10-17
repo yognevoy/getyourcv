@@ -8,13 +8,17 @@ use App\Actions\Resume\Concerns\SnapshotsResumeVersion;
 use App\Enums\ResumeStatus;
 use App\Models\Resume;
 use App\Services\Pdf\ResumePdfStore;
+use App\Services\Photo\ResumePhotoStore;
 use Illuminate\Support\Facades\DB;
 
 class DuplicateResume
 {
     use GeneratesResumeSlug, PersistsResumeRelations, SnapshotsResumeVersion;
 
-    public function __construct(private readonly ResumePdfStore $pdfStore) {}
+    public function __construct(
+        private readonly ResumePdfStore $pdfStore,
+        private readonly ResumePhotoStore $photoStore,
+    ) {}
 
     public function execute(Resume $resume, ?string $title = null): Resume
     {
@@ -26,7 +30,7 @@ class DuplicateResume
                 'slug' => $this->generateSlug($resume->title),
                 'title' => $title ?? "Copy of {$resume->title}",
                 'status' => ResumeStatus::Draft,
-                'photo_path' => $resume->photo_path,
+                'photo_path' => $this->photoStore->copy($resume->photo_path),
                 'full_name' => $resume->full_name,
                 'position' => $resume->position,
                 'email' => $resume->email,

@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Concerns;
 
 use App\Enums\ResumeStatus;
+use App\Rules\ResumePhotoRule;
 use Illuminate\Validation\Rule;
 
 trait HasResumeRules
@@ -16,6 +17,7 @@ trait HasResumeRules
             'position' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],
             'about' => ['nullable', 'string'],
+            'photo_path' => ['nullable', 'string', new ResumePhotoRule],
 
             'links' => ['array'],
             'links.*.label' => ['required', 'string', 'max:255'],
