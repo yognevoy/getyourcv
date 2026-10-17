@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@heroicons/vue": "^2.2.0",
+        "vue-advanced-cropper": "^2.8.9",
         "vuedraggable": "^4.1.0"
     }
 }

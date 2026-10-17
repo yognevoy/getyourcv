@@ -18,6 +18,10 @@ const form = useForm({
     position: props.resume.position || '',
     email: props.resume.email || '',
     about: props.resume.about || '',
+    photo_path: props.resume.photo_path || '',
+    photo_preview_url: props.resume.photo_path
+        ? route('resumes.photo', props.resume.id)
+        : '',
     links: props.resume.links,
     skill_groups: props.resume.skill_groups,
     experiences: props.resume.experiences,
@@ -29,7 +33,7 @@ const form = useForm({
 function submit(event) {
     const status = event.submitter.value;
 
-    form.transform((data) => ({
+    form.transform(({ photo_preview_url, ...data }) => ({
         ...data,
         title: data.full_name || 'Untitled resume',
         status,
@@ -41,6 +45,7 @@ const previewPayload = computed(() => ({
     position: form.position,
     email: form.email,
     about: form.about,
+    photo_path: form.photo_path,
     links: form.links,
     skill_groups: form.skill_groups,
     experiences: form.experiences,
