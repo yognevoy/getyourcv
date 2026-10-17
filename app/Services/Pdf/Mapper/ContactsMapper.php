@@ -8,10 +8,6 @@ class ContactsMapper
     {
         $contacts = [];
 
-        if (! empty($data['location'])) {
-            $contacts[] = ['label' => '', 'value' => $data['location'], 'url' => ''];
-        }
-
         if (! empty($data['email'])) {
             $contacts[] = ['label' => '', 'value' => $data['email'], 'url' => 'mailto:'.$data['email']];
         }

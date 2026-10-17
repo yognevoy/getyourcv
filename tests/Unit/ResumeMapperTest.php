@@ -33,15 +33,15 @@ test('email becomes a mailto contact and links are mapped by label/url', functio
     ]);
 });
 
-test('location becomes a contact entry before email', function () {
+test('location is mapped as a top-level field', function () {
     $payload = $this->mapper->mapFromArray([
         'full_name' => 'Jane Doe',
         'location' => 'Berlin, Germany',
         'email' => 'jane@example.com',
     ]);
 
+    expect($payload['location'])->toBe('Berlin, Germany');
     expect($payload['contacts'])->toBe([
-        ['label' => '', 'value' => 'Berlin, Germany', 'url' => ''],
         ['label' => '', 'value' => 'jane@example.com', 'url' => 'mailto:jane@example.com'],
     ]);
 });

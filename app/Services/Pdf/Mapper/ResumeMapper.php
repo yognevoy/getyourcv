@@ -90,6 +90,7 @@ class ResumeMapper
         return [
             'name' => (string) ($data['full_name'] ?? ''),
             'position' => (string) ($data['position'] ?? ''),
+            'location' => (string) ($data['location'] ?? ''),
             'photo' => $this->photoStore->absolutePath($data['photo_path'] ?? null) ?? '',
             'contacts' => $this->contacts->map($data),
             'sections' => (object) array_filter([
