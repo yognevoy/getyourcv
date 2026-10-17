@@ -3,6 +3,7 @@
 namespace App\Services\Pdf\Mapper;
 
 use App\Models\Resume;
+use App\Services\Photo\ResumePhotoStore;
 
 /**
  * Assembles mappers into the JSON payload resume-gen expects.
@@ -17,6 +18,7 @@ class ResumeMapper
         private readonly EducationMapper $education = new EducationMapper,
         private readonly CoursesMapper $courses = new CoursesMapper,
         private readonly CertificationsMapper $certifications = new CertificationsMapper,
+        private readonly ResumePhotoStore $photoStore = new ResumePhotoStore,
     ) {}
 
     public function mapFromResume(Resume $resume): array
@@ -65,6 +67,7 @@ class ResumeMapper
             'position' => $resume->position,
             'email' => $resume->email,
             'about' => $resume->about,
+            'photo_path' => $resume->photo_path,
             'links' => $links,
             'skill_groups' => $skillGroups,
             'experiences' => $experiences,
@@ -79,6 +82,7 @@ class ResumeMapper
         return [
             'name' => (string) ($data['full_name'] ?? ''),
             'position' => (string) ($data['position'] ?? ''),
+            'photo' => $this->photoStore->absolutePath($data['photo_path'] ?? null) ?? '',
             'contacts' => $this->contacts->map($data),
             'sections' => (object) array_filter([
                 'about' => $this->about->map($data),

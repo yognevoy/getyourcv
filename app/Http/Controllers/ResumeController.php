@@ -13,6 +13,7 @@ use App\Http\Requests\UpdateResumeRequest;
 use App\Http\Resources\ResumeTemplateResource;
 use App\Models\Resume;
 use App\Services\Pdf\ResumePdfStore;
+use App\Services\Photo\ResumePhotoStore;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -85,6 +86,15 @@ class ResumeController extends Controller
         $this->authorize('view', $resume);
 
         return Storage::disk('local')->download($pdfStore->ensure($resume), "{$resume->slug}.pdf");
+    }
+
+    public function photo(Resume $resume, ResumePhotoStore $photoStore): StreamedResponse
+    {
+        $this->authorize('view', $resume);
+
+        abort_unless($resume->photo_path, 404);
+
+        return $photoStore->response($resume->photo_path);
     }
 
     public function destroy(Resume $resume, DeleteResume $action): RedirectResponse

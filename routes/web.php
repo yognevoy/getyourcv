@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
         ->withTrashed()
         ->name('resumes.force-destroy');
     Route::get('/resumes/{resume}/pdf', [ResumeController::class, 'pdf'])->name('resumes.pdf');
+    Route::get('/resumes/{resume}/photo', [ResumeController::class, 'photo'])->name('resumes.photo');
     Route::post('/resumes/{resume}/duplicate', [ResumeController::class, 'duplicate'])->name('resumes.duplicate');
     Route::post('/resumes/{resume}/archive', [ResumeController::class, 'archive'])->name('resumes.archive');
     Route::post('/resumes/{resume}/unarchive', [ResumeController::class, 'unarchive'])->name('resumes.unarchive');

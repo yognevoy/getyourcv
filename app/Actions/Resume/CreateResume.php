@@ -28,6 +28,7 @@ class CreateResume
                 'position' => $data['position'] ?? null,
                 'email' => $data['email'] ?? null,
                 'about' => $data['about'] ?? null,
+                'photo_path' => $data['photo_path'] ?? null,
             ]);
 
             $this->persistRelations($resume, $data);
