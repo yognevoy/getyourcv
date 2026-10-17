@@ -15,6 +15,7 @@ trait HasResumeRules
             'status' => ['required', Rule::enum(ResumeStatus::class)],
             'full_name' => ['required', 'string', 'max:255'],
             'position' => ['nullable', 'string', 'max:255'],
+            'location' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'email', 'max:255'],
             'about' => ['nullable', 'string'],
             'photo_path' => ['nullable', 'string', new ResumePhotoRule],

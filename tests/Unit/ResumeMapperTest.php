@@ -33,6 +33,19 @@ test('email becomes a mailto contact and links are mapped by label/url', functio
     ]);
 });
 
+test('location becomes a contact entry before email', function () {
+    $payload = $this->mapper->mapFromArray([
+        'full_name' => 'Jane Doe',
+        'location' => 'Berlin, Germany',
+        'email' => 'jane@example.com',
+    ]);
+
+    expect($payload['contacts'])->toBe([
+        ['label' => '', 'value' => 'Berlin, Germany', 'url' => ''],
+        ['label' => '', 'value' => 'jane@example.com', 'url' => 'mailto:jane@example.com'],
+    ]);
+});
+
 test('a blank row just added to a repeatable list is skipped, not rendered empty', function () {
     // ResumeForm.vue pushes an empty {company: '', title: '', bullets: []} the instant
     // "Add experience" is clicked - it must not show up as an empty block in the preview.

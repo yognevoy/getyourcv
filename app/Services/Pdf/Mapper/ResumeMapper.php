@@ -71,6 +71,7 @@ class ResumeMapper
         return $this->mapFromArray([
             'full_name' => $resume->full_name,
             'position' => $resume->position,
+            'location' => $resume->location,
             'email' => $resume->email,
             'about' => $resume->about,
             'photo_path' => $resume->photo_path,

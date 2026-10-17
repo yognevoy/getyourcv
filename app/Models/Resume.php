@@ -22,6 +22,7 @@ class Resume extends Model
         'photo_path',
         'full_name',
         'position',
+        'location',
         'email',
         'about',
         'current_version_id',

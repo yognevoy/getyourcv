@@ -26,6 +26,7 @@ class CreateResume
                 'status' => $data['status'],
                 'full_name' => $data['full_name'],
                 'position' => $data['position'] ?? null,
+                'location' => $data['location'] ?? null,
                 'email' => $data['email'] ?? null,
                 'about' => $data['about'] ?? null,
                 'photo_path' => $data['photo_path'] ?? null,
