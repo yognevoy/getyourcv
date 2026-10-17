@@ -29,7 +29,7 @@ const props = defineProps({
 const STEPS = ['Contacts', 'About', 'Skills', 'Experience', 'Projects', 'Education', 'Courses', 'Certifications'];
 
 function stepForField(field) {
-    if (field.startsWith('links') || ['full_name', 'position', 'email'].includes(field)) return 0;
+    if (field.startsWith('links') || ['full_name', 'position', 'location', 'email'].includes(field)) return 0;
     if (field === 'about') return 1;
     if (field.startsWith('skill_groups')) return 2;
     if (field.startsWith('experiences')) return 3;

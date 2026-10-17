@@ -94,6 +94,12 @@ function removeLink(index) {
             </div>
 
             <div>
+                <InputLabel for="location" value="Location" />
+                <TextInput id="location" v-model="form.location" class="mt-1 block w-full" />
+                <InputError class="mt-1" :message="form.errors.location" />
+            </div>
+
+            <div>
                 <InputLabel for="email" value="Email" />
                 <TextInput id="email" type="email" v-model="form.email" class="mt-1 block w-full" />
                 <InputError class="mt-1" :message="form.errors.email" />

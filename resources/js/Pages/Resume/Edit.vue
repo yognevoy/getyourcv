@@ -16,6 +16,7 @@ const props = defineProps({
 const form = useForm({
     full_name: props.resume.full_name || '',
     position: props.resume.position || '',
+    location: props.resume.location || '',
     email: props.resume.email || '',
     about: props.resume.about || '',
     photo_path: props.resume.photo_path || '',
@@ -44,6 +45,7 @@ function submit(event) {
 const previewPayload = computed(() => ({
     full_name: form.full_name,
     position: form.position,
+    location: form.location,
     email: form.email,
     about: form.about,
     photo_path: form.photo_path,

@@ -22,6 +22,7 @@ class PreviewResumeRequest extends FormRequest
         return [
             'full_name' => ['nullable', 'string', 'max:255'],
             'position' => ['nullable', 'string', 'max:255'],
+            'location' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'max:255'],
             'about' => ['nullable', 'string'],
             'photo_path' => ['nullable', 'string', new ResumePhotoRule],

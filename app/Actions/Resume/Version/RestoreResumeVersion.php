@@ -26,6 +26,7 @@ class RestoreResumeVersion
                 'title' => $data['title'],
                 'full_name' => $data['full_name'],
                 'position' => $data['position'] ?? null,
+                'location' => $data['location'] ?? null,
                 'email' => $data['email'] ?? null,
                 'about' => $data['about'] ?? null,
                 'current_version_id' => $version->id,

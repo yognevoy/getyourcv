@@ -33,6 +33,7 @@ class DuplicateResume
                 'photo_path' => $this->photoStore->copy($resume->photo_path),
                 'full_name' => $resume->full_name,
                 'position' => $resume->position,
+                'location' => $resume->location,
                 'email' => $resume->email,
                 'about' => $resume->about,
             ]);
@@ -41,6 +42,7 @@ class DuplicateResume
                 'title' => $clone->title,
                 'full_name' => $clone->full_name,
                 'position' => $clone->position,
+                'location' => $clone->location,
                 'email' => $clone->email,
                 'about' => $clone->about,
                 'links' => $resume->links->map(fn ($link) => [

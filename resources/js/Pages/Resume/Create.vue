@@ -13,6 +13,7 @@ const isAuthorized = computed(() => !!page.props.auth.user);
 const form = useForm({
     full_name: '',
     position: '',
+    location: '',
     email: '',
     about: '',
     photo_path: '',
@@ -43,6 +44,7 @@ function draftData() {
     return {
         full_name: form.full_name,
         position: form.position,
+        location: form.location,
         email: form.email,
         about: form.about,
         photo_path: form.photo_path,
