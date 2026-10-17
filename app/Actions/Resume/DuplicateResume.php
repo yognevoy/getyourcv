@@ -64,6 +64,10 @@ class DuplicateResume
                         'text' => $bullet->text,
                     ])->all(),
                 ])->all(),
+                'projects' => $resume->projects->map(fn ($project) => [
+                    'title' => $project->title,
+                    'description' => $project->description,
+                ])->all(),
                 'educations' => $resume->educations->map(fn ($education) => [
                     'institution' => $education->institution,
                     'field' => $education->field,

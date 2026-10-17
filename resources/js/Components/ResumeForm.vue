@@ -4,6 +4,7 @@ import ContactsStep from '@/Components/ContactsStep.vue';
 import AboutStep from '@/Components/AboutStep.vue';
 import SkillsStep from '@/Components/SkillsStep.vue';
 import ExperienceStep from '@/Components/ExperienceStep.vue';
+import ProjectsStep from '@/Components/ProjectsStep.vue';
 import EducationStep from '@/Components/EducationStep.vue';
 import CoursesStep from '@/Components/CoursesStep.vue';
 import CertificationsStep from '@/Components/CertificationsStep.vue';
@@ -25,16 +26,17 @@ const props = defineProps({
     },
 });
 
-const STEPS = ['Contacts', 'About', 'Skills', 'Experience', 'Education', 'Courses', 'Certifications'];
+const STEPS = ['Contacts', 'About', 'Skills', 'Experience', 'Projects', 'Education', 'Courses', 'Certifications'];
 
 function stepForField(field) {
     if (field.startsWith('links') || ['full_name', 'position', 'email'].includes(field)) return 0;
     if (field === 'about') return 1;
     if (field.startsWith('skill_groups')) return 2;
     if (field.startsWith('experiences')) return 3;
-    if (field.startsWith('educations')) return 4;
-    if (field.startsWith('courses')) return 5;
-    if (field.startsWith('certifications')) return 6;
+    if (field.startsWith('projects')) return 4;
+    if (field.startsWith('educations')) return 5;
+    if (field.startsWith('courses')) return 6;
+    if (field.startsWith('certifications')) return 7;
     return 0;
 }
 
@@ -102,8 +104,9 @@ watch(currentStep, (value) => {
                 <AboutStep v-else-if="currentStep === 1" :form="form" />
                 <SkillsStep v-else-if="currentStep === 2" :form="form" />
                 <ExperienceStep v-else-if="currentStep === 3" :form="form" />
-                <EducationStep v-else-if="currentStep === 4" :form="form" />
-                <CoursesStep v-else-if="currentStep === 5" :form="form" />
+                <ProjectsStep v-else-if="currentStep === 4" :form="form" />
+                <EducationStep v-else-if="currentStep === 5" :form="form" />
+                <CoursesStep v-else-if="currentStep === 6" :form="form" />
                 <CertificationsStep v-else :form="form" />
             </section>
         </Transition>

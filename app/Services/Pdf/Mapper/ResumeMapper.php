@@ -15,6 +15,7 @@ class ResumeMapper
         private readonly AboutMapper $about = new AboutMapper,
         private readonly SkillsMapper $skills = new SkillsMapper,
         private readonly ExperienceMapper $experience = new ExperienceMapper,
+        private readonly ProjectsMapper $projects = new ProjectsMapper,
         private readonly EducationMapper $education = new EducationMapper,
         private readonly CoursesMapper $courses = new CoursesMapper,
         private readonly CertificationsMapper $certifications = new CertificationsMapper,
@@ -45,6 +46,11 @@ class ResumeMapper
             ])->all(),
         ])->all();
 
+        $projects = $resume->projects->map(fn ($project) => [
+            'title' => $project->title,
+            'description' => $project->description,
+        ])->all();
+
         $educations = $resume->educations->map(fn ($education) => [
             'institution' => $education->institution,
             'field' => $education->field,
@@ -71,6 +77,7 @@ class ResumeMapper
             'links' => $links,
             'skill_groups' => $skillGroups,
             'experiences' => $experiences,
+            'projects' => $projects,
             'educations' => $educations,
             'courses' => $courses,
             'certifications' => $certifications,
@@ -88,6 +95,7 @@ class ResumeMapper
                 'about' => $this->about->map($data),
                 'skills' => $this->skills->map($data),
                 'experience' => $this->experience->map($data),
+                'projects' => $this->projects->map($data),
                 'education' => $this->education->map($data),
                 'courses' => $this->courses->map($data),
                 'certifications' => $this->certifications->map($data),

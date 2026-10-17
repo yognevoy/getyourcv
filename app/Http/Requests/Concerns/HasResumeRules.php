@@ -38,6 +38,10 @@ trait HasResumeRules
             'experiences.*.bullets.*.type' => ['required', 'in:responsibility,achievement'],
             'experiences.*.bullets.*.text' => ['required', 'string'],
 
+            'projects' => ['array'],
+            'projects.*.title' => ['required', 'string', 'max:255'],
+            'projects.*.description' => ['nullable', 'string'],
+
             'educations' => ['array'],
             'educations.*.institution' => ['required', 'string', 'max:255'],
             'educations.*.field' => ['nullable', 'string', 'max:255'],

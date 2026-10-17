@@ -45,6 +45,10 @@ class PreviewResumeRequest extends FormRequest
             'experiences.*.bullets.*.type' => ['nullable', 'in:responsibility,achievement'],
             'experiences.*.bullets.*.text' => ['nullable', 'string'],
 
+            'projects' => ['array'],
+            'projects.*.title' => ['nullable', 'string', 'max:255'],
+            'projects.*.description' => ['nullable', 'string'],
+
             'educations' => ['array'],
             'educations.*.institution' => ['nullable', 'string', 'max:255'],
             'educations.*.field' => ['nullable', 'string', 'max:255'],
