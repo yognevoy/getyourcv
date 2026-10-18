@@ -30,6 +30,7 @@ const form = useForm({
     educations: props.resume.educations,
     courses: props.resume.courses,
     certifications: props.resume.certifications,
+    languages: props.resume.languages,
 });
 
 function submit(event) {
@@ -56,6 +57,7 @@ const previewPayload = computed(() => ({
     educations: form.educations,
     courses: form.courses,
     certifications: form.certifications,
+    languages: form.languages,
 }));
 </script>
 
