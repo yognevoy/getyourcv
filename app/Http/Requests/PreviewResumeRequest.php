@@ -64,6 +64,10 @@ class PreviewResumeRequest extends FormRequest
             'certifications' => ['array'],
             'certifications.*.title' => ['nullable', 'string', 'max:255'],
             'certifications.*.provider' => ['nullable', 'string', 'max:255'],
+
+            'languages' => ['array'],
+            'languages.*.language' => ['nullable', 'string', 'max:255'],
+            'languages.*.level' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

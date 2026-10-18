@@ -84,6 +84,10 @@ class DuplicateResume
                     'title' => $certification->title,
                     'provider' => $certification->provider,
                 ])->all(),
+                'languages' => $resume->languages->map(fn ($language) => [
+                    'language' => $language->language,
+                    'level' => $language->level,
+                ])->all(),
             ];
 
             $this->persistRelations($clone, $data);

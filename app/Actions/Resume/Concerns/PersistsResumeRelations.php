@@ -94,6 +94,15 @@ trait PersistsResumeRelations
                 'position' => $i,
             ]);
         }
+
+        $resume->languages()->delete();
+        foreach ($data['languages'] ?? [] as $i => $language) {
+            $resume->languages()->create([
+                'language' => $language['language'],
+                'level' => $language['level'] ?? null,
+                'position' => $i,
+            ]);
+        }
     }
 
     public const RESUME_RELATIONS = [
@@ -104,5 +113,6 @@ trait PersistsResumeRelations
         'educations',
         'courses',
         'certifications',
+        'languages',
     ];
 }

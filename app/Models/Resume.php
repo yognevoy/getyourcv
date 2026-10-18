@@ -76,6 +76,11 @@ class Resume extends Model
         return $this->hasMany(ResumeCertification::class)->orderBy('position');
     }
 
+    public function languages(): HasMany
+    {
+        return $this->hasMany(ResumeLanguage::class)->orderBy('position');
+    }
+
     public function versions(): HasMany
     {
         return $this->hasMany(ResumeVersion::class);
