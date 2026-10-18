@@ -17,7 +17,7 @@ RUN npm run build
 
 FROM golang:1.26-alpine AS resume-gen-build
 RUN apk add --no-cache git ca-certificates
-RUN CGO_ENABLED=0 GOOS=linux go install github.com/yognevoy/resume-gen@v0.3.2
+RUN CGO_ENABLED=0 GOOS=linux go install github.com/yognevoy/resume-gen@v0.4.0
 
 FROM dunglas/frankenphp:1-php8.4-alpine AS frankenphp
 RUN apk add --no-cache postgresql-libs libzip icu-libs oniguruma \

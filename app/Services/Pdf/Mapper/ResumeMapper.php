@@ -19,6 +19,7 @@ class ResumeMapper
         private readonly EducationMapper $education = new EducationMapper,
         private readonly CoursesMapper $courses = new CoursesMapper,
         private readonly CertificationsMapper $certifications = new CertificationsMapper,
+        private readonly LanguagesMapper $languages = new LanguagesMapper,
         private readonly ResumePhotoStore $photoStore = new ResumePhotoStore,
     ) {}
 
@@ -68,6 +69,11 @@ class ResumeMapper
             'provider' => $certification->provider,
         ])->all();
 
+        $languages = $resume->languages->map(fn ($language) => [
+            'language' => $language->language,
+            'level' => $language->level,
+        ])->all();
+
         return $this->mapFromArray([
             'full_name' => $resume->full_name,
             'position' => $resume->position,
@@ -82,6 +88,7 @@ class ResumeMapper
             'educations' => $educations,
             'courses' => $courses,
             'certifications' => $certifications,
+            'languages' => $languages,
         ]);
     }
 
@@ -101,6 +108,7 @@ class ResumeMapper
                 'education' => $this->education->map($data),
                 'courses' => $this->courses->map($data),
                 'certifications' => $this->certifications->map($data),
+                'languages' => $this->languages->map($data),
             ]),
         ];
     }

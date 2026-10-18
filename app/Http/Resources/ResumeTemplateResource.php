@@ -29,6 +29,7 @@ class ResumeTemplateResource extends JsonResource
             'educations' => ResumeEducationResource::collection($this->educations),
             'courses' => ResumeCourseResource::collection($this->courses),
             'certifications' => ResumeCertificationResource::collection($this->certifications),
+            'languages' => ResumeLanguageResource::collection($this->languages),
         ];
     }
 }

@@ -57,6 +57,10 @@ trait HasResumeRules
             'certifications' => ['array'],
             'certifications.*.title' => ['required', 'string', 'max:255'],
             'certifications.*.provider' => ['nullable', 'string', 'max:255'],
+
+            'languages' => ['array'],
+            'languages.*.language' => ['required', 'string', 'max:255'],
+            'languages.*.level' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

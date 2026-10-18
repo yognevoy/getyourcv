@@ -8,6 +8,7 @@ import ProjectsStep from '@/Components/ProjectsStep.vue';
 import EducationStep from '@/Components/EducationStep.vue';
 import CoursesStep from '@/Components/CoursesStep.vue';
 import CertificationsStep from '@/Components/CertificationsStep.vue';
+import LanguagesStep from '@/Components/LanguagesStep.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 
@@ -26,7 +27,7 @@ const props = defineProps({
     },
 });
 
-const STEPS = ['Contacts', 'About', 'Skills', 'Experience', 'Projects', 'Education', 'Courses', 'Certifications'];
+const STEPS = ['Contacts', 'About', 'Skills', 'Experience', 'Projects', 'Education', 'Courses', 'Certifications', 'Languages'];
 
 function stepForField(field) {
     if (field.startsWith('links') || ['full_name', 'position', 'location', 'email'].includes(field)) return 0;
@@ -37,6 +38,7 @@ function stepForField(field) {
     if (field.startsWith('educations')) return 5;
     if (field.startsWith('courses')) return 6;
     if (field.startsWith('certifications')) return 7;
+    if (field.startsWith('languages')) return 8;
     return 0;
 }
 
@@ -107,7 +109,8 @@ watch(currentStep, (value) => {
                 <ProjectsStep v-else-if="currentStep === 4" :form="form" />
                 <EducationStep v-else-if="currentStep === 5" :form="form" />
                 <CoursesStep v-else-if="currentStep === 6" :form="form" />
-                <CertificationsStep v-else :form="form" />
+                <CertificationsStep v-else-if="currentStep === 7" :form="form" />
+                <LanguagesStep v-else :form="form" />
             </section>
         </Transition>
 

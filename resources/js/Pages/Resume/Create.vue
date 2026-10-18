@@ -25,6 +25,7 @@ const form = useForm({
     educations: [],
     courses: [],
     certifications: [],
+    languages: [],
 });
 
 onMounted(() => {
@@ -55,6 +56,7 @@ function draftData() {
         educations: form.educations,
         courses: form.courses,
         certifications: form.certifications,
+        languages: form.languages,
     };
 }
 
