@@ -5,7 +5,12 @@ import PublicFooter from '@/Components/PublicFooter.vue';
 </script>
 
 <template>
-    <Head title="About" />
+    <Head title="About">
+        <meta
+            name="description"
+            content="getyourcv is a simple way to build a resume, publish it at a link, and share it with any recruiter, anywhere."
+        />
+    </Head>
 
     <div class="flex min-h-screen flex-col bg-paper text-ink">
         <PublicHeader />

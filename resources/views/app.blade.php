@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <meta inertia name="description" content="Create a professional resume in minutes, publish it as a link, and share it with any HR worldwide.">
 
         <link rel="icon" href="/favicon.ico" sizes="any">
         <link rel="icon" type="image/png" href="/favicon.png">

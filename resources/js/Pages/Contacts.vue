@@ -5,7 +5,9 @@ import PublicFooter from '@/Components/PublicFooter.vue';
 </script>
 
 <template>
-    <Head title="Contacts" />
+    <Head title="Contacts">
+        <meta name="description" content="Get in touch with the getyourcv team with questions or feedback." />
+    </Head>
 
     <div class="flex min-h-screen flex-col bg-paper text-ink">
         <PublicHeader />

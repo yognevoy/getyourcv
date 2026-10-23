@@ -5,7 +5,9 @@ import PublicFooter from '@/Components/PublicFooter.vue';
 </script>
 
 <template>
-    <Head title="Policy" />
+    <Head title="Policy">
+        <meta name="description" content="How we handle your resume data." />
+    </Head>
 
     <div class="flex min-h-screen flex-col bg-paper text-ink">
         <PublicHeader />

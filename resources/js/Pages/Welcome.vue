@@ -195,7 +195,12 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <Head title="Build your resume" />
+    <Head title="Build your resume">
+        <meta
+            name="description"
+            content="A resume builder to create and share your CV without wasting time."
+        />
+    </Head>
 
     <div class="flex min-h-screen flex-col bg-paper text-ink">
         <PublicHeader />
