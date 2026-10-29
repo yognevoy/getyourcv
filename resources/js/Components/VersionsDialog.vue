@@ -102,7 +102,7 @@ function confirmAction() {
                 No versions yet.
             </p>
 
-            <ul v-else class="mt-6 divide-y divide-ink/10">
+            <ul v-else class="mt-6 max-h-96 divide-y divide-ink/10 overflow-y-auto pr-4">
                 <li
                     v-for="version in versions"
                     :key="version.id"
