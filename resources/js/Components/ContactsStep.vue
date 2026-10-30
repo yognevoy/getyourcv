@@ -83,25 +83,25 @@ function removeLink(index) {
 
             <div>
                 <InputLabel for="full_name" value="Full name" />
-                <TextInput id="full_name" v-model="form.full_name" class="mt-1 block w-full" required />
+                <TextInput id="full_name" v-model="form.full_name" maxlength="28" class="mt-1 block w-full" required />
                 <InputError class="mt-1" :message="form.errors.full_name" />
             </div>
 
             <div>
                 <InputLabel for="position" value="Position" />
-                <TextInput id="position" v-model="form.position" class="mt-1 block w-full" />
+                <TextInput id="position" v-model="form.position" maxlength="28" class="mt-1 block w-full" />
                 <InputError class="mt-1" :message="form.errors.position" />
             </div>
 
             <div>
                 <InputLabel for="location" value="Location" />
-                <TextInput id="location" v-model="form.location" class="mt-1 block w-full" />
+                <TextInput id="location" v-model="form.location" maxlength="28" class="mt-1 block w-full" />
                 <InputError class="mt-1" :message="form.errors.location" />
             </div>
 
             <div>
                 <InputLabel for="email" value="Email" />
-                <TextInput id="email" type="email" v-model="form.email" class="mt-1 block w-full" />
+                <TextInput id="email" type="email" v-model="form.email" maxlength="36" class="mt-1 block w-full" />
                 <InputError class="mt-1" :message="form.errors.email" />
             </div>
 
@@ -123,6 +123,7 @@ function removeLink(index) {
                             <TextInput
                                 v-model="link.label"
                                 :placeholder="linkLabelPlaceholder(link)"
+                                maxlength="20"
                                 class="order-1 min-w-0 flex-1 sm:w-1/3 sm:flex-none"
                             />
                             <IconButton label="Remove link" class="order-2 sm:order-3" @click="removeLink(i)">
@@ -131,13 +132,14 @@ function removeLink(index) {
                             <TextInput
                                 v-model="link.url"
                                 placeholder="https://..."
+                                maxlength="255"
                                 class="order-3 min-w-0 w-full sm:order-2 sm:w-auto sm:flex-1"
                             />
                         </div>
                     </template>
                 </draggable>
 
-                <AddRowButton class="mt-3" @click="addLink">Add link</AddRowButton>
+                <AddRowButton v-if="form.links.length < 3" class="mt-3" @click="addLink">Add link</AddRowButton>
             </div>
         </div>
     </div>

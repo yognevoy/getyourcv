@@ -39,6 +39,7 @@ function applyRewrite(text) {
                 id="about"
                 v-model="form.about"
                 rows="10"
+                maxlength="2000"
                 placeholder="A couple of sentences about you as a professional."
                 class="mt-1 w-full rounded-md border border-ink/20 px-3 py-2 text-ink transition-colors focus:border-ink focus:outline-none"
             />

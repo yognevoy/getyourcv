@@ -52,8 +52,8 @@ function removeEducation(index) {
                     <DragHandle align-top />
                     <div class="min-w-0 flex-1 space-y-2">
                         <div class="grid gap-2 sm:grid-cols-2">
-                            <TextInput v-model="education.institution" placeholder="Institution" />
-                            <TextInput v-model="education.field" placeholder="Field of study" />
+                            <TextInput v-model="education.institution" placeholder="Institution" maxlength="50" />
+                            <TextInput v-model="education.field" placeholder="Field of study" maxlength="70" />
                         </div>
 
                         <div class="flex flex-wrap items-center gap-3">

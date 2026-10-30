@@ -46,6 +46,7 @@ function removeLanguage(index) {
                         <TextInput
                             v-model="language.language"
                             placeholder="Language"
+                            maxlength="50"
                             class="order-1 min-w-0 flex-1 sm:w-1/3 sm:flex-none"
                         />
                         <IconButton label="Remove language" class="order-2 sm:order-3" @click="removeLanguage(i)">
@@ -54,6 +55,7 @@ function removeLanguage(index) {
                         <TextInput
                             v-model="language.level"
                             placeholder="Proficiency level"
+                            maxlength="50"
                             class="order-3 min-w-0 w-full sm:order-2 sm:w-auto sm:flex-1"
                         />
                     </div>
