@@ -45,8 +45,8 @@ function removeProject(index) {
                     <div class="flex items-stretch gap-2 py-3 first:pt-0 sm:py-0">
                         <DragHandle align-top />
                         <div class="min-w-0 flex-1 space-y-2">
-                            <TextInput v-model="project.title" placeholder="Project title" class="w-full" />
-                            <Textarea v-model="project.description" placeholder="Description" />
+                            <TextInput v-model="project.title" placeholder="Project title" maxlength="50" class="w-full" />
+                            <Textarea v-model="project.description" placeholder="Description" maxlength="300" />
                         </div>
                         <IconButton label="Remove project" align-top @click="removeProject(i)">
                             <XMarkIcon class="h-4 w-4" />

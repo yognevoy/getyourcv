@@ -46,6 +46,7 @@ function removeCourse(index) {
                         <TextInput
                             v-model="course.title"
                             placeholder="Course title"
+                            maxlength="50"
                             class="order-1 min-w-0 flex-1 sm:w-1/3 sm:flex-none"
                         />
                         <IconButton label="Remove course" class="order-2 sm:order-3" @click="removeCourse(i)">
@@ -54,6 +55,7 @@ function removeCourse(index) {
                         <TextInput
                             v-model="course.provider"
                             placeholder="Provider"
+                            maxlength="70"
                             class="order-3 min-w-0 w-full sm:order-2 sm:w-auto sm:flex-1"
                         />
                     </div>

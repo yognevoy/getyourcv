@@ -175,8 +175,8 @@ function applyRewrite(text) {
                     <div :class="isExperienceExpanded(experience) ? 'overflow-visible' : 'overflow-hidden'">
                         <div class="space-y-4 border-t border-ink/15 p-4">
                             <div class="grid gap-2 sm:grid-cols-2">
-                                <TextInput v-model="experience.title" placeholder="Title" />
-                                <TextInput v-model="experience.company" placeholder="Company" />
+                                <TextInput v-model="experience.title" placeholder="Title" maxlength="50" />
+                                <TextInput v-model="experience.company" placeholder="Company" maxlength="50" />
                             </div>
 
                             <div class="flex flex-wrap items-center gap-3">
@@ -210,7 +210,7 @@ function applyRewrite(text) {
                                     <template #item="{ element: bullet }">
                                         <div class="flex items-stretch gap-2">
                                             <DragHandle align-top />
-                                            <Textarea v-model="bullet.text" class="flex-1" />
+                                            <Textarea v-model="bullet.text" class="flex-1" maxlength="500" />
                                             <Dropdown align="right" class="self-stretch">
                                                 <template #trigger>
                                                     <IconButton label="Bullet actions" align-top class="h-full">
@@ -259,7 +259,7 @@ function applyRewrite(text) {
                                     <template #item="{ element: bullet }">
                                         <div class="flex items-stretch gap-2">
                                             <DragHandle align-top />
-                                            <Textarea v-model="bullet.text" class="flex-1" />
+                                            <Textarea v-model="bullet.text" class="flex-1" maxlength="500" />
                                             <Dropdown align="right" class="self-stretch">
                                                 <template #trigger>
                                                     <IconButton label="Bullet actions" align-top class="h-full">

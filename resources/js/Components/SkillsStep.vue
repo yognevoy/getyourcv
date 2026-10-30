@@ -121,6 +121,7 @@ function removeSkill(groupIndex, skillIndex) {
                             <TextInput
                                 v-model="group.label"
                                 placeholder="Languages, Frameworks..."
+                                maxlength="50"
                                 class="w-full"
                             />
 
@@ -136,7 +137,7 @@ function removeSkill(groupIndex, skillIndex) {
                                 <template #item="{ element: skill, index: si }">
                                     <div class="flex items-stretch gap-2">
                                         <DragHandle />
-                                        <TextInput v-model="skill.value" :placeholder="skillPlaceholder(skill)" class="flex-1" />
+                                        <TextInput v-model="skill.value" :placeholder="skillPlaceholder(skill)" maxlength="50" class="flex-1" />
                                         <IconButton label="Remove skill" @click="removeSkill(gi, si)">
                                             <XMarkIcon class="h-4 w-4" />
                                         </IconButton>
