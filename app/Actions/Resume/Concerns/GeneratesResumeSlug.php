@@ -9,7 +9,7 @@ trait GeneratesResumeSlug
 {
     private function generateSlug(string $title): string
     {
-        $base = Str::slug($title) ?: 'resume';
+        $base = Str::substr(Str::slug($title) ?: 'resume', 0, 248);
 
         do {
             $slug = $base.'-'.Str::lower(Str::random(6));
