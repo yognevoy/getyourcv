@@ -15,8 +15,8 @@ const QUESTIONS = [
         a: 'Yes. Building, publishing, versioning and downloading your resume as a PDF cost nothing.',
     },
     {
-        q: 'Can HR tell I used AI to write it?',
-        a: "No - the rewrite tool sharpens your own wording, it doesn't invent experience or swap your voice for a generic one.",
+        q: 'Can I keep more than one resume in my account?',
+        a: "Yes. Your dashboard holds all of them as separate cards - build as many as you need, side by side.",
     },
     {
         q: 'What happens if I edit my resume after sending the link?',
@@ -29,6 +29,10 @@ const QUESTIONS = [
     {
         q: 'What happens if I delete a resume?',
         a: 'It goes to the trash first, not gone immediately. You can restore it, or delete it for good whenever you choose.',
+    },
+    {
+        q: 'Can I delete my account and everything in it?',
+        a: 'Yes. Deleting your account permanently erases every resume you have, including anything still in the trash, along with the account itself.',
     },
 ];
 
