@@ -85,8 +85,7 @@ onUnmounted(() => {
                     See who's actually opening your resume
                 </h2>
                 <p class="mt-4 max-w-md" :class="dark ? 'text-paper/65' : 'text-ink/65'">
-                    Every link open is logged - not your own visits. Know when a recruiter
-                    took a look, without asking them.
+                    Every link open is counted. See your views trend day by day.
                 </p>
             </div>
 
