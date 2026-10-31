@@ -11,7 +11,7 @@ defineProps({
 const ROWS = [
     { label: 'Templates to pick from', typical: '20+, decide yourself', us: '1, already decided' },
     { label: 'PDF that matches the preview', typical: 'Often drifts', us: 'Pixel-identical' },
-    { label: 'Versions per job application', typical: 'Duplicate the whole file', us: 'One click, own link each' },
+    { label: 'Version history', typical: 'No history, no undo', us: 'Auto-saved, restore anytime' },
     { label: 'AI rewrite', typical: 'Generic tone presets', us: 'Rewrites against your actual role' },
     { label: 'Sharing with HR', typical: 'Attach a file', us: 'Send a link, always current' },
 ];

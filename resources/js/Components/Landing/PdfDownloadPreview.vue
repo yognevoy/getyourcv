@@ -1,6 +1,7 @@
 <script setup>
 import DotPatchOverlay from '@/Components/Landing/DotPatchOverlay.vue';
 import { randomResumeSlug } from '@/utils/randomResumeSlug.js';
+import { ArrowDownTrayIcon, LinkIcon } from '@heroicons/vue/24/outline';
 
 defineProps({
     dark: {
@@ -26,20 +27,7 @@ const exampleSlug = randomResumeSlug();
 
             <div class="mt-10 flex flex-col items-center gap-10 sm:flex-row sm:justify-center sm:gap-16">
                 <div class="flex flex-col items-center">
-                    <svg
-                        class="h-8 w-8"
-                        :class="dark ? 'text-paper' : 'text-ink'"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="M9 15 15 9" />
-                        <path d="M10.5 6.5 12 5a4 4 0 0 1 5.66 5.66L16 12.17" />
-                        <path d="M13.5 17.5 12 19a4 4 0 0 1-5.66-5.66L7.83 11.83" />
-                    </svg>
+                    <LinkIcon class="h-8 w-8" :class="dark ? 'text-paper' : 'text-ink'" />
                     <p class="mt-3 text-sm font-medium" :class="dark ? 'text-paper/80' : 'text-ink/80'">Share a link</p>
                     <div class="mt-3 flex items-center gap-2 text-sm">
                         <span :class="dark ? 'text-paper/60' : 'text-ink/60'">getyourcv.app/r/{{ exampleSlug }}</span>
@@ -49,21 +37,7 @@ const exampleSlug = randomResumeSlug();
                 <div class="hidden text-sm sm:block" :class="dark ? 'text-paper/30' : 'text-ink/30'">or</div>
 
                 <div class="flex flex-col items-center">
-                    <svg
-                        class="h-8 w-8"
-                        :class="dark ? 'text-paper' : 'text-ink'"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="M7 3h7l3 3v15H7z" />
-                        <path d="M14 3v3h3" />
-                        <path d="M9.5 15.5h5" />
-                        <path d="M9.5 12.5h5" />
-                    </svg>
+                    <ArrowDownTrayIcon class="h-8 w-8" :class="dark ? 'text-paper' : 'text-ink'" />
                     <p class="mt-3 text-sm font-medium" :class="dark ? 'text-paper/80' : 'text-ink/80'">Download a PDF</p>
                     <p class="mt-3 text-sm" :class="dark ? 'text-paper/60' : 'text-ink/60'">Exact same layout, ready to send</p>
                 </div>

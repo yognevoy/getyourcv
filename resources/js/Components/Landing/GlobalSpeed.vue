@@ -1,5 +1,7 @@
 <script setup>
+import { onMounted, onUnmounted, ref } from 'vue';
 import DotPatchOverlay from '@/Components/Landing/DotPatchOverlay.vue';
+import { LAND_RINGS, MAP_W, MAP_H, REGIONS } from '@/Components/Landing/mapData.js';
 
 defineProps({
     dark: {
@@ -8,29 +10,11 @@ defineProps({
     },
 });
 
-const REGIONS = [
-    { place: 'New York', ms: 48, x: 70, y: 75 },
-    { place: 'London', ms: 52, x: 200, y: 50 },
-    { place: 'Singapore', ms: 61, x: 325, y: 95 },
-    { place: 'São Paulo', ms: 57, x: 115, y: 155 },
-];
-
 const prefersReducedMotion =
     typeof window !== 'undefined' &&
     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-const MAP_W = 400;
-const MAP_H = 200;
-const DOT_SPACING = 7;
-
-const LANDMASSES = [
-    [[35, 40], [50, 20], [80, 15], [115, 18], [140, 30], [150, 45], [140, 60], [125, 55], [110, 65], [100, 80], [90, 100], [75, 115], [60, 110], [45, 95], [35, 75], [28, 55]],
-    [[95, 125], [120, 120], [140, 130], [148, 150], [140, 175], [125, 195], [110, 190], [100, 170], [92, 150]],
-    [[180, 35], [200, 20], [220, 25], [230, 40], [222, 55], [205, 65], [190, 60], [178, 50]],
-    [[195, 65], [225, 60], [245, 75], [248, 110], [240, 140], [225, 165], [210, 160], [200, 130], [195, 100]],
-    [[230, 20], [270, 12], [315, 15], [350, 25], [368, 45], [360, 65], [340, 60], [325, 75], [332, 95], [320, 115], [305, 110], [290, 95], [270, 85], [250, 70], [235, 50], [228, 35]],
-    [[335, 145], [360, 140], [378, 155], [375, 175], [355, 185], [335, 178], [328, 160]],
-];
+const DOT_SPACING = 3;
 
 function inPolygon(x, y, points) {
     let inside = false;
@@ -45,7 +29,7 @@ function inPolygon(x, y, points) {
 }
 
 function inLandmass(x, y) {
-    return LANDMASSES.some((polygon) => inPolygon(x, y, polygon));
+    return LAND_RINGS.some((ring) => inPolygon(x, y, ring));
 }
 
 const mapDots = [];
@@ -63,6 +47,29 @@ const CONNECTIONS = [
     [1, 3],
     [2, 3],
 ];
+
+const el = ref(null);
+const visible = ref(false);
+let observer = null;
+
+onMounted(() => {
+    if (prefersReducedMotion || !el.value) {
+        visible.value = true;
+        return;
+    }
+    observer = new IntersectionObserver(
+        ([entry]) => {
+            if (entry.isIntersecting) {
+                visible.value = true;
+                observer.disconnect();
+            }
+        },
+        { threshold: 0.15 },
+    );
+    observer.observe(el.value);
+});
+
+onUnmounted(() => observer?.disconnect());
 </script>
 
 <template>
@@ -77,8 +84,8 @@ const CONNECTIONS = [
                 restrictions, no waiting.
             </p>
 
-            <div class="mt-10">
-                <svg :viewBox="`0 0 ${MAP_W} ${MAP_H}`" class="mx-auto w-full max-w-xl" role="img" aria-label="World map with resume link load times by region">
+            <div ref="el" class="mt-10">
+                <svg :viewBox="`0 0 ${MAP_W} ${MAP_H}`" class="mx-auto w-full max-w-2xl" role="img" aria-label="World map with resume link load times by region">
                     <g v-for="([a, b], i) in CONNECTIONS" :key="`conn-${i}`">
                         <path
                             :id="`gyc-map-conn-${i}`"
@@ -88,7 +95,7 @@ const CONNECTIONS = [
                             stroke-width="0.75"
                             stroke-opacity="0.15"
                         />
-                        <circle v-if="!prefersReducedMotion" r="1.8" :fill="dark ? '#fdfdfd' : '#0a0a0a'" fill-opacity="0.85">
+                        <circle v-if="!prefersReducedMotion && visible" r="1.8" :fill="dark ? '#fdfdfd' : '#0a0a0a'" fill-opacity="0.85">
                             <animateMotion :dur="`${3.5 + i * 0.6}s`" repeatCount="indefinite" :begin="`${i * 0.5}s`">
                                 <mpath :href="`#gyc-map-conn-${i}`" />
                             </animateMotion>
@@ -99,7 +106,7 @@ const CONNECTIONS = [
                         :key="i"
                         :cx="dot.x"
                         :cy="dot.y"
-                        r="1.4"
+                        r="0.8"
                         :fill="dark ? '#fdfdfd' : '#0a0a0a'"
                         fill-opacity="0.25"
                     />
@@ -114,13 +121,7 @@ const CONNECTIONS = [
                             stroke-width="1"
                         />
                         <circle :cx="region.x" :cy="region.y" r="2.5" :fill="dark ? '#fdfdfd' : '#0a0a0a'" />
-                        <text
-                            :x="region.x"
-                            :y="region.y - 8"
-                            text-anchor="middle"
-                            font-size="8"
-                            :fill="dark ? '#fdfdfd' : '#0a0a0a'"
-                        >
+                        <text :x="region.x" :y="region.y - 8" text-anchor="middle" font-size="8" :fill="dark ? '#fdfdfd' : '#0a0a0a'">
                             {{ region.ms }}ms
                         </text>
                     </g>
