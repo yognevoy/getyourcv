@@ -3,10 +3,10 @@ import { onMounted, onUnmounted, ref } from 'vue';
 import DotPatchOverlay from '@/Components/Landing/DotPatchOverlay.vue';
 
 const VERSIONS = [
-    { ref: 'base', label: 'Base resume', link: '/r/john-doe-resume-k7m2qx', detail: 'Your full experience, nothing left out', isBase: true },
-    { ref: 'frontend', label: 'Frontend role', link: '/r/john-doe-frontend-h8n3pz', detail: 'Leads with React, UI work, design systems' },
-    { ref: 'lead', label: 'Team lead role', link: '/r/john-doe-lead-m4j9qw', detail: 'Leads with mentoring, planning, delivery' },
-    { ref: 'freelance', label: 'Freelance pitch', link: '/r/john-doe-freelance-t2x8rc', detail: 'Leads with client results, turnaround time' },
+    { ref: 'v4', label: 'Version 4', link: 'Oct 31, 2026 · Current', detail: 'Updated skills, added new project', isBase: true },
+    { ref: 'v3', label: 'Version 3', link: 'Oct 20, 2026', detail: 'Rewrote About summary' },
+    { ref: 'v2', label: 'Version 2', link: 'Oct 12, 2026', detail: 'Added certification' },
+    { ref: 'v1', label: 'Version 1', link: 'Oct 5, 2026', detail: 'Initial resume created' },
 ];
 
 const el = ref(null);
@@ -43,11 +43,11 @@ onUnmounted(() => observer?.disconnect());
         <DotPatchOverlay side="left" />
         <div class="relative mx-auto max-w-4xl">
             <h2 class="max-w-xl text-[clamp(1.75rem,4vw,2.75rem)] font-semibold tracking-tight">
-                One resume, reshaped for every application
+                Your resume remembers everything
             </h2>
             <p class="mt-4 max-w-md text-ink/65">
-                Branch off a version per job. Each keeps its own link - edit one without
-                touching the others.
+                Every save keeps a version. Browse the history, restore any one
+                instantly.
             </p>
 
             <div ref="el" class="relative mt-12 max-w-xl pl-7">
