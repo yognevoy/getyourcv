@@ -37,7 +37,7 @@ const HEADING_LINES = ['Your resume, shipped.', 'Ready to go.'];
                 <HeroStatsLine />
             </div>
 
-            <div class="relative">
+            <div class="relative hidden lg:block">
                 <SkillWordFeed />
             </div>
         </div>
